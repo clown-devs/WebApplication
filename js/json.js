@@ -88,29 +88,29 @@ window.onload = async function () {
 
     //     }
         
-        let responce = await sendRequest('POST', 'http://176.119.157.82:8000/api/meeting/', body)
-        responce = await responce.json()       
+    //     let responce = await sendRequest('POST', 'http://176.119.157.82:8000/api/meeting/', body)
+    //     responce = await responce.json()       
 
         
-        let id_clien = responce.creator
-        let id_meet = responce.id
-        console.log(responce)
-        console.log(id_meet)
-        fetch('http://176.119.157.82:8000/api/employeelist/', {
-            method: 'POST',
-            body: JSON.stringify({
-                "employee": id_clien,
-                "meeting": id_meet
-            }),
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8',
-            },
-          })
-            .then((response) => response.json())
-            .then((json) => console.log(json));
+    //     let id_clien = responce.creator
+    //     let id_meet = responce.id
+    //     console.log(responce)
+    //     console.log(id_meet)
+    //     fetch('http://176.119.157.82:8000/api/employeelist/', {
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //             "employee": id_clien,
+    //             "meeting": id_meet
+    //         }),
+    //         headers: {
+    //           'Content-type': 'application/json; charset=UTF-8',
+    //         },
+    //       })
+    //         .then((response) => response.json())
+    //         .then((json) => console.log(json));
           
         
-     }
+    //  }
 
     //  c.onclick = async function () {
 
@@ -207,3 +207,4 @@ window.onload = async function () {
         }
         getResponse()
     }
+}
