@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/calendar.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap" rel="stylesheet">
+        <title>Календарь</title>
+        <script defer src=".\js\calendar.js"></script>
+    </head>
+
+    <body>
+
+    <div class="content">
+
+        <div class="header">
+            <div class="avatar"><img src="./img/image.png" class="avatar_inside"></div>
+            <button class="btnbell"><img src="./img/bell.png" width="55px"></button>
+            <div class="search">
+                <form><input type="text" class="search_place" placeholder="Поиск по сайту">
+                    <img class="search_img" src="./img/search.png">
+                </form>
+            </div>
+            <img class="sber_logo" src="./img/sberlogo.png">
+        </div>
+
+
+        <div class="profile">
+            <div class="profile_name">Герман Германский</div>
+        </div>
+
+        <div class="nav_specs">
+            <div class="nav_elem">
+                <img class="menu_img" src="./img/main.png"><a href="index.html" type="_blank"><div class="menu_text">Главная Германии</div> </a>
+            </div>
+            <div class="nav_elem">
+                <img class="menu_img" src="./img/klients.png"><a href="klient.html" type="_blank"><div class="menu_text">Мои клиенты</div></a>
+            </div>
+            <div class="nav_elem">
+                <img class="menu_img" src="./img/results.png"><div class="menu_text">Отчет по встречам</div>
+            </div>
+            <div class="nav_elem active_menu">
+                <img class="menu_img" src="./img/calendar.png"><a href="calendar.html" type="_blank"><div class="menu_text">Календарь</div></a>
+            </div>
+        </div>
+
+            <div class="current_nav_title">Календарь</div>
+            <div class="month">
+                <ul>
+                  <li class="prev">&#10094;</li>
+                  <li class="next">&#10095;</li>
+                  <li>Апрель 2022</li>
+                </ul>
+              </div>
+
+
+    </body>
+</html>
