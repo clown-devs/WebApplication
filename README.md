@@ -1,2 +1,2 @@
-# WebApplication-0.2
+# WebApplication
 Web application for SberMeetings
