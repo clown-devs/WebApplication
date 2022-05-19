@@ -77,14 +77,14 @@ window.onload = async function () {
                 // place: place.value,
                 // client: client.value,
                 // contact: contact_lico.value
-                date: '2022-11-14',
-                start: '11:34',
-                end: '18:45',
-                topic: 'Проблемы будущих нас',
-                creator: '2',
-                place: '2',
-                client: '2',
-                contact: '2'
+                // date: '2022-11-14',
+                // start: '11:34',
+                // end: '18:45',
+                // topic: 'Проблемы будущих нас',
+                // creator: '2',
+                // place: '2',
+                // client: '2',
+                // contact: '2'
 
         }
         
