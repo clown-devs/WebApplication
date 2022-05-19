@@ -47,46 +47,46 @@ window.onload = async function () {
 
     // }
 
-     b.onclick = async function () {
-        async function sendRequest(method, url, body = null) {
-            return fetch(url, {
-                method: method,
-                body: JSON.stringify(body),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                }
+    //  b.onclick = async function () {
+    //     async function sendRequest(method, url, body = null) {
+    //         return fetch(url, {
+    //             method: method,
+    //             body: JSON.stringify(body),
+    //             headers: {
+    //                 'Content-type': 'application/json; charset=UTF-8',
+    //             }
 
-            })
+    //         })
 
-        }
-        // let data = document.getElementsByTagName("data")[0]
-        // let time_start = document.getElementById("time_start").value
-        // let time_end = document.getElementById("time_end").value
-        // let theme = document.getElementById("theme").value
-        // let place = document.getElementById("place").value
-        // let client = document.getElementById("client").value
-        // let contact_lico = document.getElementById("contact_lico").value
-        console.log(data)
-        let body = {
+    //     }
+    //     // let data = document.getElementsByTagName("data")[0]
+    //     // let time_start = document.getElementById("time_start").value
+    //     // let time_end = document.getElementById("time_end").value
+    //     // let theme = document.getElementById("theme").value
+    //     // let place = document.getElementById("place").value
+    //     // let client = document.getElementById("client").value
+    //     // let contact_lico = document.getElementById("contact_lico").value
+    //     console.log(data)
+    //     let body = {
 
-                // date: data,
-                // start: time_start.value,
-                // end: time_end.value,
-                // topic: theme.value,
-                // creator: '1',
-                // place: place.value,
-                // client: client.value,
-                // contact: contact_lico.value
-                // date: '2022-11-14',
-                // start: '11:34',
-                // end: '18:45',
-                // topic: 'Проблемы будущих нас',
-                // creator: '2',
-                // place: '2',
-                // client: '2',
-                // contact: '2'
+    //             // date: data,
+    //             // start: time_start.value,
+    //             // end: time_end.value,
+    //             // topic: theme.value,
+    //             // creator: '1',
+    //             // place: place.value,
+    //             // client: client.value,
+    //             // contact: contact_lico.value
+    //             // date: '2022-11-14',
+    //             // start: '11:34',
+    //             // end: '18:45',
+    //             // topic: 'Проблемы будущих нас',
+    //             // creator: '2',
+    //             // place: '2',
+    //             // client: '2',
+    //             // contact: '2'
 
-        }
+    //     }
         
         let responce = await sendRequest('POST', 'http://176.119.157.82:8000/api/meeting/', body)
         responce = await responce.json()       
@@ -207,4 +207,3 @@ window.onload = async function () {
         }
         getResponse()
     }
-}
