@@ -42,10 +42,7 @@ list.innerHTML = `
         list.innerHTML += `
                 
            <li class="meet_list_elem">
-           <div class="current_nav_elem_theme">Тема встречи</div>
-           <div class="current_nav_elem_data">Дата</div>
-           <div class="current_nav_elem_place">Место</div>
-           <div class="current_nav_elem_time">Время</div>
+           
                     <div class="meet_list_elem_data">${content[key].date}</div>
                     <div class="meet_list_elem_time">${str}</div>
                     <div class="meet_list_elem_place">${content2.name}</div>
