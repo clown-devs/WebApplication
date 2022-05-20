@@ -3,10 +3,25 @@ window.onload = async function () {
     let b = document.getElementById('savethisshit')
     let c = document.getElementById('bronir3')
 
-
+    
     let responce = await fetch('http://176.119.157.82:8000/api/meeting/')
     let content = await responce.json()
-    let id_contact = content[0].contact
+    if (content == 0) {
+    let list = document.querySelector('.current_nav_main')
+
+list.innerHTML = `
+            <a href="#zatemnenie_edit_klient"><img class="pencil" src="./img/pencil.png" alt=""></a>
+           <div class="current_nav_elem_themee ">ВСТРЕЧ НЕТ</div>
+
+`
+// let listt = document.querySelector('.meet_list_list')
+// listt.innerHTML = `
+// <div class="meet_list_elem_dataa">Встреч нет</div>
+// `
+
+    }
+    else {
+        let id_contact = content[0].contact
     let id_place = content[0].place
     let id_client = content[0].client
     let responce1 = await fetch('http://176.119.157.82:8000/api/contact/' + id_contact)
@@ -27,6 +42,10 @@ window.onload = async function () {
         list.innerHTML += `
                 
            <li class="meet_list_elem">
+           <div class="current_nav_elem_theme">Тема встречи</div>
+           <div class="current_nav_elem_data">Дата</div>
+           <div class="current_nav_elem_place">Место</div>
+           <div class="current_nav_elem_time">Время</div>
                     <div class="meet_list_elem_data">${content[key].date}</div>
                     <div class="meet_list_elem_time">${str}</div>
                     <div class="meet_list_elem_place">${content2.name}</div>
@@ -54,6 +73,7 @@ window.onload = async function () {
             <div class="current_nav_elem_time">Время:</div>
             <div class="current_nav_elem_times">${str}</div>
             `
+    }
 
     b.onclick = async function () {
         async function sendRequest(method, url, body = null) {
