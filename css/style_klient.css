@@ -45,7 +45,7 @@ a{text-decoration: none; color: #000000;}
         /* border-radius: 20px; */
     }
     .btnbell:hover {
-        background-image: url(/img/bell_light.png);
+        background-image: url(../img/bell_light.png);
         background-size: 55px;
     }
 

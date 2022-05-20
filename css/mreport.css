@@ -48,7 +48,7 @@ body{
     /* border-radius: 20px; */
 }
 .btnbell:hover {
-    background-image: url(/img/bell_light.png);
+    background-image: url(../img/bell_light.png);
     background-size: 55px;
 }
 
@@ -169,6 +169,24 @@ body{
     height: 69.26px;
     left: 312.31px;
     top: 92.81px;
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22.85px;
+    line-height: 27px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+
+    color: #000000;
+}
+
+.current_nav_titlee {
+    position: absolute;
+    width: 351.32px;
+    height: 69.26px;
+    left: 312.31px;
+    top: 250px;
 
     font-style: normal;
     font-weight: 700;

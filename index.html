@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="/img/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="img/favicon.png" type="image/png">
     <title>Ближайшая встреча</title>
 </head>
 
@@ -84,41 +84,7 @@
                 <div class="meet_list_elem_theme">Тема встречи</div> 
                 <div class="meet_list_elem_klient">Клиент</div>
             </li>
-            <li class="meet_list_elem">
-                <div class="meet_list_elem_data">Дата</div>
-                <div class="meet_list_elem_time">Время</div>
-                <div class="meet_list_elem_place">Место</div>
-                <div class="meet_list_elem_theme">Тема встречи</div> 
-                <div class="meet_list_elem_klient">Клиент</div>
-            </li>
-            <li class="meet_list_elem">
-                <div class="meet_list_elem_data">Дата</div>
-                <div class="meet_list_elem_time">Время</div>
-                <div class="meet_list_elem_place">Место</div>
-                <div class="meet_list_elem_theme">Тема встречи</div> 
-                <div class="meet_list_elem_klient">Клиент</div>
-            </li>
-            <li class="meet_list_elem">
-                <div class="meet_list_elem_data">Дата</div>
-                <div class="meet_list_elem_time">Время</div>
-                <div class="meet_list_elem_place">Место</div>
-                <div class="meet_list_elem_theme">Тема встречи</div> 
-                <div class="meet_list_elem_klient">Клиент</div>
-            </li>
-            <li class="meet_list_elem">
-                <div class="meet_list_elem_data">Дата</div>
-                <div class="meet_list_elem_time">Время</div>
-                <div class="meet_list_elem_place">Место</div>
-                <div class="meet_list_elem_theme">Тема встречи</div> 
-                <div class="meet_list_elem_klient">Клиент</div>
-            </li>
-            <li class="meet_list_elem">
-                <div class="meet_list_elem_data">Дата</div>
-                <div class="meet_list_elem_time">Время</div>
-                <div class="meet_list_elem_place">Место</div>
-                <div class="meet_list_elem_theme">Тема встречи</div> 
-                <div class="meet_list_elem_klient">Клиент</div>
-            </li> -->
+             -->
         </ul>
     </div>
 
@@ -137,18 +103,21 @@
             </div>
 
             <div id="klient" class="tabcontent">
-                <!-- <div class="klient_text">Клиент</div><input class="klient_input" type="text" name="client"> -->
-                <form method="post" class="qw">
+                <div class="klient_text">Клиент</div><input class="klient_input" type="text" id="client">
+                <!-- <form method="post" class="qwe">
                     <label for="client" class="klient_text">Клиент</label>
-                    <select name="client" class="klient_input" type="text" id="client">
                     
+                    <select name="client" class="klient_input" type="text" id="client">
+                        <option value="one" id="valu">Nikolay</option>
+                        <option value="two" id="valu">IVAN</option>
+                        <option value="three" id="valu">matvei</option>
                     </select>
-                    </form>
+                    </form> -->
                 <div class="litso_text">Контактное лицо</div><input class="litso_input" type="text" id="contact_lico">
                 <div class="dolj_text">Должность</div><input class="dolj_input" type="text" id="dolj">
                 <div class="theme_text">Тема</div><input class="theme_input" type="text" id="theme">
                 <div class="data_text">Дата</div><input class="data_input" type="date" name="calendar" max="2060-12-31"
-                    min="2000-01-01" name="data">
+                    min="2000-01-01" id="data">
                 <div class="time_text">Время</div><input class="time_input1" type="time" value="16:00" id="time_start">
                 <input class="time_input2" type="time" value="18:00" id="time_end">
                 <div class="place_text">Место</div><input class="place_input" type="text" id="place">
@@ -156,7 +125,7 @@
 
             <div id="stuff" class="tabcontent">
                 <div class="klient_text">Сотрудник</div><input class="klient_input" type="text" id="client">
-                <div class="litso_text">ЭНИФИНГ эЛС??</div><input class="litso_input" type="text" id="contact_lico">
+                <div class="litso_text">Контактное лицо</div><input class="litso_input" type="text" id="contact_lico">
                 <div class="dolj_text">Должность</div><input class="dolj_input" type="text" id="dolj">
                 <div class="theme_text">Тема</div><input class="theme_input" type="text" id="theme">
                 <div class="data_text">Дата</div><input class="data_input" type="date" name="calendar" max="2060-12-31"
@@ -184,7 +153,7 @@
                 document.getElementById("defaultOpen").click();
             </script>
 
-            <button class="savethisshit" onclick="sendJSON()" id="savethisshit">Сохранить</button>
+            <button class="savethisshit" id="savethisshit">Сохранить</button>
             
             <a href="#" class="close">Отмена</a>
         </div>
