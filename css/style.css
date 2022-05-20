@@ -537,29 +537,6 @@ body {
     display: block;
 }
 
-.close {
-    color: #000000;
-    position: absolute;
-    width: 158.18px;
-    height: 44.38px;
-    left: 27.91px;
-    top: 500px;
-    background: #C4C4C4;
-    font-size: 14pt;
-    border-radius: 21.4727px;
-    text-decoration: none;
-
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    font-size: 20.0412px;
-
-    cursor: pointer;
-}
-
-.close:hover {
-    background: #cccccc;
-}
 
 
 .tab {
@@ -767,29 +744,6 @@ body {
     display: block;
 }
 
-.close {
-    color: #000000;
-    position: absolute;
-    width: 158.18px;
-    height: 44.38px;
-    left: 27.91px;
-    top: 500px;
-    background: #C4C4C4;
-    font-size: 14pt;
-    border-radius: 21.4727px;
-    text-decoration: none;
-
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    font-size: 20.0412px;
-
-    cursor: pointer;
-}
-
-.close:hover {
-    background: #cccccc;
-}
 
 .edit_meet {
     text-align: center;
@@ -938,7 +892,7 @@ body {
 .close {
     color: #000000;
     position: absolute;
-    width: 158.18px;
+    width: 241px;
     height: 44.38px;
     left: 27.91px;
     top: 500px;
