@@ -1,9 +1,12 @@
 window.onload = async function () {
     let a = document.getElementById('bronir');
-    let b = document.getElementById('savethisshit')
+    let b = document.getElementById('savethisshit1')
     let c = document.getElementById('bronir3')
     let r = document.getElementById('add')
-
+    let q = document.getElementById('contacts')
+    let close = document.getElementById('close')
+    let client = document.getElementById('cliente')
+    let place = document.getElementById('place_list')
     let responce = await fetch('http://176.119.157.82:8000/api/meeting/')
     let content = await responce.json()
     if (content == 0) {
@@ -37,7 +40,9 @@ window.onload = async function () {
 
         for (key in content) {
             let str = content[key].start
+            let str1 = content[key].end
             str = str.substr(0, 5)
+            str1 = str1.substr(0, 5);
 
             list.innerHTML += `
                 
@@ -45,6 +50,7 @@ window.onload = async function () {
            
                     <div class="meet_list_elem_data">${content[key].date}</div>
                     <div class="meet_list_elem_time">${str}</div>
+                    <div class="meet_list_elem_time1">${str1}</div>
                     <div class="meet_list_elem_place">${content2.name}</div>
                     <div class="meet_list_elem_theme">${content[key].topic}</div> 
                     <div class="meet_list_elem_klient">${content3.company}</div>
@@ -54,7 +60,9 @@ window.onload = async function () {
 
         let list_blizh = document.querySelector('.current_nav_main')
         let str = content[0].start
+        let str1 = content[0].end
         str = str.substr(0, 5)
+        str1 = str1.substr(0, 5);
         list_blizh.innerHTML += `
             
             <div class="current_nav_elem_klient">${content3.company}</div>
@@ -68,9 +76,10 @@ window.onload = async function () {
             <div class="current_nav_elem_places">${content2.name}</div>
             <div class="current_nav_elem_time">Время:</div>
             <div class="current_nav_elem_times">${str}</div>
+            <div class="current_nav_elem_times1">${str1}</div>
             `
     }
-
+    
     b.onclick = async function () {
         async function sendRequest(method, url, body = null) {
             return fetch(url, {
@@ -88,9 +97,9 @@ window.onload = async function () {
         let time_end = document.getElementById("time_end")
         let theme = document.getElementById("theme")
         let place = document.getElementById("place")
-        let client = document.getElementById("client")
+        let client = document.getElementById("company")
         let contact_lico = document.getElementById("contact_lico")
-        console.log(data);
+
         let body = {
 
             date: data.value,
@@ -98,9 +107,9 @@ window.onload = async function () {
             end: time_end.value,
             topic: theme.value,
             creator: '1',
-            place: place.value,
-            client: client.value,
-            contact: contact_lico.value
+            place: id_place,
+            client: id_client,
+            contact: id_contact
             // date: '2022-11-14',
             // start: '11:34',
             // end: '18:45',
@@ -118,8 +127,7 @@ window.onload = async function () {
 
         let id_clien = responce.creator
         let id_meet = responce.id
-        console.log(responce)
-        console.log(id_meet)
+
         fetch('http://176.119.157.82:8000/api/employeelist/', {
             method: 'POST',
             body: JSON.stringify({
@@ -133,48 +141,56 @@ window.onload = async function () {
             .then((response) => response.json())
             .then((json) => console.log(json));
 
-        window.location = "http://sbermeeting.tk/";
+        // window.location = "http://sbermeeting.tk/"
     }
 
-
-
-
+    
+    let k = 0;
+    let i = 0;
+    let mark = 1;
     r.onclick = async function () {
-    let client = await fetch('http://176.119.157.82:8000/api/client/')
-    let contacts = await fetch('http://176.119.157.82:8000/api/contact/')
-    let places = await fetch('http://176.119.157.82:8000/api/place/')
-    let content1 = await client.json()  
-    let content2 = await contacts.json()
-    let content3 = await places.json()  
-    let list_cli = document.querySelector('.klient_input')
-    let list_contact = document.querySelector('.litso_input')
-    let list_place = document.querySelector('.place_input')
-    let list_dolj = document.querySelector('.dolj_input1')
-    let keyS;
+
+        let client = await fetch('http://176.119.157.82:8000/api/client/')
+        let contacts = await fetch('http://176.119.157.82:8000/api/contact/')
+        let places = await fetch('http://176.119.157.82:8000/api/place/')
+        let content1 = await client.json()
+        let content2 = await contacts.json()
+        let content3 = await places.json()
+        let list_dolj = document.querySelector('.dolj_input1')
+        let list_cli = document.querySelector('.klient_input')
+        let list_contact = document.querySelector('.litso_input')
+        let list_place = document.querySelector('.place_input')
+
+        let keyS;
         
-        for (keyS in content1) {
-            list_cli.innerHTML += `
+        if (mark == 1) {
+            for (keyS in content1) {
+                list_cli.innerHTML += `
             
-            <option value="one" id="valu">${content1[keyS].company}</option>
-           `
-        }
-        for (keyS in content2) {
-            list_contact.innerHTML += `
+            <option value="${content1[keyS].company}" id="company">${content1[keyS].company}</option>
             
-            <option value="one" id="valu">${content2[keyS].first_name + ' ' + content2[keyS].second_name + ' ' + content2[keyS].third_name}</option>
            `
-           list_dolj.innerHTML = `
-           <input class="dolj_input" type="text" id="dolj" value="${content2[keyS].position}">
+            }
+            for (keyS in content2) {
+                list_contact.innerHTML += `
+            
+            <option value="${content2[keyS].first_name + ' ' + content2[keyS].second_name + ' ' + content2[keyS].third_name}" id="nam">${content2[keyS].first_name + ' ' + content2[keyS].second_name + ' ' + content2[keyS].third_name}</option>
+           `
+
+            }
+            list_dolj.innerHTML += `
+           <input class="dolj_input" type="text" id="dolj" value="${content2[0].position}">
                `
-        }
-        
-
-        for (keyS in content3) {
-            list_place.innerHTML += `
-            
-            <option value="one" id="valu">${content3[keyS].name}</option>           `
+               for (keyS in content3) {
+                list_place.innerHTML += `
+                
+                <option value="${content3[keyS].name}" id="qwe">${content3[keyS].name}</option>           `
+            }
         }
 
+
+        mark = 0;
+    }
 
 
     // let select = document.querySelector('.klient_input')
@@ -182,87 +198,146 @@ window.onload = async function () {
     // op.addEventListener('click', function() {
     //     console.log(selector.value);
     // })
+    
+    let id_contact = 1
+    let id_client = 1
+    let id_place = 1
+    q.onclick = async function () {
+        
+        let list_dolj = document.querySelector('.dolj_input1')
+        let contacts = await fetch('http://176.119.157.82:8000/api/contact/')
+        let content2 = await contacts.json()
+        let name = document.getElementById('contacts')
+
+        let name1 = (content2[0].first_name + ' ' + content2[0].second_name + ' ' + content2[0].third_name)
+
+        if ((name.value) == name1) {
+            id_contact = 1
+            list_dolj.innerHTML = `
+                   <input class="dolj_input" type="text" id="dolj" value="${content2[0].position}">
+                       `
         }
+        else {
+            id_contact = 2
+            list_dolj.innerHTML = `
+                   <input class="dolj_input" type="text" id="dolj" value="${content2[1].position}">
+                       `
+        }
+    }
+
+    client.onclick = async function () {
+        let client = await fetch('http://176.119.157.82:8000/api/client/')
+        let content1 = await client.json()
+
+        let name = document.getElementById('cliente')
+
+        let name1 = (content1[0].company)
+
+        if ((name.value) == name1) {
+            id_client = 1
+            
+        }
+        else {
+            id_client = 2
+            
+        }
+    }
+
+    place.onclick = async function () {
+        let places = await fetch('http://176.119.157.82:8000/api/place/')
+        let content3 = await places.json()
+
+        let name = document.getElementById('place_list')
+
+        let name1 = (content3[0].name)
+
+        if ((name.value) == name1) {
+            id_place = 1
+            
+        }
+        else {
+            id_place = 2
+            
+        }
+    }
 
 
 
 
+// a.onclick = async function () {
+
+//     async function sendRequest(method, url, body = null) {
+//         return fetch(url, {
+//             method: method,
+//             body: JSON.stringify(body),
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+
+//         })
+
+//     }
+//     let body = {
+//         color: 'YES'
+
+//     }
+
+//     let responce = await sendRequest('PATCH', 'http://176.119.157.82:8000/api/v1/cars/car/detail/9/', body)
+
+//     let content = await responce.json()
+//     console.log(content)
 
 
-    // a.onclick = async function () {
+//     let list = document.querySelector('.posts')
 
-    //     async function sendRequest(method, url, body = null) {
-    //         return fetch(url, {
-    //             method: method,
-    //             body: JSON.stringify(body),
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
+//     let key
+//     list.innerHTML = `
+//         <li class="post">
+//         <h4>${content.id}</h4>
+//         </li>   
+//         <li class="post"> 
+//             <h4>${content.color}</h4>
+//         </li>`
 
-    //         })
+//     let if_id = "list"
 
-    //     }
-    //     let body = {
-    //         color: 'YES'
-
-    //     }
-
-    //     let responce = await sendRequest('PATCH', 'http://176.119.157.82:8000/api/v1/cars/car/detail/9/', body)
-
-    //     let content = await responce.json()
-    //     console.log(content)
-
-
-    //     let list = document.querySelector('.posts')
-
-    //     let key
-    //     list.innerHTML = `
-    //         <li class="post">
-    //         <h4>${content.id}</h4>
-    //         </li>   
-    //         <li class="post"> 
-    //             <h4>${content.color}</h4>
-    //         </li>`
-
-    //     let if_id = "list"
-
-    //     if_id = document.getElementById(if_id);
-    //     if_id.style.background = "rgb(218, 64, 92)";
-
-
-
-    // }
-
-
-    //  c.onclick = async function () {
-
-
-    {/* <img class="pencil" src="pencil.png" alt=""> */ }
-    // let if_id = "list"
-    // if (content.color == "YES") {
-    //     if_id = document.getElementById(if_id);
-    //     if_id.style.background = "rgb(218, 64, 92)";
-    // }
-    // else {
-    //     if_id = document.getElementById(if_id);
-    //     if_id.style.background = "rgb(137, 206, 126)";
-    // }
-    //  }
+//     if_id = document.getElementById(if_id);
+//     if_id.style.background = "rgb(218, 64, 92)";
 
 
 
-    async function update() {
-        let responce = await fetch('http://176.119.157.82:8000/api/v1/cars/car/detail/9/')
+// }
 
-        let content = await responce.json()
 
-        let list = document.querySelector('.posts')
+//  c.onclick = async function () {
 
-        let key;
 
-        for (key in content) {
-            console.log(content[key])
-            list.innerHTML = `
+{/* <img class="pencil" src="pencil.png" alt=""> */ }
+// let if_id = "list"
+// if (content.color == "YES") {
+//     if_id = document.getElementById(if_id);
+//     if_id.style.background = "rgb(218, 64, 92)";
+// }
+// else {
+//     if_id = document.getElementById(if_id);
+//     if_id.style.background = "rgb(137, 206, 126)";
+// }
+//  }
+
+
+
+async function update() {
+    let responce = await fetch('http://176.119.157.82:8000/api/v1/cars/car/detail/9/')
+
+    let content = await responce.json()
+
+    let list = document.querySelector('.posts')
+
+    let key;
+
+    for (key in content) {
+        console.log(content[key])
+        list.innerHTML = `
    <li class="post">
    <h4>${content.id}</h4>
    </li>   
@@ -270,8 +345,8 @@ window.onload = async function () {
        <h4>${content.color}</h4>
    </li>`
 
-        }
-        getResponse()
     }
+    getResponse()
+}
 
 }
