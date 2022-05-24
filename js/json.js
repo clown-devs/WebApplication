@@ -52,6 +52,43 @@ window.onload = async function () {
            `
         }
 
+        document.getElementById('btn_current').onclick = function() {
+            list.innerHTML = '';
+
+            for (key in content) {
+                let str = content[key].start
+                str = str.substr(0, 5)
+
+                list.innerHTML += `
+                
+           <li class="meet_list_elem">
+           
+                    <div class="meet_list_elem_data">${content[key].date}</div>
+                    <div class="meet_list_elem_time">${str}</div>
+                    <div class="meet_list_elem_place">${content2.name}</div>
+                    <div class="meet_list_elem_theme">${content[key].topic}</div> 
+                    <div class="meet_list_elem_klient">${content3.company}</div>
+           </li>   
+           `
+            }
+        };
+
+        document.getElementById('btn_past').onclick = function() {
+
+            list.innerHTML = `
+                
+           <li class="meet_list_elem">
+           
+                    <div class="meet_list_elem_data">2019-05-21</div>
+                    <div class="meet_list_elem_time">15:30</div>
+                    <div class="meet_list_elem_place">Переговорка 1.2</div>
+                    <div class="meet_list_elem_theme">Тест тема</div> 
+                    <div class="meet_list_elem_klient">Yandex</div>
+           </li>   
+           `
+
+        };
+
         let list_blizh = document.querySelector('.current_nav_main')
         let str = content[0].start
         str = str.substr(0, 5)
