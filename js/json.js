@@ -17,10 +17,10 @@ window.onload = async function () {
            <div class="current_nav_elem_themee ">ВСТРЕЧ НЕТ</div>
 
 `
-        // let listt = document.querySelector('.meet_list_list')
-        // listt.innerHTML = `
-        // <div class="meet_list_elem_dataa">Встреч нет</div>
-        // `
+        let listt = document.querySelector('.meet_list_list')
+        listt.innerHTML = `
+        <div class="meet_list_elem_dataa">Встреч нет</div>
+        `
 
     }
     else {
@@ -38,25 +38,7 @@ window.onload = async function () {
 
         let key;
 
-        for (key in content) {
-            let str = content[key].start
-            let str1 = content[key].end
-            str = str.substr(0, 5)
-            str1 = str1.substr(0, 5);
-
-            list.innerHTML += `
-                
-           <li class="meet_list_elem">
-           
-                    <div class="meet_list_elem_data">${content[key].date}</div>
-                    <div class="meet_list_elem_time">${str}</div>
-                    <div class="meet_list_elem_time1">${str1}</div>
-                    <div class="meet_list_elem_place">${content2.name}</div>
-                    <div class="meet_list_elem_theme">${content[key].topic}</div> 
-                    <div class="meet_list_elem_klient">${content3.company}</div>
-           </li>   
-           `
-        }
+       
 
         document.getElementById('btn_current').onclick = function() {
             list.innerHTML = '';
@@ -64,6 +46,8 @@ window.onload = async function () {
             for (key in content) {
                 let str = content[key].start
                 str = str.substr(0, 5)
+                let str1 = content[key].end
+            str1 = str1.substr(0, 5);
 
                 list.innerHTML += `
                 
@@ -71,6 +55,7 @@ window.onload = async function () {
            
                     <div class="meet_list_elem_data">${content[key].date}</div>
                     <div class="meet_list_elem_time">${str}</div>
+                    <div class="meet_list_elem_time1">${str1}</div>
                     <div class="meet_list_elem_place">${content2.name}</div>
                     <div class="meet_list_elem_theme">${content[key].topic}</div> 
                     <div class="meet_list_elem_klient">${content3.company}</div>
@@ -95,6 +80,7 @@ window.onload = async function () {
 
         };
 
+        
         let list_blizh = document.querySelector('.current_nav_main')
         let str = content[0].start
         let str1 = content[0].end
@@ -133,10 +119,8 @@ window.onload = async function () {
         let time_start = document.getElementById("time_start")
         let time_end = document.getElementById("time_end")
         let theme = document.getElementById("theme")
-        let place = document.getElementById("place")
-        let client = document.getElementById("company")
-        let contact_lico = document.getElementById("contact_lico")
-
+        console.log(data);
+        console.log(theme);
         let body = {
 
             date: data.value,
@@ -363,27 +347,5 @@ window.onload = async function () {
 
 
 
-async function update() {
-    let responce = await fetch('http://176.119.157.82:8000/api/v1/cars/car/detail/9/')
-
-    let content = await responce.json()
-
-    let list = document.querySelector('.posts')
-
-    let key;
-
-    for (key in content) {
-        console.log(content[key])
-        list.innerHTML = `
-   <li class="post">
-   <h4>${content.id}</h4>
-   </li>   
-   <li class="post"> 
-       <h4>${content.color}</h4>
-   </li>`
-
-    }
-    getResponse()
-}
 
 }
