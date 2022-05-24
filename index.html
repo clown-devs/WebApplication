@@ -23,7 +23,7 @@
             <div class="search">
                 <form><input type="text" class="search_place" placeholder="Поиск по сайту">
                     <img class="search_img" src="./img/search.png">
-                </form> 
+                </form>
             </div>
             <img class="sber_logo" src="./img/sberlogo.png">
         </div>
@@ -32,19 +32,27 @@
         <div class="profile">
             <div class="profile_name">Иванов Иван</div>
         </div>
-        
+
         <div class="nav_specs">
             <div class="nav_elem active_menu">
-                <img class="menu_img" src="./img/main.png"><a href="index.html" type="_blank"><div class="menu_text">Главная</div> </a>
+                <img class="menu_img" src="./img/main.png"><a href="index.html" type="_blank">
+                    <div class="menu_text">Главная</div>
+                </a>
             </div>
             <div class="nav_elem">
-                <img class="menu_img" src="./img/klients.png"><a href="klient.html" type="_blank"><div class="menu_text">Мои клиенты</div></a>
+                <img class="menu_img" src="./img/klients.png"><a href="klient.html" type="_blank">
+                    <div class="menu_text">Мои клиенты</div>
+                </a>
             </div>
             <div class="nav_elem">
-                <img class="menu_img" src="./img/results.png"><a href="mreport.html" type="_blank"><div class="menu_text">Отчет по встречам</div></a>
+                <img class="menu_img" src="./img/results.png"><a href="mreport.html" type="_blank">
+                    <div class="menu_text">Отчет по встречам</div>
+                </a>
             </div>
             <div class="nav_elem">
-                <img class="menu_img" src="./img/calendar.png"><a href="calendar.html" type="_blank"><div class="menu_text">Календарь</div></a>
+                <img class="menu_img" src="./img/calendar.png"><a href="calendar.html" type="_blank">
+                    <div class="menu_text">Календарь</div>
+                </a>
             </div>
         </div>
 
@@ -54,19 +62,19 @@
             <!-- <div class="current_nav_elem_klient">Клиент</div>
             <div class="current_nav_elem_Kont_litso">Контактное лицо</div>
             <div class="current_nav_elem_phone">Телефон</div> -->
-            
+
             <!-- <div class="current_nav_elem_themes"> fddfdfs</div> -->
-            
+
             <!-- <div class="current_nav_elem_datas">Дата</div> -->
-            
+
             <!-- <div class="current_nav_elem_places">Место</div> -->
-            
+
             <!-- <div class="current_nav_elem_times">Время</div> -->
 
         </div>
-        
+
         <a href="#zatemnenie">
-            <div class="current_nav_add">
+            <div class="current_nav_add" id="add">
                 <div class="current_nav_add_text">Добавить встречу</div>
             </div>
         </a>
@@ -98,28 +106,50 @@
                 <div class="wq">
                     <button class="tablinks" onclick="openMeet(event, 'stuff')">Встреча с сотрудником</button>
                 </div>
-                
+
             </div>
 
             <div id="klient" class="tabcontent">
                 <!-- <div class="klient_text">Клиент</div><input class="klient_input" type="text" id="client"> -->
                 <form method="post" class="qwe">
                     <label for="client" class="klient_text">Клиент</label>
-                    
+
                     <select name="client" class="klient_input" type="text" id="cliente">
                         <!-- <option value="one" id="valu" id="clients">Nikolay</option>
                         <option value="two" id="valu" id="clients">IVAN</option>
                         <option value="three" id="valu" id="clients">matvei</option> -->
                     </select>
-                    </form>
-                <div class="litso_text">Контактное лицо</div><input class="litso_input" type="text" id="contact_lico">
-                <div class="dolj_text">Должность</div><input class="dolj_input" type="text" id="dolj">
+
+                </form>
+                <!-- <div class="litso_text">Контактное лицо</div><input class="litso_input" type="text" id="contact_lico"> -->
+                <form method="post" class="qwe">
+                    <label for="client" class="litso_text">Контактное лицо</label>
+
+                    <select name="client" class="litso_input" type="text" id="cliente">
+                        <!-- <option value="one" id="valu" id="clients">Nikolay</option>
+                        <option value="two" id="valu" id="clients">IVAN</option>
+                        <option value="three" id="valu" id="clients">matvei</option> -->
+                    </select>
+
+                </form>
+                <div class="dolj_text">Должность</div><div class="dolj_input1"><input class="dolj_input" type="text" id="dolj" >
+                        </div>
                 <div class="theme_text">Тема</div><input class="theme_input" type="text" id="theme">
                 <div class="data_text">Дата</div><input class="data_input" type="date" name="calendar" max="2060-12-31"
                     min="2000-01-01" id="data">
                 <div class="time_text">Время</div><input class="time_input1" type="time" value="16:00" id="time_start">
                 <input class="time_input2" type="time" value="18:00" id="time_end">
-                <div class="place_text">Место</div><input class="place_input" type="text" id="place">
+                <!-- <div class="place_text">Место</div><input class="place_input" type="text" id="place"> -->
+                <form method="post" class="qwe">
+                    <label for="client" class="place_text">Место</label>
+
+                    <select name="client" class="place_input" type="text" id="cliente">
+                        <!-- <option value="one" id="valu" id="clients">Nikolay</option>
+                        <option value="two" id="valu" id="clients">IVAN</option>
+                        <option value="three" id="valu" id="clients">matvei</option> -->
+                    </select>
+
+                </form>
             </div>
 
             <div id="stuff" class="tabcontent">
@@ -153,7 +183,7 @@
             </script>
 
             <button class="savethisshit" id="savethisshit">Сохранить</button>
-            
+
             <a href="#" class="close">Отмена</a>
         </div>
     </div>
@@ -161,21 +191,21 @@
     <div id="zatemnenie_edit_klient">
         <div id="okno_edit_klient">
 
-                <div class="edit_meet">Редактирование встречи</div>
-                <div class="klient_text_edit">Клиент</div><input class="klient_input_edit" type="text">
-                <div class="litso_text_edit">Контактное лицо</div><input class="litso_input_edit" type="text">
-                <div class="dolj_text_edit">Должность</div><input class="dolj_input_edit" type="text">
-                <div class="theme_text_edit">Тема</div><input class="theme_input_edit" type="text">
-                <div class="data_text_edit">Дата</div><input class="data_input_edit" type="date" name="calendar" max="2060-12-31"
-                    min="2000-01-01">
-                <div class="time_text_edit">Время</div><input class="time_input1_edit" type="time" value="16:00">
-                <input class="time_input2_edit" type="time" value="18:00">
-               <div class="place_text_edit">Место</div><input class="place_input_edit" type="text">
+            <div class="edit_meet">Редактирование встречи</div>
+            <div class="klient_text_edit">Клиент</div><input class="klient_input_edit" type="text">
+            <div class="litso_text_edit">Контактное лицо</div><input class="litso_input_edit" type="text">
+            <div class="dolj_text_edit">Должность</div><input class="dolj_input_edit" type="text">
+            <div class="theme_text_edit">Тема</div><input class="theme_input_edit" type="text">
+            <div class="data_text_edit">Дата</div><input class="data_input_edit" type="date" name="calendar"
+                max="2060-12-31" min="2000-01-01">
+            <div class="time_text_edit">Время</div><input class="time_input1_edit" type="time" value="16:00">
+            <input class="time_input2_edit" type="time" value="18:00">
+            <div class="place_text_edit">Место</div><input class="place_input_edit" type="text">
 
-  
-            
+
+
             <button class="savethisshit" onclick="sendJSON()" id="savethisshit">Сохранить</button>
-            
+
             <a href="#" class="close">Отмена</a>
         </div>
     </div>
@@ -183,21 +213,21 @@
     <div id="zatemnenie_edit_stuff">
         <div id="okno_edit_stuff">
 
-                <div class="edit_meet">Редактирование встречи</div>
-                <div class="klient_text_edit">Сотрудник</div><input class="klient_input_edit" type="text">
-                <div class="litso_text_edit">ЭНИФИНГ эЛС??</div><input class="litso_input_edit" type="text">
-                <div class="dolj_text_edit">Должность</div><input class="dolj_input_edit" type="text">
-                <div class="theme_text_edit">Тема</div><input class="theme_input_edit" type="text">
-                <div class="data_text_edit">Дата</div><input class="data_input_edit" type="date" name="calendar" max="2060-12-31"
-                    min="2000-01-01">
-                <div class="time_text_edit">Время</div><input class="time_input1_edit" type="time" value="16:00">
-                <input class="time_input2_edit" type="time" value="18:00">
-               <div class="place_text_edit">Место</div><input class="place_input_edit" type="text">
+            <div class="edit_meet">Редактирование встречи</div>
+            <div class="klient_text_edit">Сотрудник</div><input class="klient_input_edit" type="text">
+            <div class="litso_text_edit">ЭНИФИНГ эЛС??</div><input class="litso_input_edit" type="text">
+            <div class="dolj_text_edit">Должность</div><input class="dolj_input_edit" type="text">
+            <div class="theme_text_edit">Тема</div><input class="theme_input_edit" type="text">
+            <div class="data_text_edit">Дата</div><input class="data_input_edit" type="date" name="calendar"
+                max="2060-12-31" min="2000-01-01">
+            <div class="time_text_edit">Время</div><input class="time_input1_edit" type="time" value="16:00">
+            <input class="time_input2_edit" type="time" value="18:00">
+            <div class="place_text_edit">Место</div><input class="place_input_edit" type="text">
 
-  
-            
+
+
             <button class="savethisshit" onclick="sendJSON()" id="savethisshit">Сохранить</button>
-            
+
             <a href="#" class="close">Отмена</a>
         </div>
     </div>

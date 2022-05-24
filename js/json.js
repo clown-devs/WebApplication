@@ -2,7 +2,7 @@ window.onload = async function () {
     let a = document.getElementById('bronir');
     let b = document.getElementById('savethisshit')
     let c = document.getElementById('bronir3')
-    let r = document.getElementById('cliente')
+    let r = document.getElementById('add')
 
     let responce = await fetch('http://176.119.157.82:8000/api/meeting/')
     let content = await responce.json()
@@ -140,16 +140,39 @@ window.onload = async function () {
 
 
     r.onclick = async function () {
-    let responcee = await fetch('http://176.119.157.82:8000/api/client/')
-    let contente = await responcee.json()    
+    let client = await fetch('http://176.119.157.82:8000/api/client/')
+    let contacts = await fetch('http://176.119.157.82:8000/api/contact/')
+    let places = await fetch('http://176.119.157.82:8000/api/place/')
+    let content1 = await client.json()  
+    let content2 = await contacts.json()
+    let content3 = await places.json()  
     let list_cli = document.querySelector('.klient_input')
+    let list_contact = document.querySelector('.litso_input')
+    let list_place = document.querySelector('.place_input')
+    let list_dolj = document.querySelector('.dolj_input1')
     let keyS;
-
-        for (keyS in contente) {
+        
+        for (keyS in content1) {
             list_cli.innerHTML += `
             
-            <option value="one" id="valu">${contente[keyS].company}</option>
+            <option value="one" id="valu">${content1[keyS].company}</option>
            `
+        }
+        for (keyS in content2) {
+            list_contact.innerHTML += `
+            
+            <option value="one" id="valu">${content2[keyS].first_name + ' ' + content2[keyS].second_name + ' ' + content2[keyS].third_name}</option>
+           `
+           list_dolj.innerHTML = `
+           <input class="dolj_input" type="text" id="dolj" value="${content2[keyS].position}">
+               `
+        }
+        
+
+        for (keyS in content3) {
+            list_place.innerHTML += `
+            
+            <option value="one" id="valu">${content3[keyS].name}</option>           `
         }
 
 
