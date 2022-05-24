@@ -356,6 +356,19 @@ body {
     color: #000000;
 }
 
+.current_nav_elem_times1 {
+    position: absolute;
+    width: 214.93px;
+    height: 26.42px;
+    left: 450px;
+    top: 210px;
+
+    font-weight: 700;
+    font-size: 17.8516px;
+    line-height: 21px;
+    color: #000000;
+}
+
 .current_nav_add {
     position: absolute;
     height: 108.54px;
@@ -459,12 +472,21 @@ body {
     margin-top: 8px;
     font-weight: 700;
     font-size: 12px;
+
     color: #000000;
 }
 
+.meet_list_elem_time1 {
+    position: absolute;
+    margin-left: 125px;
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    color: #000000;
+}
 .meet_list_elem_place {
     position: absolute;
-    margin-left: 150px;
+    margin-left: 175px;
     margin-top: 8px;
     font-weight: 700;
     font-size: 12px;
@@ -598,7 +620,7 @@ body {
 
 .klient_input {
     position: absolute;
-    width: 506.76px;
+    width: 514px;
     height: 30.78px;
     left: 196.83px;
     margin-top: 30px;
@@ -612,7 +634,7 @@ body {
 
 .litso_input {
     position: absolute;
-    width: 506.76px;
+    width: 514px;
     height: 30.78px;
     left: 196.83px;
     margin-top: 80px;
@@ -691,7 +713,7 @@ body {
 
 .place_input {
     position: absolute;
-    width: 506.76px;
+    width: 514px;
     height: 30.78px;
     left: 196.83px;
     margin-top: 330px;
@@ -713,7 +735,7 @@ body {
     font-weight: 500;
     font-size: 20px;
     color: #ffffff;
-    text-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, .8);
+    
 }
 
 #zatemnenie_edit_klient {
