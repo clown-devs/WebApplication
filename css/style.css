@@ -788,30 +788,12 @@ body {
     transition: color 0.4s ease-in-out;
 }
 
-.btns::before {
-    content: '';
-    z-index: -1;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    background-color: rgb(255, 255, 255);
-    transform-origin: center;
-    transform: translate3d(-50%, -50%, 0) scale3d(0, 0, 0);
-    transition: transform 0.45s ease-in-out;
-}
-
 .btns:hover {
     cursor: pointer;
-    color: #000000;
+    color: #ffffff;
+    background-color: hsl(152, 70%, 45.5%);
 }
 
-.btns:hover::before {
-    transform: translate3d(-50%, -50%, 0) scale3d(15, 15, 15);
-    border-radius: 12px;
-}
 
 .savethisshit {
     position: absolute;
