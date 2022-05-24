@@ -38,7 +38,25 @@ window.onload = async function () {
 
         let key;
 
-       
+        for (key in content) {
+            let str = content[key].start
+            let str1 = content[key].end
+            str = str.substr(0, 5)
+            str1 = str1.substr(0, 5);
+
+            list.innerHTML += `
+                
+           <li class="meet_list_elem">
+           
+                    <div class="meet_list_elem_data">${content[key].date}</div>
+                    <div class="meet_list_elem_time">${str}</div>
+                    <div class="meet_list_elem_time1">${str1}</div>
+                    <div class="meet_list_elem_place">${content2.name}</div>
+                    <div class="meet_list_elem_theme">${content[key].topic}</div> 
+                    <div class="meet_list_elem_klient">${content3.company}</div>
+           </li>   
+           `
+        }
 
         document.getElementById('btn_current').onclick = function() {
             list.innerHTML = '';
