@@ -2,44 +2,44 @@ window.onload = async function () {
     let a = document.getElementById('bronir');
     let b = document.getElementById('savethisshit')
     let c = document.getElementById('bronir3')
+    let r = document.getElementById('cliente')
 
-    
     let responce = await fetch('http://176.119.157.82:8000/api/meeting/')
     let content = await responce.json()
     if (content == 0) {
-    let list = document.querySelector('.current_nav_main')
+        let list = document.querySelector('.current_nav_main')
 
-list.innerHTML = `
+        list.innerHTML = `
             <a href="#zatemnenie_edit_klient"><img class="pencil" src="./img/pencil.png" alt=""></a>
            <div class="current_nav_elem_themee ">ВСТРЕЧ НЕТ</div>
 
 `
-// let listt = document.querySelector('.meet_list_list')
-// listt.innerHTML = `
-// <div class="meet_list_elem_dataa">Встреч нет</div>
-// `
+        // let listt = document.querySelector('.meet_list_list')
+        // listt.innerHTML = `
+        // <div class="meet_list_elem_dataa">Встреч нет</div>
+        // `
 
     }
     else {
         let id_contact = content[0].contact
-    let id_place = content[0].place
-    let id_client = content[0].client
-    let responce1 = await fetch('http://176.119.157.82:8000/api/contact/' + id_contact)
-    let responce2 = await fetch('http://176.119.157.82:8000/api/place/' + id_place)
-    let responce3 = await fetch('http://176.119.157.82:8000/api/client/' + id_client)
-    let content1 = await responce1.json()
-    let content2 = await responce2.json()
-    let content3 = await responce3.json()
+        let id_place = content[0].place
+        let id_client = content[0].client
+        let responce1 = await fetch('http://176.119.157.82:8000/api/contact/' + id_contact)
+        let responce2 = await fetch('http://176.119.157.82:8000/api/place/' + id_place)
+        let responce3 = await fetch('http://176.119.157.82:8000/api/client/' + id_client)
+        let content1 = await responce1.json()
+        let content2 = await responce2.json()
+        let content3 = await responce3.json()
 
-    let list = document.querySelector('.meet_list_list')
+        let list = document.querySelector('.meet_list_list')
 
-    let key;
+        let key;
 
-    for (key in content) {
-        let str = content[key].start
-        str = str.substr(0, 5)
+        for (key in content) {
+            let str = content[key].start
+            str = str.substr(0, 5)
 
-        list.innerHTML += `
+            list.innerHTML += `
                 
            <li class="meet_list_elem">
            
@@ -50,13 +50,12 @@ list.innerHTML = `
                     <div class="meet_list_elem_klient">${content3.company}</div>
            </li>   
            `
-    }
+        }
 
-    let list_blizh = document.querySelector('.current_nav_main')
-    console.log(content)
-    let str = content[0].start
-    str = str.substr(0, 5)
-    list_blizh.innerHTML += `
+        let list_blizh = document.querySelector('.current_nav_main')
+        let str = content[0].start
+        str = str.substr(0, 5)
+        list_blizh.innerHTML += `
             
             <div class="current_nav_elem_klient">${content3.company}</div>
             <div class="current_nav_elem_Kont_litso">${content1.second_name + " " + content1.first_name + " " + content1.third_name}</div>
@@ -91,7 +90,7 @@ list.innerHTML = `
         let place = document.getElementById("place")
         let client = document.getElementById("client")
         let contact_lico = document.getElementById("contact_lico")
-    console.log(data);
+        console.log(data);
         let body = {
 
             date: data.value,
@@ -133,20 +132,34 @@ list.innerHTML = `
         })
             .then((response) => response.json())
             .then((json) => console.log(json));
-        
-            window.location = "http://sbermeeting.tk/";
+
+        window.location = "http://sbermeeting.tk/";
     }
 
 
 
-    // let selector = document.querySelector('select')
 
-    //         let select = document.querySelector('.klient_input')
-    //         let op = document.querySelector('option')
-    //         op.addEventListener('click', function() {
-    //             console.log(selector.value);
-    //         })
+    r.onclick = async function () {
+    let responcee = await fetch('http://176.119.157.82:8000/api/client/')
+    let contente = await responcee.json()    
+    let list_cli = document.querySelector('.klient_input')
+    let keyS;
 
+        for (keyS in contente) {
+            list_cli.innerHTML += `
+            
+            <option value="one" id="valu">${contente[keyS].company}</option>
+           `
+        }
+
+
+
+    // let select = document.querySelector('.klient_input')
+    // let op = document.querySelector('option')
+    // op.addEventListener('click', function() {
+    //     console.log(selector.value);
+    // })
+        }
 
 
 
