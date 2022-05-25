@@ -138,12 +138,7 @@ window.onload = async function () {
         let time_start = document.getElementById("time_start")
         let time_end = document.getElementById("time_end")
         let theme = document.getElementById("theme")
-<<<<<<< HEAD
 
-=======
-        console.log(data);
-        console.log(theme);
->>>>>>> c5fa132570fbfaf141118d5a4f2e7f3824ddcfb1
         let body = {
 
             date: data.value,
@@ -267,7 +262,6 @@ window.onload = async function () {
                    <input class="dolj_input" type="text" id="dolj" value="${content2[1].position}">
                        `
         }
-<<<<<<< HEAD
     }
 
     client.onclick = async function () {
@@ -390,8 +384,6 @@ async function update() {
        <h4>${content.color}</h4>
    </li>`
 
-=======
->>>>>>> c5fa132570fbfaf141118d5a4f2e7f3824ddcfb1
     }
     getResponse()
 }
@@ -494,8 +486,6 @@ async function update() {
 //     if_id.style.background = "rgb(137, 206, 126)";
 // }
 //  }
-
-
 
 
 }
