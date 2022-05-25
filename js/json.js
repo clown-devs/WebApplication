@@ -65,7 +65,7 @@ window.onload = async function () {
                 let str = content[key].start
                 str = str.substr(0, 5)
                 let str1 = content[key].end
-            str1 = str1.substr(0, 5);
+                str1 = str1.substr(0, 5);
 
                 list.innerHTML += `
                 
@@ -89,7 +89,8 @@ window.onload = async function () {
            <li class="meet_list_elem">
            
                     <div class="meet_list_elem_data">2019-05-21</div>
-                    <div class="meet_list_elem_time">15:30 17:30</div>
+                    <div class="meet_list_elem_time">15:30</div>
+                    <div class="meet_list_elem_time1">17:30</div>
                     <div class="meet_list_elem_place">Переговорка 1.2</div>
                     <div class="meet_list_elem_theme">Тест тема</div> 
                     <div class="meet_list_elem_klient">Yandex</div>
