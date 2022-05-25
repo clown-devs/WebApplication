@@ -412,6 +412,85 @@ body {
     color: #000000;
 }
 
+.btn {
+    z-index: 0;
+    position: relative;
+    font-size: inherit;
+    font-family: inherit;
+    color: black;
+    outline: none;
+    background-color: hsl(152, 70%, 43%);
+    overflow: hidden;
+    transition: color 0.4s ease-in-out;
+    border-radius: 12px;
+}
+
+.btn::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: #21b972;
+    transform-origin: center;
+    transform: translate3d(-50%, -50%, 0) scale3d(0, 0, 0);
+    transition: transform 0.45s ease-in-out;
+    border-radius: 12px;
+}
+
+.btn:hover {
+    cursor: pointer;
+    color: #ffffff;
+    border-radius: 12px;
+}
+
+.btn:hover::before {
+    transform: translate3d(-50%, -50%, 0) scale3d(15, 15, 15);
+    border-radius: 12px;
+}
+
+.meet_list_btn_past {
+    position: absolute;
+    width: 140.46px;
+    height: 36.42px;
+    left: 920px;
+    top: 109.23px;
+
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    color: #000000;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    background: #F1FBF2;
+    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+    border-radius: 12px;
+    border: 1px #21b972;
+}
+
+.meet_list_btn_current {
+    position: absolute;
+    width: 140.46px;
+    height: 36.42px;
+    left: 1077px;
+    top: 109.23px;
+
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    color: #000000;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    background: #F1FBF2;
+    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+    border-radius: 12px;
+    border: 1px #21b972;
+
+}
+
 .meet_list_list {
     position: absolute;
     width: 280px;
@@ -590,7 +669,7 @@ body {
 .tab button.active {
     background: #21ba72;
     color: #ffffff;
-    text-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, .8);
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, .8);
 }
 
 .qw {
@@ -719,6 +798,25 @@ body {
     margin-top: 330px;
 }
 
+.btns {
+    z-index: 0;
+    position: relative;
+    font-size: inherit;
+    font-family: inherit;
+    color: black;
+    outline: none;
+    background-color: hsl(152, 70%, 43%);
+    overflow: hidden;
+    transition: color 0.4s ease-in-out;
+}
+
+.btns:hover {
+    cursor: pointer;
+    color: #ffffff;
+    background-color: hsl(152, 70%, 45.5%);
+}
+
+
 .savethisshit {
     position: absolute;
     width: 241.21px;
@@ -735,9 +833,11 @@ body {
     font-weight: 500;
     font-size: 20px;
     color: #ffffff;
+<<<<<<< HEAD
     
+=======
+>>>>>>> c5fa132570fbfaf141118d5a4f2e7f3824ddcfb1
 }
-
 #zatemnenie_edit_klient {
     background: rgba(47, 47, 47, 0.5);
     width: 100%;
@@ -934,3 +1034,8 @@ body {
 .close:hover {
     background: #cccccc;
 }
+
+
+
+
+
