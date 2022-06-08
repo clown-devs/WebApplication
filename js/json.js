@@ -165,7 +165,7 @@ window.onload = async function () {
             // place: '2',
             // client: '2',
             // contact: '2'
-
+            //
         }
 
         let responce = await sendRequest('POST', 'http://176.119.157.82:8000/api/meeting/', body)
