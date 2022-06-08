@@ -38,71 +38,14 @@ window.onload = async function () {
         let content2 = await responce2.json()
         let content3 = await responce3.json()
 
-        let list = document.querySelector('.meet_list_list')
-
-        for (key in content) {
-            if (key == 0) {
-                continue
-            }
-            
-            let str = content[key].start
-            let str1 = content[key].end
-            str = str.substr(0, 5)
-            str1 = str1.substr(0, 5);
-        
-            list.innerHTML += `
-                    
-            <li class="meet_list_elem">
-            
-                        <div class="meet_list_elem_data">${content[key].date}</div>
-                        <div class="meet_list_elem_time">${str}</div>
-                        <div class="meet_list_elem_time1">${str1}</div>
-                        <div class="meet_list_elem_place">${content[key].place}</div>
-                        <div class="meet_list_elem_theme">${content[key].topic}</div> 
-                        <div class="meet_list_elem_klient">${content[key].client}</div>
-            </li>   
-            `
-        }
+        display_meetings("future")
 
         document.getElementById('btn_current').onclick = function() {
-        //     list.innerHTML = '';
-
-        //     for (key in content) {
-        //         let str = content[key].start
-        //         str = str.substr(0, 5)
-        //         let str1 = content[key].end
-        //         str1 = str1.substr(0, 5);
-
-        //         list.innerHTML += `
-                
-        //    <li class="meet_list_elem">
-           
-        //             <div class="meet_list_elem_data">${content[key].date}</div>
-        //             <div class="meet_list_elem_time">${str}</div>
-        //             <div class="meet_list_elem_time1">${str1}</div>
-        //             <div class="meet_list_elem_place">${content2.name}</div>
-        //             <div class="meet_list_elem_theme">${content[key].topic}</div> 
-        //             <div class="meet_list_elem_klient">${content3.company}</div>
-        //    </li>   
-        //    `
-        //     }
+            display_meetings("future")
         };
 
         document.getElementById('btn_past').onclick = function() {
-
-            list.innerHTML = `
-                
-           <li class="meet_list_elem">
-           
-                    <div class="meet_list_elem_data">2019-05-21</div>
-                    <div class="meet_list_elem_time">15:30</div>
-                    <div class="meet_list_elem_time1">17:30</div>
-                    <div class="meet_list_elem_place">Переговорка 1.2</div>
-                    <div class="meet_list_elem_theme">Тест тема</div> 
-                    <div class="meet_list_elem_klient">Yandex</div>
-           </li>   
-           `
-
+            display_meetings("past")
         };
 
         
@@ -165,7 +108,7 @@ window.onload = async function () {
             // place: '2',
             // client: '2',
             // contact: '2'
-
+            //
         }
 
         let responce = await sendRequest('POST', 'http://176.119.157.82:8000/api/meeting/', body)
@@ -334,4 +277,59 @@ async function get_first_id(api_path) {
     let responce = await fetch('http://176.119.157.82:8000/api/' + api_path)
     let objects = await responce.json()
     return objects[0].id
+}
+
+async function display_meetings(type) {
+    
+    let path = ""
+    if (type == "past") {
+        path = "?past=true"
+    }
+
+    let responce = await fetch('http://176.119.157.82:8000/api/meeting' + path)
+    let meetings = await responce.json()
+    
+    let list = document.querySelector('.meet_list_list')
+    
+    responce = await fetch('http://176.119.157.82:8000/api/place/')
+    let places = await responce.json()
+
+    responce = await fetch('http://176.119.157.82:8000/api/client/')
+    let clients = await responce.json()
+
+    list.innerHTML = '';
+    for (key in meetings) {
+        if (key == 0) { continue; }
+
+        let str = meetings[key].start
+        str = str.substr(0, 5)
+        
+        let str1 = meetings[key].end
+        str1 = str1.substr(0, 5);
+        
+        let place
+        places.forEach((elem) => {
+            if (elem.id === meetings[key].place) {
+                place = elem.name
+            }
+        });
+
+        let client
+        clients.forEach((elem) => {
+            if (elem.id === meetings[key].client) {
+                client = elem.company
+            }
+        });
+
+        list.innerHTML += `
+                <li class="meet_list_elem">                                
+                <div class="meet_list_elem_data">${meetings[key].date}</div>
+                <div class="meet_list_elem_time">${str}</div>
+                <div class="meet_list_elem_time1">${str1}</div>
+                <div class="meet_list_elem_place">${place}</div>
+                <div class="meet_list_elem_theme">${meetings[key].topic}</div> 
+                <div class="meet_list_elem_klient">${client}</div>
+            </li>`
+    }
+
 }
