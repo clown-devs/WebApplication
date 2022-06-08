@@ -18,45 +18,179 @@
     <div class="content">
 
         <div class="header">
-            <div class="avatar"><img src="./img/image.png" class="avatar_inside"></div>
-            <button class="btnbell"><img src="./img/bell.png" width="55px"></button>
+            <div
+                    class="avatar"><img
+                    src="./img/image.png"
+                    class="avatar_inside"></div>
+            <button
+                    class="btnbell">
+                <img
+                    src="./img/bell.png"
+                    width="55px"
+                >
+            </button>
             <div class="search">
-                <form><input type="text" class="search_place" placeholder="Поиск по сайту">
-                    <img class="search_img" src="./img/search.png">
+                <form><input
+                        type="text"
+                        class="search_place"
+                        placeholder="Поиск по сайту">
+                    <img
+                            class="search_img"
+                            src="./img/search.png">
                 </form>
             </div>
-            <img class="sber_logo" src="./img/sberlogo.png">
+            <img
+                    class="sber_logo"
+                    src="./img/sberlogo.png">
         </div>
 
 
         <div class="profile">
-            <div class="profile_name">Иванов Иван</div>
+            <div
+                    class="profile_name">
+                Иванов Иван
+            </div>
         </div>
 
         <div class="nav_specs">
             <div class="nav_elem">
-                <img class="menu_img" src="./img/main.png"><a href="index.html" type="_blank"><div class="menu_text">Главная</div> </a>
+                <img
+                        class="menu_img"
+                        src="./img/main.png"
+                >
+                <a
+                        href="index.html"
+                        type="_blank"
+                >
+                    <div class="menu_text">Главная</div> </a>
+            </div>
+
+            <div class="nav_elem">
+                <img
+                        class="menu_img"
+                        src="./img/klients.png"
+                >
+                <a
+                        href="klient.html"
+                        type="_blank"
+                >
+                    <div class="menu_text">Мои клиенты</div></a>
             </div>
             <div class="nav_elem">
-                <img class="menu_img" src="./img/klients.png"><a href="klient.html" type="_blank"><div class="menu_text">Мои клиенты</div></a>
-            </div>
-            <div class="nav_elem">
-                <img class="menu_img" src="./img/results.png"><a href="mreport.html" type="_blank"><div class="menu_text">Отчет по встречам</div></a>
+                <img
+                        class="menu_img"
+                        src="./img/results.png"
+                >
+                <a
+                        href="mreport.html"
+                        type="_blank"
+                >
+                    <div class="menu_text">Отчет по встречам</div></a>
+
             </div>
             <div class="nav_elem active_menu">
-                <img class="menu_img" src="./img/calendar.png"><a href="calendar.html" type="_blank"><div class="menu_text">Календарь</div></a>
+                <img
+                        class="menu_img"
+                        src="./img/calendar.png"
+                >
+                <a
+                        href="calendar.html"
+                        type="_blank"
+                >
+                    <div class="menu_text">Календарь</div></a>
             </div>
         </div>
+                <a href="#zatemnenie">
+                    <div class="current_nav_add" id="add">
+                        <div class="current_nav_add_text">Забронировать комнату</div>
+                    </div>
+                </a>
 
-            <div class="current_nav_title">Календарь</div>
-            <div class="month">
-                <ul>
-                  <li class="prev">&#10094;</li>
-                  <li class="next">&#10095;</li>
-                  <li>Апрель 2022</li>
+                <div class="current_nav_title">Забронированные комнаты</div>
+
+                <ul type="none" class="meet_list_list">
+
                 </ul>
-              </div>
-              <div class="current_nav_titlee">Скоро...</div>
+            </div>
+    <div id="zatemnenie">
+        <div id="okno" class="okno win_animation">
+
+            <div id="klient" class="tabcontent">
+
+                <div class="klient_text">Сотрудник</div><input class="klient_input" type="text" id="client">
+
+                <div class="data_text">Дата</div>
+                <input
+                        class="data_input"
+                        type="date"
+                        name="calendar"
+                        max="2060-12-31"
+                        min="2000-01-01"
+                        id="data">
+
+                <div class="time_text">Время</div>
+                <input
+                        class="time_input1"
+                        type="time"
+                        value="16:00"
+                        id="time_start">
+                <input
+                        class="time_input2"
+                        type="time"
+                        value="18:00"
+                        id="time_end">
+
+                <form method="post" class="qwe">
+                    <label for="client" class="place_text">Место</label>
+
+                    <select
+                            name="client"
+                            class="place_input"
+                            type="text"
+                            id="place_list">
+                    </select>
+
+                </form>
+            </div>
+
+            <script>
+                function openMeet(evt, cityName) {
+                    var i, tabcontent, tablinks;
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+                    tablinks = document.getElementsByClassName("tablinks");
+                    for (i = 0; i < tablinks.length; i++) {
+                        tablinks[i].className = tablinks[i].className.replace(" active", "");
+                    }
+                    document.getElementById(cityName).style.display = "block";
+                    evt.currentTarget.className += " active";
+                }
+
+                document.getElementById("defaultOpen").click();
+            </script>
+
+                        <button
+                                class="savethisshit"
+                                id="savethisshit1">
+                            Сохранить
+                        </button>
+
+            <button
+                    class="savethisshit btns"
+                    id="savethisshit1">
+                Сохранить
+            </button>
+
+
+            <a
+                    href="#"
+                    class="close">
+                Отмена
+            </a>
+        </div>
+    </div>
 
     </body>
 </html>
