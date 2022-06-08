@@ -2,6 +2,9 @@ a {
     color: #000 !important;
     text-decoration: none
 }
+html{
+    height: 100%;
+}
 body{
     background: linear-gradient(45deg, #C4F1CF, rgb(200, 253, 255));
     margin:0px;

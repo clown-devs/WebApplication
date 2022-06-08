@@ -20,8 +20,8 @@ window.onload = async function () {
         listt.innerHTML = `
         <div class="meet_list_elem_dataa">Встреч нет</div>
         `
-
     }
+
     else {
         let id_contact = content[0].contact
         let id_place = content[0].place
