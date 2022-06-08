@@ -1,14 +1,17 @@
 window.onload = async function () {
     let a = document.getElementById('bronir');
-    let b = document.getElementById('savethisshit1')
     let c = document.getElementById('bronir3')
     let r = document.getElementById('add')
-    let q = document.getElementById('contacts')
+    
+    let save_button = document.getElementById('savethisshit1')
+    let contact_button = document.getElementById('contacts')
+    let client_button = document.getElementById('cliente')
+    
     let close = document.getElementById('close')
-    let client = document.getElementById('cliente')
     let place = document.getElementById('place_list')
     let responce = await fetch('http://176.119.157.82:8000/api/meeting/')
     let content = await responce.json()
+    
     if (content == 0) {
         let list = document.querySelector('.current_nav_main')
 
@@ -20,65 +23,69 @@ window.onload = async function () {
         listt.innerHTML = `
         <div class="meet_list_elem_dataa">Встреч нет</div>
         `
-
     }
+
     else {
         let id_contact = content[0].contact
         let id_place = content[0].place
         let id_client = content[0].client
+        
         let responce1 = await fetch('http://176.119.157.82:8000/api/contact/' + id_contact)
         let responce2 = await fetch('http://176.119.157.82:8000/api/place/' + id_place)
         let responce3 = await fetch('http://176.119.157.82:8000/api/client/' + id_client)
+        
         let content1 = await responce1.json()
         let content2 = await responce2.json()
         let content3 = await responce3.json()
 
         let list = document.querySelector('.meet_list_list')
 
-        let key;
-
         for (key in content) {
+            if (key == 0) {
+                continue
+            }
+            
             let str = content[key].start
             let str1 = content[key].end
             str = str.substr(0, 5)
             str1 = str1.substr(0, 5);
-
+        
             list.innerHTML += `
-                
-           <li class="meet_list_elem">
-           
-                    <div class="meet_list_elem_data">${content[key].date}</div>
-                    <div class="meet_list_elem_time">${str}</div>
-                    <div class="meet_list_elem_time1">${str1}</div>
-                    <div class="meet_list_elem_place">${content2.name}</div>
-                    <div class="meet_list_elem_theme">${content[key].topic}</div> 
-                    <div class="meet_list_elem_klient">${content3.company}</div>
-           </li>   
-           `
+                    
+            <li class="meet_list_elem">
+            
+                        <div class="meet_list_elem_data">${content[key].date}</div>
+                        <div class="meet_list_elem_time">${str}</div>
+                        <div class="meet_list_elem_time1">${str1}</div>
+                        <div class="meet_list_elem_place">${content[key].place}</div>
+                        <div class="meet_list_elem_theme">${content[key].topic}</div> 
+                        <div class="meet_list_elem_klient">${content[key].client}</div>
+            </li>   
+            `
         }
 
         document.getElementById('btn_current').onclick = function() {
-            list.innerHTML = '';
+        //     list.innerHTML = '';
 
-            for (key in content) {
-                let str = content[key].start
-                str = str.substr(0, 5)
-                let str1 = content[key].end
-                str1 = str1.substr(0, 5);
+        //     for (key in content) {
+        //         let str = content[key].start
+        //         str = str.substr(0, 5)
+        //         let str1 = content[key].end
+        //         str1 = str1.substr(0, 5);
 
-                list.innerHTML += `
+        //         list.innerHTML += `
                 
-           <li class="meet_list_elem">
+        //    <li class="meet_list_elem">
            
-                    <div class="meet_list_elem_data">${content[key].date}</div>
-                    <div class="meet_list_elem_time">${str}</div>
-                    <div class="meet_list_elem_time1">${str1}</div>
-                    <div class="meet_list_elem_place">${content2.name}</div>
-                    <div class="meet_list_elem_theme">${content[key].topic}</div> 
-                    <div class="meet_list_elem_klient">${content3.company}</div>
-           </li>   
-           `
-            }
+        //             <div class="meet_list_elem_data">${content[key].date}</div>
+        //             <div class="meet_list_elem_time">${str}</div>
+        //             <div class="meet_list_elem_time1">${str1}</div>
+        //             <div class="meet_list_elem_place">${content2.name}</div>
+        //             <div class="meet_list_elem_theme">${content[key].topic}</div> 
+        //             <div class="meet_list_elem_klient">${content3.company}</div>
+        //    </li>   
+        //    `
+        //     }
         };
 
         document.getElementById('btn_past').onclick = function() {
@@ -121,7 +128,7 @@ window.onload = async function () {
             `
     }
     
-    b.onclick = async function () {
+    save_button.onclick = async function() {
         async function sendRequest(method, url, body = null) {
             return fetch(url, {
                 method: method,
@@ -133,10 +140,11 @@ window.onload = async function () {
             })
 
         }
-        let data = document.getElementById("data")
+
         let time_start = document.getElementById("time_start")
         let time_end = document.getElementById("time_end")
         let theme = document.getElementById("theme")
+        let data = document.getElementById("data")
 
         let body = {
 
@@ -147,7 +155,8 @@ window.onload = async function () {
             creator: '1',
             place: id_place,
             client: id_client,
-            contact: id_contact
+            contact: id_contact,
+            creatorText: ''
             // date: '2022-11-14',
             // start: '11:34',
             // end: '18:45',
@@ -179,21 +188,57 @@ window.onload = async function () {
             .then((response) => response.json())
             .then((json) => console.log(json));
 
-         window.location = "http://sbermeeting.tk/"
+        //  window.location = "http://sbermeeting.tk/"
     }
 
-    
-    let k = 0;
-    let i = 0;
+    let id_client = await get_first_id("client")
+    client_button.onclick = async function() {
+        this.selected_client
+        
+        let client = document.getElementById('cliente').addEventListener(
+            'change',
+            () => { this.selected_client = this.value},
+            {'once' : true}
+        )
+
+        id_client = await get_client_id(this.selected_client)
+    }
+
+    let id_contact = await get_first_id("contact")
+    contact_button.onclick = async function() {
+        this.selected_contact
+        
+        let contact = document.getElementById('contacts').addEventListener(
+            'change',
+            () => { this.selected_contact = this.value},
+            {'once' : true}
+        )
+        id_contact = await get_contact_id(this.selected_contact)
+    }
+
+    let id_place = await get_first_id("place")
+    place.onclick = async function () {
+        this.selected_place
+        
+        let place = document.getElementById('place_list').addEventListener(
+            'change',
+            () => { this.selected_place = this.value},
+            {'once' : true}
+        )
+        id_place = await get_place_id(this.selected_place)
+    }
+
     let mark = 1;
     r.onclick = async function () {
 
         let client = await fetch('http://176.119.157.82:8000/api/client/')
         let contacts = await fetch('http://176.119.157.82:8000/api/contact/')
         let places = await fetch('http://176.119.157.82:8000/api/place/')
+        
         let content1 = await client.json()
         let content2 = await contacts.json()
         let content3 = await places.json()
+        
         let list_dolj = document.querySelector('.dolj_input1')
         let list_cli = document.querySelector('.klient_input')
         let list_contact = document.querySelector('.litso_input')
@@ -230,261 +275,63 @@ window.onload = async function () {
         mark = 0;
     }
 
-
-    // let select = document.querySelector('.klient_input')
-    // let op = document.querySelector('option')
-    // op.addEventListener('click', function() {
-    //     console.log(selector.value);
-    // })
-    
-    let id_contact = 1
-    let id_client = 1
-    let id_place = 1
-    q.onclick = async function () {
-        
-        let list_dolj = document.querySelector('.dolj_input1')
-        let contacts = await fetch('http://176.119.157.82:8000/api/contact/')
-        let content2 = await contacts.json()
-        let name = document.getElementById('contacts')
-
-        let name1 = (content2[0].first_name + ' ' + content2[0].second_name + ' ' + content2[0].third_name)
-
-        if ((name.value) == name1) {
-            id_contact = 1
-            list_dolj.innerHTML = `
-                   <input class="dolj_input" type="text" id="dolj" value="${content2[0].position}">
-                       `
-        }
-        else {
-            id_contact = 2
-            list_dolj.innerHTML = `
-                   <input class="dolj_input" type="text" id="dolj" value="${content2[1].position}">
-                       `
-        }
-    }
-
-    client.onclick = async function () {
-        let client = await fetch('http://176.119.157.82:8000/api/client/')
-        let content1 = await client.json()
-
-        let name = document.getElementById('cliente')
-
-        let name1 = (content1[0].company)
-
-        if ((name.value) == name1) {
-            id_client = 1
-            
-        }
-        else {
-            id_client = 2
-            
-        }
-    }
-
-    place.onclick = async function () {
-        let places = await fetch('http://176.119.157.82:8000/api/place/')
-        let content3 = await places.json()
-
-        let name = document.getElementById('place_list')
-
-        let name1 = (content3[0].name)
-
-        if ((name.value) == name1) {
-            id_place = 1
-            
-        }
-        else {
-            id_place = 2
-            
-        }
-    }
-
-
-
-
-// a.onclick = async function () {
-
-//     async function sendRequest(method, url, body = null) {
-//         return fetch(url, {
-//             method: method,
-//             body: JSON.stringify(body),
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-
-//         })
-
-//     }
-//     let body = {
-//         color: 'YES'
-
-//     }
-
-//     let responce = await sendRequest('PATCH', 'http://176.119.157.82:8000/api/v1/cars/car/detail/9/', body)
-
-//     let content = await responce.json()
-//     console.log(content)
-
-
-//     let list = document.querySelector('.posts')
-
-//     let key
-//     list.innerHTML = `
-//         <li class="post">
-//         <h4>${content.id}</h4>
-//         </li>   
-//         <li class="post"> 
-//             <h4>${content.color}</h4>
-//         </li>`
-
-//     let if_id = "list"
-
-//     if_id = document.getElementById(if_id);
-//     if_id.style.background = "rgb(218, 64, 92)";
-
-
-
-// }
-
-
-//  c.onclick = async function () {
-
-
-{/* <img class="pencil" src="pencil.png" alt=""> */ }
-// let if_id = "list"
-// if (content.color == "YES") {
-//     if_id = document.getElementById(if_id);
-//     if_id.style.background = "rgb(218, 64, 92)";
-// }
-// else {
-//     if_id = document.getElementById(if_id);
-//     if_id.style.background = "rgb(137, 206, 126)";
-// }
-//  }
-
-
-
-async function update() {
-    let responce = await fetch('http://176.119.157.82:8000/api/v1/cars/car/detail/9/')
-
-    let content = await responce.json()
-
-    let list = document.querySelector('.posts')
-
-    let key;
-
-    for (key in content) {
-        console.log(content[key])
-        list.innerHTML = `
-   <li class="post">
-   <h4>${content.id}</h4>
-   </li>   
-   <li class="post"> 
-       <h4>${content.color}</h4>
-   </li>`
-
-    }
-    getResponse()
 }
 
-    client.onclick = async function () {
-        let client = await fetch('http://176.119.157.82:8000/api/client/')
-        let content1 = await client.json()
+async function get_contact_id(contact_full_name) {
 
-        let name = document.getElementById('cliente')
+    let responce_contacts = await fetch('http://176.119.157.82:8000/api/contact/')
+    let contacts = await responce_contacts.json()
+    let id_contact = get_first_id("contact")
 
-        let name1 = (content1[0].company)
+    contacts.forEach((contact) => {
+        let full_name = contact.first_name + ' '
+            + contact.second_name + ' '
+            + contact.third_name
 
-        if ((name.value) == name1) {
-            id_client = 1
-            
+        if (full_name === contact_full_name) {
+            id_contact = contact.id
         }
-        else {
-            id_client = 2
-            
+    });
+
+    return id_contact
+}
+
+async function get_client_id(client_company) {
+
+    let responce = await fetch('http://176.119.157.82:8000/api/client/')
+    let clients = await responce.json()
+    let id_client = get_first_id("client")
+
+    clients.forEach((client) => {
+        let company_name = client.company
+
+        if (client_company === company_name) {
+            id_client = client.id
         }
-    }
+    });
 
-    place.onclick = async function () {
-        let places = await fetch('http://176.119.157.82:8000/api/place/')
-        let content3 = await places.json()
+    return id_client
+}
 
-        let name = document.getElementById('place_list')
+async function get_place_id(selected_place) {
+    
+    let responce = await fetch('http://176.119.157.82:8000/api/place/')
+    let places = await responce.json()
+    let id_place = get_first_id("place")
 
-        let name1 = (content3[0].name)
+    places.forEach((place) => {
+        let place_name = place.name
 
-        if ((name.value) == name1) {
-            id_place = 1
-            
+        if (place_name === selected_place) {
+            id_place = place.id
         }
-        else {
-            id_place = 2
-            
-        }
-    }
+    });
 
+    return id_place 
+}
 
-
-
-// a.onclick = async function () {
-
-//     async function sendRequest(method, url, body = null) {
-//         return fetch(url, {
-//             method: method,
-//             body: JSON.stringify(body),
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-
-//         })
-
-//     }
-//     let body = {
-//         color: 'YES'
-
-//     }
-
-//     let responce = await sendRequest('PATCH', 'http://176.119.157.82:8000/api/v1/cars/car/detail/9/', body)
-
-//     let content = await responce.json()
-//     console.log(content)
-
-
-//     let list = document.querySelector('.posts')
-
-//     let key
-//     list.innerHTML = `
-//         <li class="post">
-//         <h4>${content.id}</h4>
-//         </li>   
-//         <li class="post"> 
-//             <h4>${content.color}</h4>
-//         </li>`
-
-//     let if_id = "list"
-
-//     if_id = document.getElementById(if_id);
-//     if_id.style.background = "rgb(218, 64, 92)";
-
-
-
-// }
-
-
-//  c.onclick = async function () {
-
-
-{/* <img class="pencil" src="pencil.png" alt=""> */ }
-// let if_id = "list"
-// if (content.color == "YES") {
-//     if_id = document.getElementById(if_id);
-//     if_id.style.background = "rgb(218, 64, 92)";
-// }
-// else {
-//     if_id = document.getElementById(if_id);
-//     if_id.style.background = "rgb(137, 206, 126)";
-// }
-//  }
-
-
+async function get_first_id(api_path) {
+    let responce = await fetch('http://176.119.157.82:8000/api/' + api_path)
+    let objects = await responce.json()
+    return objects[0].id
 }
