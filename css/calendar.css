@@ -2,6 +2,9 @@ a {
     color: #000 !important;
     text-decoration: none
 }
+html{
+    height: 100%;
+}
 body{
     background: linear-gradient(45deg, #C4F1CF, rgb(200, 253, 255));
     margin:0px;
@@ -338,7 +341,8 @@ body{
 .current_nav_add {
     position: absolute;
     height: 108.54px;
-    width: 553.4px;
+    width: 920px;
+    /*width: 553.4px;*/
     left: 293.74px;
     top: 535.49px;
 
@@ -377,9 +381,9 @@ body{
 }
 .meet_list_list {
     position: absolute;
-    width: 280px;
-    height: 465px;
-    left: 902.69px;
+    width: 880px;
+    height: 335px;
+    left: 293.74px;
     top: 159px;
     background: #21ba72;
     border-radius: 21.4219px;
@@ -475,7 +479,7 @@ body{
 }
 #okno {
     width: 715.8px;
-    height: 548px;
+    height: 348px;
     padding: 15px;
     border-radius: 22px;
     position: absolute;
@@ -514,19 +518,24 @@ body{
     display: flex;
 }
 
+.tab {
+    overflow: hidden;
+    display: flex;
+}
+
 .tab button {
     background-color: inherit;
     float: left;
     border: none;
     outline: none;
-    /* cursor: pointer; */
+    /*cursor: pointer;*/
     transition: 0.3s;
     font-weight: 500;
-    font-size: 20px;
+    /*font-size: 20px;*/
     border-radius: 21px;
     background-color: #C4C4C4;
-
-
+    text-shadow: 0px 0.5px 0.5px rgb(0 0 0 / 80%);
+    font-size: 20.0412px;
     width: 300px;
     height: 45px;
 }
@@ -538,7 +547,12 @@ body{
 .tab button.active {
     background: #21ba72;
     color: #ffffff;
-    text-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, .8);
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, .8);
+}
+
+.qw {
+    display: flex;
+    margin-right: auto;
 }
 
 .tabcontent {
@@ -553,19 +567,40 @@ body{
     align-items: center;
 }
 
+
+.win_animation {
+    animation-duration: 0.55s;
+    animation-fill-mode: both;
+    animation-name: fadeInDown;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translate3d(0px, -100%, 0px);
+    }
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
 .klient_text {
     position: absolute;
-    margin-top: 30px;
+    margin-top: 5%;
     font-size: 17.8939px;
 
 }
-.klient_input{
+
+.klient_input {
     position: absolute;
     width: 506.76px;
     height: 30.78px;
     left: 196.83px;
-    margin-top: 30px;
+    margin-top: 5%;
 }
+
 .litso_text {
     position: absolute;
     margin-top: 80px;
@@ -604,7 +639,7 @@ body{
 }
 .data_text {
     position: absolute;
-    margin-top: 230px;
+    margin-top: 22%;
     font-size: 17.8939px;
 }
 .data_input{
@@ -612,11 +647,11 @@ body{
     width: 506.76px;
     height: 30.78px;
     left: 196.83px;
-    margin-top: 230px;
+    margin-top: 22%;
 }
 .time_text {
     position: absolute;
-    margin-top: 280px;
+    margin-top: 39%;
     font-size: 17.8939px;
 
 }
@@ -625,18 +660,18 @@ body{
     width: 150px;
     height: 30.78px;
     left: 196.83px;
-    margin-top: 280px;
+    margin-top: 39%;
 }
 .time_input2{
     position: absolute;
     width: 150px;
     height: 30.78px;
     left: 400.83px;
-    margin-top: 280px;
+    margin-top: 39%;
 }
 .place_text {
     position: absolute;
-    margin-top: 330px;
+    margin-top: 26%;
     font-size: 17.8939px;
 }
 .place_input{
@@ -644,16 +679,35 @@ body{
     width: 506.76px;
     height: 30.78px;
     left: 196.83px;
-    margin-top: 330px;
+    margin-top: 26%;
 }
 
-.savethisshit{
+.btns {
+    z-index: 0;
+    position: relative;
+    font-size: inherit;
+    font-family: inherit;
+    color: black;
+    outline: none;
+    background-color: hsl(152, 70%, 43%);
+    overflow: hidden;
+    transition: color 0.4s ease-in-out;
+}
+
+.btns:hover {
+    cursor: pointer;
+    color: #ffffff;
+    background-color: hsl(152, 70%, 45.5%);
+}
+
+
+.savethisshit {
     position: absolute;
     width: 241.21px;
     height: 43.66px;
     left: 469.54px;
-    top: 500px;
-
+    top: 300px;
+    border: none;
     background: #21ba72;
     border-radius: 21.4727px;
     justify-content: center;
@@ -661,9 +715,9 @@ body{
     justify-content: center;
     display: flex;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 20.0412px;
     color: #ffffff;
-    text-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, .8);
+    text-shadow: 0px 2px 2px rgb(0 0 0 / 80%);
 }
 
 #zatemnenie_edit_klient {
@@ -695,7 +749,7 @@ body{
     width: 158.18px;
     height: 44.38px;
     left: 27.91px;
-    top: 500px;
+    top: 300px;
     background: #C4C4C4;
     font-size: 14pt;
     border-radius: 21.4727px;
@@ -841,7 +895,7 @@ body{
     width: 158.18px;
     height: 44.38px;
     left: 27.91px;
-    top: 500px;
+    top: 300px;
     background: #C4C4C4;
     font-size: 14pt;
     border-radius: 21.4727px;
