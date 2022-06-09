@@ -61,9 +61,7 @@ window.onload = async function () {
                     'Content-type': 'application/json; charset=UTF-8',
                 }
 
-            }).then((response) => response.json())
-            .then((json) => console.log(json));
-
+            })
         }
 
         let time_start = document.getElementById("time_start")
@@ -86,12 +84,29 @@ window.onload = async function () {
         }
 
         let responce = await sendRequest('POST', 'http://176.119.157.82:8000/api/meeting/', body)
-        console.log(data.value, time_start.value, time_end.value, id_place, creator.value);
-        let empl = await responce.json()
+
+        // let empl = await responce.json()
 
 
-        let id_clien = empl.creator
-        let id_meet = empl.id
+        // let id_clien = empl.creator
+        // let id_meet = empl.id
+
+        // fetch('http://176.119.157.82:8000/api/employeelist/', {
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         "employee": id_clien,
+        //         "meeting": id_meet
+        //     }),
+        //     headers: {
+        //         'Content-type': 'application/json; charset=UTF-8',
+        //     },
+        // })
+
+        responce = await responce.json()
+
+
+        let id_clien = responce.creator
+        let id_meet = responce.id
 
         fetch('http://176.119.157.82:8000/api/employeelist/', {
             method: 'POST',
@@ -106,7 +121,8 @@ window.onload = async function () {
             .then((response) => response.json())
             .then((json) => console.log(json));
 
-            window.location = 'http://sbermeeting.tk/calendar.html'
+        window.location = 'http://sbermeeting.tk/calendar.html'
+
     }
 
     let id_place = await get_first_id("place")
