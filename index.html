@@ -72,9 +72,15 @@
             <!-- <div class="current_nav_elem_times">Время</div> -->
 
         </div>
-
+        <!-- <a href="#zatemnenie1">
+            <div class="current_nav_addd" id="adds">
+                <div class="current_nav_addd_text">Збронировать</div>
+            </div>
+        </a> -->
         <a href="#zatemnenie">
+
             <div class="current_nav_add" id="add">
+
                 <div class="current_nav_add_text">Добавить встречу</div>
             </div>
         </a>
@@ -137,9 +143,9 @@
                     </select>
 
                 </form>
-                
-                <div class="dolj_text">Должность</div><div class="dolj_input1"><input class="dolj_input" type="text" id="dolj" >
-                        </div>
+                <div class="dolj_text">Должность</div>
+                <div class="dolj_input1"><input class="dolj_input" type="text" id="dolj">
+                </div>
                 <div class="theme_text">Тема</div><input class="theme_input" type="text" id="theme">
                 <div class="data_text">Дата</div><input class="data_input" type="date" name="calendar" max="2060-12-31"
                     min="2000-01-01" id="data">
@@ -188,9 +194,14 @@
                 document.getElementById("defaultOpen").click();
             </script>
 
-<!--            <button class="savethisshit" id="savethisshit1">Сохранить</button>-->
+            <!--            <button class="savethisshit" id="savethisshit1">Сохранить</button>-->
 
             <button class="savethisshit btns" id="savethisshit1">Сохранить</button>
+            <script>
+                $(".savethisshit").click(function(){
+                    $("#okno").hide(800);
+                });
+            </script>
 
 
             <a href="#" class="close">Отмена</a>
@@ -213,7 +224,7 @@
 
 
 
-            <button class="savethisshit btns"  id="savethisshit1">Сохранить</button>
+            <button class="savethisshit" id="savethisshit1">Сохранить</button>
 
             <a href="#" class="close">Отмена</a>
         </div>
@@ -235,27 +246,11 @@
 
 
 
-            <button class="savethisshit btns"  id="savethisshit1">Сохранить</button>
+            <button class="savethisshit" id="savethisshit1">Сохранить</button>
 
             <a href="#" class="close">Отмена</a>
         </div>
     </div>
-
-    <!-- <div>
-        <button id="bronir3">
-            <h1>ОБНОВИТЬ</h1>
-        </button>
-    </div>
-    <div>
-        <button id="bronir2">
-            <h1>ОБНОВИТЬ</h1>
-        </button>
-    </div>
-    <div>
-        <button id="bronir2">
-            <h1>ОвывывБНОВИТЬ</h1>
-        </button>
-    </div>       -->
 
     <script src="./js/json.js"></script>
 </body>
