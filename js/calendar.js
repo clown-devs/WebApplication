@@ -20,7 +20,7 @@ window.onload = async function () {
         <li class="meet_list_elem">
             <div class="meet_list_elem_theme">${booking[keyS].creatorText}</div> 
             <div class="meet_list_elem_place">Переговорка 1.${booking[keyS].place}</div>
-            <div class="meet_list_elem_data">${booking[keyS].data}</div>     
+            <div class="meet_list_elem_data">${booking[keyS].date}</div>     
             <div class="meet_list_elem_time">${booking[keyS].start}</div>
             <div class="meet_list_elem_time1">${booking[keyS].end}</div>  
         </li>
@@ -106,9 +106,7 @@ window.onload = async function () {
             .then((response) => response.json())
             .then((json) => console.log(json));
 
-        //  window.location = "http://sbermeeting.tk/"
-
-
+            window.location = 'http://sbermeeting.tk/calendar.html'
     }
 
     let id_place = await get_first_id("place")
