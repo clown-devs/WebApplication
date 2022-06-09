@@ -467,7 +467,7 @@ window.onload = async function () {
             .then((response) => response.json())
             .then((json) => console.log(json));
 
-        //  window.location = "http://sbermeeting.tk/"
+         window.location = "http://sbermeeting.tk/"
     }
 
     let id_client = await get_first_id("client")
