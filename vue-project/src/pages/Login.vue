@@ -65,7 +65,9 @@ button {
 
 .save-container {
   display: flex;
+  align-self: flex-start;
   align-items: center;
+  margin-left: 9.56%;
 }
 
 input,
