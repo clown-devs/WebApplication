@@ -59,8 +59,8 @@ button {
 }
 
 .submit-button {
-    width: 39.76%;
-    height: 9.09%;
+  width: 39.76%;
+  height: 9.09%;
 }
 
 .save-container {
@@ -77,8 +77,9 @@ input,
 }
 
 input[type="checkbox"] {
-  min-height: 17px;
-  min-width: 17px;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
 
 input {
@@ -88,5 +89,34 @@ input {
   border-top-style: none;
   border-left-style: none;
   border-right-style: none;
+}
+
+@media (max-width: 1200px) {
+}
+
+@media (max-width: 992px) {
+  form {
+    min-width: 100vw;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .submit-button {
+    width: 80.8%;
+  }
+}
+
+@media (max-width: 767px) {
+  form {
+    min-width: 100vw;
+    min-height: 100vh;
+    border-radius: 0;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .submit-button {
+    width: 80.8%;
+  }
 }
 </style>
