@@ -13,9 +13,7 @@
         <input type="checkbox" id="save" name="selected_save" />
         <label for="save" class="save-label">Запомнить</label>
       </div>
-      <div class="submit-button">
-        <button type="submit">Далее</button>
-      </div>
+      <button type="submit">Далее</button>
     </form>
   </div>
 </template>
@@ -37,8 +35,8 @@ form {
   background: rgba(255, 255, 255, 0.58);
   border: 1px solid #47af52;
   border-radius: 30px;
-  width: 31.04%;
-  height: 61.11%;
+  width: 596px;
+  height: 660px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,90 +96,62 @@ button {
   font-size: 1.5rem;
   border-radius: 30px;
   border-width: 0;
-  padding: 1.125rem 2.9rem;
+  width: 237px;
+  height: 60px;
 }
 
 @media (max-width: 1200px) {
   form {
-    min-height: 660px;
-    min-width: 596px;
+    width: 60vw;
+    height: 70vh;
     justify-content: center;
-    gap: 2rem;
+    gap: 2.5rem;
   }
-
+  
   h1,
-  .save-container,
-  button,
   input[type="text"],
-  input[type="password"] {
+  input[type="password"],
+  label,
+  input[type="checkbox"],
+  button,
+  .save-container {
     margin-top: 0;
     margin-bottom: 0;
   }
 
+  button {
+    width: 50%;
+  }
 }
 
 @media (max-width: 992px) {
   form {
-    min-width: 100vw;
-    min-height: 100vh;
-    justify-content: center;
     gap: 2rem;
-    font-size: 2rem;
+    height: 100vh;
+    width: 100vw;
+    border: inherit;
     border-radius: 0;
   }
-
-  h1,
-  .save-container,
-  button,
-  label,
-  input[type="text"],
-  input[type="password"] {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  h1 {
-    font-size: 3rem;
-  }
-
-  .save-container,
-  button,
-  label,
-  input[type="text"],
-  input[type="password"] {
-    font-size: 2rem;
-  }
-
-  button {
-    width: 50vw;
-    padding: 1rem 2rem;
-  }
-
 }
 
 @media (max-width: 767px) {
   form {
-    min-height: 100vh;
-    min-width: 100vw;
+    height: 100vh;
+    width: 100vw;
     border-radius: 0;
-    gap: 1rem;
-  }
-
-   h1 {
-    font-size: 2.5rem;
-  }
-
-  .save-container,
-  button,
-  label,
-  input[type="text"],
-  input[type="password"] {
-    font-size: 1.2rem;
+    border: inherit;
   }
 
   button {
-    width: 80.8vw;
+    width: 80%;
+    height: 2.5rem;
   }
-
 }
+
+@media (max-height: 415px) {
+  form {
+    height: 100vh;
+    gap: 1.3rem;
+  }
+} 
 </style>
