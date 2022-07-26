@@ -1,29 +1,67 @@
 <template>
-  <div class="login">
-    <form action="/my-handling-form-page" method="post">
+  <div class="login-container">
+    <div class="form">
       <h1 class="title">Вход в систему</h1>
-      <input type="text" id="log" name="user_login" value="Логин" />
+      <input
+        type="text"
+        id="login"
+        name="user_login"
+        v-model="username"
+        placeholder="Логин"
+      />
       <input
         type="password"
         id="password"
         name="user_password"
-        value="Пароль"
+        v-model="password"
+        placeholder="Пароль"
       />
       <div class="save-container">
-        <input type="checkbox" id="save" name="selected_save" />
+        <input
+          type="checkbox"
+          id="save"
+          name="selected_save"
+          v-model="isSavedSession"
+        />
         <label for="save" class="save-label">Запомнить</label>
       </div>
-      <button type="submit">Далее</button>
-    </form>
+      <button type="submit" @click="touchNextButton">Далее</button>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+
+export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      isSavedSession: false,
+    };
+  },
+
+  methods: {
+    ...mapActions(["logIn"]),
+
+    async touchNextButton() {
+      const isAuth = this.logIn({
+        username: this.username,
+        password: this.password,
+        isSavedSession: this.isSavedSession
+      });
+
+      if (isAuth) {
+        this.$router.push("/");
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
-.login {
+.login-container {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -31,7 +69,7 @@ export default {};
   justify-content: center;
 }
 
-form {
+.form {
   background: rgba(255, 255, 255, 0.58);
   border: 1px solid #47af52;
   border-radius: 30px;
@@ -101,13 +139,13 @@ button {
 }
 
 @media (max-width: 1200px) {
-  form {
+  .form {
     width: 60vw;
     height: 70vh;
     justify-content: center;
     gap: 2.5rem;
   }
-  
+
   h1,
   input[type="text"],
   input[type="password"],
@@ -125,7 +163,7 @@ button {
 }
 
 @media (max-width: 992px) {
-  form {
+  .form {
     gap: 2rem;
     height: 100vh;
     width: 100vw;
@@ -135,7 +173,7 @@ button {
 }
 
 @media (max-width: 767px) {
-  form {
+  .form {
     height: 100vh;
     width: 100vw;
     border-radius: 0;
@@ -149,9 +187,9 @@ button {
 }
 
 @media (max-height: 415px) {
-  form {
+  .form {
     height: 100vh;
     gap: 1.3rem;
   }
-} 
+}
 </style>
