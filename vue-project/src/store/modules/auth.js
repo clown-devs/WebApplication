@@ -21,9 +21,10 @@ export default {
               await context.dispatch('getUser');
 
               if (isSavedSession) {
-                context.commit("saveTokenToLocalStorage");
-                context.commit("saveUserToLocalStorage");
+                context.commit("saveSessionToLocalStorage");
               }
+
+              context.commit("saveSessionToSessionStorage");
 
               return true;
         },
@@ -47,12 +48,14 @@ export default {
             state.token = token;
         },
 
-        saveTokenToLocalStorage(state) {
+        saveSessionToLocalStorage(state) {
             localStorage.setItem("token", state.token);
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
 
-        saveUserToLocalStorage(state) {
-            localStorage.setItem("user", JSON.stringify(state.user));
+        saveSessionToSessionStorage(state) {
+            sessionStorage.setItem("token", state.token);
+            sessionStorage.setItem("user", JSON.stringify(state.user));
         },
 
         updateUser(state, user) {
@@ -64,6 +67,11 @@ export default {
             state.user = JSON.parse(localStorage.getItem("user"));
         },
 
+        loadDataFromSessionStorage(state) {
+            state.token = sessionStorage.getItem("token");
+            state.user = JSON.parse(sessionStorage.getItem("user"));
+        },
+
         logOut(state) {
             state.token = "";
             state.user = {};
@@ -73,7 +81,7 @@ export default {
     },
     
     state: {
-        token: "",
+        token: null,
         user: {},
         baseURL: "http://sbermeeting.tk/api/v2/",
     },

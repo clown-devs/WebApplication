@@ -25,7 +25,7 @@
         />
         <label for="save" class="save-label">Запомнить</label>
       </div>
-      <button type="submit" @click="touchNextButton">Далее</button>
+      <button type="submit" @click="touchLogIn">Далее</button>
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@ export default {
   methods: {
     ...mapActions(["logIn"]),
 
-    async touchNextButton() {
+    async touchLogIn() {
       const isAuth = this.logIn({
         username: this.username,
         password: this.password,

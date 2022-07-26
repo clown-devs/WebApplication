@@ -16,7 +16,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["loadDataFromLocalStorage", "logOut"]),
+    ...mapMutations([
+      "loadDataFromLocalStorage",
+      "logOut",
+      "loadDataFromSessionStorage"
+      ]),
 
     logOutWrapper() {
       this.$router.push("/login");
@@ -25,12 +29,17 @@ export default {
   },
 
   mounted() {
-    if (localStorage.getItem("token") === null) {
-      this.$router.push("/login");
+    if(sessionStorage.getItem("token") !== null) {
+      this.loadDataFromSessionStorage();
       return;
     }
 
-    this.loadDataFromLocalStorage();
+    if (localStorage.getItem("token") !== null) {
+      this.loadDataFromLocalStorage();
+      return;
+    }
+
+    this.$router.push("/login");
   },
 };
 </script>
