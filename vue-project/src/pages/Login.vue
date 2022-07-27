@@ -10,7 +10,7 @@
         placeholder="Введите логин..."
         :class="{ invalid: v$.username.$error }"
       />
-      <small v-if="v$.username.$error" class="validate-error-message">
+      <small v-if="v$.username.$error" class="validate-error-message" id="test">
         Логин не должен быть пустым!
       </small>
       
@@ -204,6 +204,25 @@ button {
   margin-top: 2.5rem;
   color: red;
   font-weight: bolder;
+  font-size: smaller;
+}
+
+/* Validation styles */
+
+input[type="text"].invalid {
+  border-bottom-color: red;
+  margin-bottom: 5px;
+}
+
+input[type="password"].invalid {
+  border-bottom-color: red;
+  margin-bottom: 5px;
+}
+
+.validate-error-message {
+  color: red;
+  font-weight: bolder;
+  margin-bottom: 2rem;
 }
 
 /* Responcive CSS */
@@ -211,9 +230,9 @@ button {
 @media (max-width: 1200px) {
   form {
     width: 60vw;
-    height: 70vh;
+    height: 80vh;
     justify-content: center;
-    gap: 2.5rem;
+    gap: 2rem;
   }
 
   h1,
@@ -230,6 +249,11 @@ button {
 
   button {
     width: 50%;
+    height: 2.5rem;
+  }
+
+  .validate-error-message {
+    margin: 0;
   }
 }
 
@@ -243,12 +267,13 @@ button {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   form {
     height: 100vh;
     width: 100vw;
     border-radius: 0;
     border: inherit;
+    gap: 1.7rem;
   }
 
   button {
@@ -260,18 +285,11 @@ button {
 @media (max-height: 415px) {
   form {
     height: 100vh;
-    gap: 1.3rem;
+    gap: 0.5rem;
   }
-}
 
-/* Validation styles */
-
-.invalid {
-  border-bottom-color: red;
-}
-
-.validate-error-message {
-  color: red;
-  font-weight: bolder;
+  .validate-error-message {
+    margin: 0;
+  }
 }
 </style>
