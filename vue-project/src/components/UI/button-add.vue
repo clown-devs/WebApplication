@@ -1,0 +1,28 @@
+<template>
+  <div class="button-add-meet">
+    <button class="add-meet-but">Добавить встречу</button>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style>
+button {
+  background-color: white;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.add-meet-but {
+  width: 558px;
+  height: 70px;
+  background-color: #00b268;
+  font-size: 24px;
+  color: #ffffff;
+  box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+}
+</style>
