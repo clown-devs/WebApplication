@@ -3,11 +3,22 @@ import api from '@/api'
 export default {
     actions: {
         async logIn(context, { username, password, isSavedSession }) {
-
+            
             const token = await api.auth(username, password);
-            context.commit("setToken", token.auth_token);
+            if (token === null) {
+                context.commit("setErrorMessage", api.error);
+                api.error = '';
+                return false;
+            }
 
-            await context.dispatch('getUser');
+            context.commit("setToken", token.auth_token);
+            
+            let isAuth = true;
+
+            const user = await context.dispatch('getUser');
+            if (user === null) {
+                isAuth = false;    
+            }
 
             if (isSavedSession) {
                 context.commit("saveSessionToLocalStorage");
@@ -15,12 +26,24 @@ export default {
 
             context.commit("saveSessionToSessionStorage");
 
-            return true;
+            if (isAuth) {
+                context.commit("setErrorMessage", "");
+            }
+            
+            return isAuth;
+            
         },
 
         async getUser(context) {
             const user = await api.currentUser(context.state.token);
+            if (user === null) {
+                context.commit("setErrorMessage", api.error);
+                api.error = '';
+                return null;
+            }
+
             context.commit("updateUser", user);
+            return user;
         }
     },
 
@@ -58,13 +81,17 @@ export default {
             state.user = {};
             localStorage.removeItem('token');
             localStorage.removeItem("user");
+        },
+
+        setErrorMessage(state, error) {
+            state.errorMessage = error; 
         }
     },
 
     state: {
         token: null,
         user: {},
-        baseURL: "http://sbermeeting.tk/api/v2/",
+        errorMessage: ''
     },
 
     getters: {}

@@ -1,3 +1,4 @@
+import { handleError } from "vue";
 import axios from "./instance";
 
 const API_KEY = 'api/v2/';
@@ -8,24 +9,73 @@ const API_PATHS = {
 }
 
 const api = {
+    
+    error: {},
+    contextForMuttations: {},
+
     async auth(username, password) {
-        const res = await axios.post(API_KEY + API_PATHS['auth'], {
-            username,
-            password
-        });
         
-        return res.data;
+        try {
+            const res = await axios.post(API_KEY + API_PATHS['auth'], {
+                username,
+                password
+            });
+
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return null;
+        }
+        
     },
 
     async currentUser(token) {
-        const res = await axios.get(API_KEY + API_PATHS['user'], {
-            headers: {
-                "Authorization": "Token " + token
-            }
-        });
+        try {
+            const res = await axios.get(API_KEY + API_PATHS['user'], {
+                headers: {
+                    "Authorization": "Token " + token
+                }
+            });
+    
+            return res.data;
 
-        return res.data;
+        } catch(error) {
+            this.errorHandle(error);
+            return null;
+        }
+    },
+
+    errorHandle(error) {
+        
+        if (error.response) {
+
+            switch (error.response.status) {
+                case 400:
+                    this.error = "Неверный логин/пароль";
+                    break;
+                case 401:
+                    this.error = 
+                        error.response.statusText 
+                        + "." 
+                        + error.response.data.detail
+                    ;
+                    break;
+                default:
+                    this.error = error.message + "." + error.response.statusText;
+            }
+            
+        } else if (error.request) {
+            
+            this.error = "Bad connection";
+
+        } else {
+
+            //
+
+        }    
     }
+
 };
 
 export default api;

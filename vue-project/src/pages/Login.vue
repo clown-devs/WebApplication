@@ -26,6 +26,9 @@
         <label for="save" class="save-label">Запомнить</label>
       </div>
       <button type="submit" @click="touchLogIn">Далее</button>
+      <div v-if="isHaveErrorAuth()" class="error-container">
+        {{ this.$store.state.auth.errorMessage }}
+      </div>
     </div>
   </div>
 </template>
@@ -46,15 +49,22 @@ export default {
     ...mapActions(["logIn"]),
 
     async touchLogIn() {
-      const isAuth = this.logIn({
+      const isAuth = await this.logIn({
         username: this.username,
         password: this.password,
-        isSavedSession: this.isSavedSession
+        isSavedSession: this.isSavedSession,
       });
 
       if (isAuth) {
         this.$router.push("/");
+        return;
       }
+
+      this.$router.push("/login");
+    },
+
+    isHaveErrorAuth() {
+      return this.$store.state.auth.errorMessage !== "";
     },
   },
 };
@@ -138,6 +148,11 @@ button {
   height: 60px;
 }
 
+.error-container {
+  border: 2px solid pink;
+  margin-top: 2.5rem;
+}
+
 @media (max-width: 1200px) {
   .form {
     width: 60vw;
@@ -152,7 +167,8 @@ button {
   label,
   input[type="checkbox"],
   button,
-  .save-container {
+  .save-container,
+  .error-container {
     margin-top: 0;
     margin-bottom: 0;
   }
