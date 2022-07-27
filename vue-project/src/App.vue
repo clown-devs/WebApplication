@@ -1,7 +1,6 @@
 <template>
   <div class="app" :class="{ loginColor: isSignIn }">
     <router-view></router-view>
-    <button @click="logOutWrapper">Logout</button>
   </div>
 </template>
 
@@ -18,14 +17,8 @@ export default {
   methods: {
     ...mapMutations([
       "loadDataFromLocalStorage",
-      "logOut",
       "loadDataFromSessionStorage"
       ]),
-
-    logOutWrapper() {
-      this.$router.push("/login");
-      this.logOut();
-    },
   },
 
   mounted() {
