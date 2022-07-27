@@ -1,48 +1,29 @@
+import api from '@/api'
+
 export default {
     actions: {
-        async logIn(context, {username, password, isSavedSession}) {
-            const res = await fetch(
-                context.state.baseURL + "users/auth/token/login/",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    username,
-                    password
-                  }),
-                }
-              );
-        
-              const token = await res.json();
-              context.commit("setToken", token.auth_token);
-              
-              await context.dispatch('getUser');
+        async logIn(context, { username, password, isSavedSession }) {
 
-              if (isSavedSession) {
+            const token = await api.auth(username, password);
+            context.commit("setToken", token.auth_token);
+
+            await context.dispatch('getUser');
+
+            if (isSavedSession) {
                 context.commit("saveSessionToLocalStorage");
-              }
+            }
 
-              context.commit("saveSessionToSessionStorage");
+            context.commit("saveSessionToSessionStorage");
 
-              return true;
+            return true;
         },
 
         async getUser(context) {
-            const res = await fetch(context.state.baseURL + "users/employee/current/", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Token " + context.state.token
-                }
-              });
-        
-              const user = await res.json();
-              context.commit("updateUser", user);
+            const user = await api.currentUser(context.state.token);
+            context.commit("updateUser", user);
         }
     },
-    
+
     mutations: {
         setToken(state, token) {
             state.token = token;
@@ -79,12 +60,12 @@ export default {
             localStorage.removeItem("user");
         }
     },
-    
+
     state: {
         token: null,
         user: {},
         baseURL: "http://sbermeeting.tk/api/v2/",
     },
-    
+
     getters: {}
 }
