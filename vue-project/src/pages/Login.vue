@@ -7,18 +7,28 @@
         id="login"
         name="user_login"
         v-model="username"
-        :placeholder="[[ loginPlaceholder ]]"
-        required
+        placeholder="Введите логин..."
+        :class="{ invalid: v$.username.$error }"
       />
+      <small v-if="v$.username.$error" class="validate-error-message">
+        Логин не должен быть пустым!
+      </small>
+      
       <input
         type="password"
         id="password"
         name="user_password"
         v-model="password"
-        :placeholder="[[ passwordPlaceholder]]"
-        minlength="4"
-        required
+        placeholder="Введите пароль..."
+        :class="{ invalid: v$.password.$error}"
       />
+      <small v-if="v$.password.$dirty && v$.password.required.$invalid" class="validate-error-message">
+        Пароль является обязательным полем!
+      </small>
+      <small v-if="v$.password.minLength.$invalid" class="validate-error-message">
+        Длина пароля должна быть больше 3 символов!
+      </small>
+
       <div class="save-container">
         <input
           type="checkbox"
@@ -28,8 +38,8 @@
         />
         <label for="save" class="save-label">Запомнить</label>
       </div>
-      <button type="submit" @click="touchLogIn">Далее</button>      
-      
+      <button type="submit" @click="touchLogIn">Далее</button>
+
       <div v-if="isHaveErrorAuth()" class="error-container">
         {{ this.$store.state.auth.errorMessage }}
       </div>
@@ -39,15 +49,30 @@
 
 <script>
 import { mapActions } from "vuex";
+import useVuelidate from "@vuelidate/core";
+import { required, minLength } from "@vuelidate/validators";
 
 export default {
+  setup() {
+    return {
+      v$: useVuelidate(),
+    };
+  },
+
   data() {
     return {
       username: "",
       password: "",
       isSavedSession: false,
       passwordPlaceholder: "Введите пароль...",
-      loginPlaceholder: "Введите логин..."
+      loginPlaceholder: "Введите логин...",
+    };
+  },
+
+  validations() {
+    return {
+      username: { required },
+      password: { required, minLength: minLength(4) },
     };
   },
 
@@ -55,8 +80,9 @@ export default {
     ...mapActions(["logIn"]),
 
     async touchLogIn() {
-      
-      if (!this.isValidForm()) {
+
+      const isCorrectForm = await this.v$.$validate();
+      if (!isCorrectForm) {
         return;
       }
 
@@ -84,11 +110,11 @@ export default {
       this.validationErrors = [];
 
       if (this.username.length && this.password.length >= MAX_PASSWORD_LEN) {
-        return true; 
+        return true;
       }
 
       return false;
-    }
+    },
   },
 };
 </script>
@@ -175,8 +201,9 @@ button {
 }
 
 .error-container {
-  border: 2px solid pink;
   margin-top: 2.5rem;
+  color: red;
+  font-weight: bolder;
 }
 
 /* Responcive CSS */
@@ -239,11 +266,12 @@ button {
 
 /* Validation styles */
 
-input[type="text"]:invalid {
+.invalid {
   border-bottom-color: red;
 }
 
-input[type="password"]:invalid {
-  border-bottom-color: red;
+.validate-error-message {
+  color: red;
+  font-weight: bolder;
 }
 </style>
