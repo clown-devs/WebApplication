@@ -3,8 +3,9 @@
     <nav-bar></nav-bar>
 
     <mains></mains>
-  <div>
-    <button @click="logOutWrapper">Logout</button>
+    <div>
+      <button @click="logOutWrapper">Logout</button>
+    </div>
   </div>
 </template>
 
@@ -15,7 +16,7 @@ import mains from "@/components/main.vue";
 
 export default {
   components: { NavBar, mains },
-  
+
   methods: {
     ...mapMutations(["logOut"]),
 
