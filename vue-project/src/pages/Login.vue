@@ -1,20 +1,23 @@
 <template>
   <div class="login-container">
-    <div class="form">
+    <form @submit.prevent>
       <h1 class="title">Вход в систему</h1>
       <input
         type="text"
         id="login"
         name="user_login"
         v-model="username"
-        placeholder="Логин"
+        :placeholder="[[ loginPlaceholder ]]"
+        required
       />
       <input
         type="password"
         id="password"
         name="user_password"
         v-model="password"
-        placeholder="Пароль"
+        :placeholder="[[ passwordPlaceholder]]"
+        minlength="4"
+        required
       />
       <div class="save-container">
         <input
@@ -25,11 +28,12 @@
         />
         <label for="save" class="save-label">Запомнить</label>
       </div>
-      <button type="submit" @click="touchLogIn">Далее</button>
+      <button type="submit" @click="touchLogIn">Далее</button>      
+      
       <div v-if="isHaveErrorAuth()" class="error-container">
         {{ this.$store.state.auth.errorMessage }}
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -42,6 +46,8 @@ export default {
       username: "",
       password: "",
       isSavedSession: false,
+      passwordPlaceholder: "Введите пароль...",
+      loginPlaceholder: "Введите логин..."
     };
   },
 
@@ -49,6 +55,11 @@ export default {
     ...mapActions(["logIn"]),
 
     async touchLogIn() {
+      
+      if (!this.isValidForm()) {
+        return;
+      }
+
       const isAuth = await this.logIn({
         username: this.username,
         password: this.password,
@@ -66,11 +77,25 @@ export default {
     isHaveErrorAuth() {
       return this.$store.state.auth.errorMessage !== "";
     },
+
+    isValidForm() {
+      const MAX_PASSWORD_LEN = 4;
+
+      this.validationErrors = [];
+
+      if (this.username.length && this.password.length >= MAX_PASSWORD_LEN) {
+        return true; 
+      }
+
+      return false;
+    }
   },
 };
 </script>
 
 <style scoped>
+/* Main */
+
 .login-container {
   width: 100vw;
   height: 100vh;
@@ -79,7 +104,7 @@ export default {
   justify-content: center;
 }
 
-.form {
+form {
   background: rgba(255, 255, 255, 0.58);
   border: 1px solid #47af52;
   border-radius: 30px;
@@ -122,6 +147,7 @@ input[type="text"] {
 
 input[type="password"] {
   margin-bottom: 5.45%;
+  background: rgba(255, 255, 255, 0);
 }
 
 .save-container {
@@ -153,8 +179,10 @@ button {
   margin-top: 2.5rem;
 }
 
+/* Responcive CSS */
+
 @media (max-width: 1200px) {
-  .form {
+  form {
     width: 60vw;
     height: 70vh;
     justify-content: center;
@@ -179,7 +207,7 @@ button {
 }
 
 @media (max-width: 992px) {
-  .form {
+  form {
     gap: 2rem;
     height: 100vh;
     width: 100vw;
@@ -189,7 +217,7 @@ button {
 }
 
 @media (max-width: 767px) {
-  .form {
+  form {
     height: 100vh;
     width: 100vw;
     border-radius: 0;
@@ -203,9 +231,19 @@ button {
 }
 
 @media (max-height: 415px) {
-  .form {
+  form {
     height: 100vh;
     gap: 1.3rem;
   }
+}
+
+/* Validation styles */
+
+input[type="text"]:invalid {
+  border-bottom-color: red;
+}
+
+input[type="password"]:invalid {
+  border-bottom-color: red;
 }
 </style>
