@@ -1,17 +1,17 @@
-import { handleError } from "vue";
 import axios from "./instance";
 
 const API_KEY = 'api/v2/';
+const OLD_API_KEY = 'api/v1/';
 
 const API_PATHS = {
     auth: 'users/auth/token/login/',
-    user: 'users/employee/current/'
+    user: 'users/employee/current/',
+    meeting: 'meeting'
 }
 
 const api = {
     
     error: {},
-    contextForMuttations: {},
 
     async auth(username, password) {
         
@@ -44,6 +44,21 @@ const api = {
             this.errorHandle(error);
             return null;
         }
+    },
+
+    async getMeetings(past = false) {
+       
+        try {
+            const res = await axios.get(
+                OLD_API_KEY + API_PATHS['meeting'] + (past ? '?past=true' : '/')
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return [];
+        }
+
     },
 
     errorHandle(error) {

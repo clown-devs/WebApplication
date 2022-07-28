@@ -52,7 +52,6 @@
               <p class="client-item">Клиент</p>
             </li>
 
-            
             <li class="all-meet-item">
               <div class="data-time-place-item">
                 <p class="data-item">Дата</p>
@@ -71,7 +70,8 @@
               </div>
               <p class="theme-item">Тема</p>
               <p class="client-item">Клиент</p>
-            </li><li class="all-meet-item">
+            </li>
+            <li class="all-meet-item">
               <div class="data-time-place-item">
                 <p class="data-item">Дата</p>
                 <p class="time-item">Время</p>
@@ -108,8 +108,21 @@
 
 <script>
 import buttons from "@/components/UI/button-add.vue";
+import api from "@/api";
+
 export default {
   components: { buttons },
+
+  data() {
+    return {
+      meetings: [],
+    };
+  },
+
+  async mounted() {
+    // this.meetings = await api.getMeetings();
+    // const pastMeetings = await api.getMeetings(true);
+  },
 };
 </script>
 
@@ -141,7 +154,7 @@ p {
 }
 
 .data-time-place-item {
-    display: flex;
+  display: flex;
 }
 
 .window-tel-and-contact {
@@ -165,8 +178,8 @@ p {
   border-radius: 10px;
 }
 
-.all-meet-item{
-    margin-bottom: 19px;
+.all-meet-item {
+  margin-bottom: 19px;
 }
 
 .contact-window {
@@ -198,7 +211,7 @@ p {
 }
 
 .list-all-meet {
-    margin-left: 16px;
+  margin-left: 16px;
 }
 
 .data-window {
