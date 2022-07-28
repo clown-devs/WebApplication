@@ -41,6 +41,7 @@
               <p class="theme-item">{{ meeting.topic }}</p>
               <p class="client-item">{{ meeting.client }}</p>
             </li>
+          </ul>
         </div>
       </div>
     </div>
