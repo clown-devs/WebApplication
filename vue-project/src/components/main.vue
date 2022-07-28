@@ -9,7 +9,7 @@
             <button class="pencil-meet">
               <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
             </button>
-            <p class="client-wiindow">{{nearMeeting.client.company}}</p>
+            <p class="client-wiindow">{{nearMeeting.client.name}}</p>
             <div class="window-tel-and-contact">
               <p class="contact-window">
                 {{nearMeeting.contact.first_name}} {{nearMeeting.contact.second_name}} {{nearMeeting.contact.third_name}}
@@ -41,7 +41,7 @@
                 <p class="place-item">{{ meeting.place.name }}</p>
               </div>
               <p class="theme-item">{{ meeting.topic }}</p>
-              <p class="client-item">{{ meeting.client.company }}</p>
+              <p class="client-item">{{ meeting.client.name }}</p>
             </li>
           </ul>
         </div>
