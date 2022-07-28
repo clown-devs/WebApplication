@@ -103,6 +103,7 @@ export default {
 
       const contact = await api.getContact(this.meetings[0].contact);
       this.meetings[0].contact = contact;
+
     },
   },
 };

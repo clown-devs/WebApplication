@@ -9,7 +9,8 @@ const API_PATHS = {
     meetings: 'meeting',
     client: 'client/',
     contact: 'contact/',
-    place: 'place/'
+    place: 'place/',
+    employeelist: 'employeelist/'
 }
 
 const api = {
@@ -126,6 +127,43 @@ const api = {
         } catch (error) {
             this.errorHandle(error);
             return [];
+        }
+    },
+
+    async getFreePlaces(start, end, date) {
+        try {
+            let places = await axios.get(
+                OLD_API_KEY 
+                + API_PATHS['place']
+                + '?date=' + date
+                + '&start=' + start
+                + '&end=' + end
+            );
+            return places.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return [];
+        }
+    },
+
+    async createMeeting(meeting) {
+        try {
+            const newMeeting = await axios.post(
+                OLD_API_KEY + API_PATHS['meetings'] + '/', meeting
+            );
+            
+            const newEmployee = await axios.post(
+                OLD_API_KEY + API_PATHS['employeelist'], {
+                "employee": newMeeting.data().creator,
+                "meeting": newMeeting.data().id
+            });
+            
+            return newEmployee.data();
+
+        } catch(error) {
+            this.errorHandle(error);
+            return {};
         }
     },
 
