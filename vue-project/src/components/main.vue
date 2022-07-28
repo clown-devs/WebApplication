@@ -113,7 +113,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped >
 .window-near-meet {
   width: 774px;
   height: 567px;
@@ -183,6 +183,9 @@ p {
 }
 
 .container {
+  max-width: 1520px;
+  margin-left: 200px;
+  margin-right: 200px;
   display: flex;
 }
 

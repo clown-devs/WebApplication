@@ -1,12 +1,16 @@
 <template>
   <header class="header">
-    <div class="container header-container">
-      <div class="title-name title-names">Sber clients</div>
+    <nav>
+      <div class="container header-container">
 
-      <div class="header-burger">
-        <span></span>
-      </div>
-      <div class="header-nav-bar">
+        <div class="title-name title-names">
+          <h3 class="logo-name">Sber clients</h3>
+        </div>
+
+        <div class="header-burger">
+          <span></span>
+        </div>
+
         <ul class="nav-bar-list">
           <li class="nav-bar-list-item">Главная страница</li>
 
@@ -16,93 +20,81 @@
 
           <li class="nav-bar-list-item">Отчёты по встречам</li>
         </ul>
-      </div>
 
-      <button class="nav-bar-notify-button">
-        <img src="/svg/notify.svg" alt="" class="nav-bar-notify-icon" />
-      </button>
-      <div class="nav-bar-icon-button">
-        <button class="nav-bar-add-meet">
-          <img src="/svg/add-meet.svg" alt="" class="nav-bar-icon-add" />
+        <button class="nav-bar-notify-button">
+          <img src="/svg/notify.svg" alt="" class="nav-bar-notify-icon" />
         </button>
+        <div class="nav-bar-icon-button">
+          <button class="nav-bar-add-meet">
+            <img src="/svg/add-meet.svg" alt="" class="nav-bar-icon-add" />
+          </button>
 
-        <button class="nav-bar-profile">
-          <img src="/svg/profile.svg" alt="" class="nav-bar-profile-icon" />
-        </button>
+          <button class="nav-bar-profile">
+            <img src="/svg/profile.svg" alt="" class="nav-bar-profile-icon" />
+          </button>
+        </div>
+
+        <div>
+          <button @click="logOutWrapper" class="log-out">Выйти</button>
+        </div>
       </div>
-    </div>
+    </nav>
+
     <hr class="line-header" />
   </header>
 
-  <!-- <main>
-    <div class="container">
-      <div class="content-text">
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
-          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
-          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
-          vel alias facere ratione nihil!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
-          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
-          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
-          vel alias facere ratione nihil!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
-          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
-          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
-          vel alias facere ratione nihil!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
-          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
-          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
-          vel alias facere ratione nihil!
-        </p>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>
-export default {};
+import { mapMutations } from "vuex";
+
+export default {
+  components: {},
+
+  methods: {
+    ...mapMutations(["logOut"]),
+
+    logOutWrapper() {
+      this.$router.push("/login");
+      this.logOut();
+    },
+  },
+};
 </script>
 
-<style>
-.header-container {
+<style scoped>
+.container {
   display: flex;
   align-items: center;
 }
 
-.container {
-  max-width: 1520px;
-  height: 110px;
-  margin-left: 200px;
-  margin-right: 200px;
+.header {
+  background-color: #fff;
 }
 
-@media (max-width: 1520px) {
-  .container {
-    max-width: 970px;
-  }
+* {
+  padding: 0;
+  margin: 0;
+
+  box-sizing: border-box;
 }
 
-@media (max-width: 992px) {
-  .container {
-    max-width: 750px;
-  }
+html, body {
+  overflow-x: hidden;
 }
 
-@media (max-width: 767px) {
-  .container {
-    max-width: none;
-  }
-}
-
-.nav-bar-list {
+nav {
+  padding: 15px 10px;
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 110px;
+  
+}
+
+/*.nav-bar-list {
+  display: flex;
+  justify-content: space-around;
 }
 
 .nav-bar-icon-button {
@@ -122,14 +114,11 @@ export default {};
 
 ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 .line-header {
   width: 100%;
 }
-
 
 .nav-bar-list-item {
   font-size: 16px;
@@ -140,6 +129,12 @@ ul {
   margin-right: 34px;
 }
 
+.log-out {
+  background-color: white;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
 .nav-bar-notify-button {
   height: 40px;
 
@@ -170,5 +165,24 @@ ul {
   margin-bottom: 0;
   margin-left: 0;
   padding: 0;
+  margin-right: 20px;
+}*/
+
+@media (max-width: 1520px) {
+  .container {
+    max-width: 970px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    max-width: none;
+  }
 }
 </style>
