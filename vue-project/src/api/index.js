@@ -6,7 +6,8 @@ const OLD_API_KEY = 'api/v1/';
 const API_PATHS = {
     auth: 'users/auth/token/login/',
     user: 'users/employee/current/',
-    meeting: 'meeting'
+    meetings: 'meeting',
+    client: 'client/'
 }
 
 const api = {
@@ -50,7 +51,7 @@ const api = {
        
         try {
             const res = await axios.get(
-                OLD_API_KEY + API_PATHS['meeting'] + (past ? '?past=true' : '/')
+                OLD_API_KEY + API_PATHS['meetings'] + (past ? '?past=true' : '/')
             );
             return res.data;
 
@@ -59,6 +60,32 @@ const api = {
             return [];
         }
 
+    },
+
+    async getClient(id) {
+        try {
+            const res = await axios.get(
+                OLD_API_KEY + API_PATHS['client'] + String(id)
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return;
+        } 
+    },
+
+    async getClients() {
+        try {
+            let clients = await axios.get(
+                OLD_API_KEY + API_PATHS['client']
+            );
+            return clients.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return new Map();
+        }     
     },
 
     errorHandle(error) {

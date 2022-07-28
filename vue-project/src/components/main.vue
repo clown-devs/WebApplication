@@ -32,74 +32,15 @@
 
         <div class="all-meet">
           <ul class="list-all-meet">
-            <li class="all-meet-item first-item">
+            <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
               <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
+                <p class="data-item">{{ meeting.date }}</p>
+                <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
+                <p class="place-item">{{ meeting.place }}</p>
               </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
+              <p class="theme-item">{{ meeting.topic }}</p>
+              <p class="client-item">{{ meeting.client }}</p>
             </li>
-
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -120,8 +61,22 @@ export default {
   },
 
   async mounted() {
-    // this.meetings = await api.getMeetings();
-    // const pastMeetings = await api.getMeetings(true);
+    this.meetings = await api.getMeetings();
+    this.prepareClientInMeeting();
+  },
+
+  methods: {
+    async prepareClientInMeeting() {
+      const clients = await api.getClients();
+      const mathchIdToClient = new Map();
+      clients.forEach((item) => {
+        mathchIdToClient.set(item.id, item);
+      });
+
+      this.meetings.forEach(meeting => {
+        meeting.client = mathchIdToClient.get(meeting.client).company;
+      });
+    },
   },
 };
 </script>
