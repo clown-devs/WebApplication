@@ -1,4 +1,5 @@
 import axios from "./instance";
+import auth from '@/store/modules/auth'
 
 const API_KEY = 'api/v2/';
 const OLD_API_KEY = 'api/v1/';
@@ -7,7 +8,7 @@ const API_PATHS = {
     auth: 'users/auth/token/login/',
     user: 'users/employee/current/',
     meetings: 'meeting',
-    client: 'client/',
+    client: 'clients/',
     contact: 'contact/',
     place: 'place/',
     employeelist: 'employeelist/'
@@ -38,7 +39,7 @@ const api = {
         try {
             const res = await axios.get(API_KEY + API_PATHS['user'], {
                 headers: {
-                    "Authorization": "Token " + token
+                    "Authorization": "Token " + auth.state.token
                 }
             });
 
@@ -68,7 +69,11 @@ const api = {
     async getClient(id) {
         try {
             const res = await axios.get(
-                OLD_API_KEY + API_PATHS['client'] + String(id)
+                API_KEY + API_PATHS['client'] + String(id), {
+                headers: {
+                    "Authorization": "Token " + auth.state.token
+                }
+            }
             );
             return res.data;
 
@@ -81,7 +86,11 @@ const api = {
     async getClients() {
         try {
             let clients = await axios.get(
-                OLD_API_KEY + API_PATHS['client']
+                API_KEY + API_PATHS['client'], {
+                headers: {
+                    "Authorization": "Token " + auth.state.token
+                }
+            }
             );
             return clients.data;
 
@@ -133,7 +142,7 @@ const api = {
     async getFreePlaces(start, end, date) {
         try {
             let places = await axios.get(
-                OLD_API_KEY 
+                OLD_API_KEY
                 + API_PATHS['place']
                 + '?date=' + date
                 + '&start=' + start
@@ -152,16 +161,16 @@ const api = {
             const newMeeting = await axios.post(
                 OLD_API_KEY + API_PATHS['meetings'] + '/', meeting
             );
-            
+
             const newEmployee = await axios.post(
                 OLD_API_KEY + API_PATHS['employeelist'], {
                 "employee": newMeeting.data().creator,
                 "meeting": newMeeting.data().id
             });
-            
+
             return newEmployee.data();
 
-        } catch(error) {
+        } catch (error) {
             this.errorHandle(error);
             return {};
         }
