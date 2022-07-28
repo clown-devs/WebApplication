@@ -3,9 +3,9 @@
     <nav-bar></nav-bar>
 
     <mains></mains>
-    <div>
+    <!-- <div>
       <button @click="logOutWrapper">Logout</button>
-    </div>
+    </div> -->
   </div>
 </template>
 

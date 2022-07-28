@@ -8,7 +8,8 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
+
 button {
   background-color: white;
   border: none;

@@ -1,6 +1,5 @@
 <template>
   <main>
-    <div class="container">
       <div class="near-meet">
         <h4 class="near-meet-text">Ближайшая встреча:</h4>
 
@@ -46,7 +45,6 @@
           </ul>
         </div>
       </div>
-    </div>
   </main>
 </template>
 
@@ -109,14 +107,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .window-near-meet {
-  width: 774px;
-  height: 567px;
   background: #ffffff;
   border: 1px solid #bdbdbd;
   border-radius: 30px;
   margin-bottom: 60px;
+  height: 72%; 
 }
 
 p {
@@ -130,6 +127,8 @@ p {
 
 .near-meet {
   margin-right: 40px;
+  margin-left: 10.14%;
+  flex: 2;
 }
 .green-button-add {
   display: flex;
@@ -159,9 +158,6 @@ p {
   border: 0.714062px solid #f1fbf2;
   box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-}
-
-.all-meet-item {
   margin-bottom: 19px;
 }
 
@@ -178,13 +174,15 @@ p {
   margin-left: 40px;
 }
 
-.container {
+main {
   display: flex;
+  justify-content: space-around;
+  height: 80vh;
 }
 
 .all-meet {
   width: 406px;
-  height: 766px;
+  height: 86%;
   background: #00b268;
   border-radius: 20px;
   overflow: auto;
@@ -203,5 +201,37 @@ p {
 }
 .client-wiindow {
   margin-bottom: 26px;
+}
+
+.list-meet {
+  flex: 1;
+  margin-right: 10.14%;
+}
+
+/* Responsive layout */
+
+@media (max-width: 1200px){
+  main {
+    flex-direction: column;
+    align-content: center;
+  }
+
+  .list-meet {
+    margin-left: 2rem;
+    height: 500px;
+  }
+
+  .near-meet {
+    margin-left: 2rem;
+  }
+}
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-height: 415px) {
 }
 </style>
