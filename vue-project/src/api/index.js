@@ -7,7 +7,8 @@ const API_PATHS = {
     auth: 'users/auth/token/login/',
     user: 'users/employee/current/',
     meetings: 'meeting',
-    client: 'client/'
+    client: 'client/',
+    contact: 'contact/'
 }
 
 const api = {
@@ -71,7 +72,7 @@ const api = {
 
         } catch (error) {
             this.errorHandle(error);
-            return;
+            return {};
         } 
     },
 
@@ -86,6 +87,32 @@ const api = {
             this.errorHandle(error);
             return new Map();
         }     
+    },
+
+    async getContact(id) {
+        try {
+            let contact = await axios.get(
+                OLD_API_KEY + API_PATHS['contact'] + String(id)
+            );
+            return contact.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }        
+    },
+
+    async getContacts() {
+        try {
+            let contacts = await axios.get(
+                OLD_API_KEY + API_PATHS['contact']
+            );
+            return contacts.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return [];
+        }        
     },
 
     errorHandle(error) {

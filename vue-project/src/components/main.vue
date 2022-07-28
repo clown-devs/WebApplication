@@ -9,17 +9,19 @@
             <button class="pencil-meet">
               <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
             </button>
-            <p class="client-wiindow">Клиент</p>
+            <p class="client-wiindow">{{nearMeeting.client}}</p>
             <div class="window-tel-and-contact">
-              <p class="contact-window">Контактное лицо</p>
-              <p class="tel-window">Телефон</p>
+              <p class="contact-window">
+                {{nearMeeting.contact.first_name}} {{nearMeeting.contact.second_name}} {{nearMeeting.contact.third_name}}
+              </p>
+              <p class="tel-window">{{nearMeeting.contact.phone}}</p>
             </div>
-            <p class="theme-window">Тема</p>
+            <p class="theme-window">{{nearMeeting.topic}}</p>
             <div class="data-and-time-window">
-              <p class="data-window">Дата</p>
-              <p class="time-window">Время</p>
+              <p class="data-window">{{nearMeeting.date}}</p>
+              <p class="time-window">{{nearMeeting.start}} - {{nearMeeting.end}}</p>
             </div>
-            <p class="place-window">Место</p>
+            <p class="place-window">{{nearMeeting.place}}</p>
           </div>
         </div>
         <div class="green-button-add">
@@ -58,16 +60,19 @@ export default {
   data() {
     return {
       meetings: [],
+      nearMeeting: {contact: {}}
     };
   },
 
   async mounted() {
     this.meetings = await api.getMeetings();
-    this.prepareClientInMeeting();
+    this.prepareMeetingsForDisplay();
+    this.nearMeeting = this.meetings[0];
+    console.log(await api.getContacts());
   },
 
   methods: {
-    async prepareClientInMeeting() {
+    async prepareMeetingsForDisplay() {
       const clients = await api.getClients();
       const mathchIdToClient = new Map();
       clients.forEach((item) => {
@@ -76,7 +81,12 @@ export default {
 
       this.meetings.forEach(meeting => {
         meeting.client = mathchIdToClient.get(meeting.client).company;
+        meeting.start = meeting.start.substr(0, 5);
+        meeting.end = meeting.end.substr(0, 5);
       });
+
+      const contact = await api.getContact(this.meetings[0].contact);
+      this.meetings[0].contact = contact;
     },
   },
 };
