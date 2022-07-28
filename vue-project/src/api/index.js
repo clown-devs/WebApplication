@@ -8,15 +8,16 @@ const API_PATHS = {
     user: 'users/employee/current/',
     meetings: 'meeting',
     client: 'client/',
-    contact: 'contact/'
+    contact: 'contact/',
+    place: 'place/'
 }
 
 const api = {
-    
+
     error: {},
 
     async auth(username, password) {
-        
+
         try {
             const res = await axios.post(API_KEY + API_PATHS['auth'], {
                 username,
@@ -29,7 +30,7 @@ const api = {
             this.errorHandle(error);
             return null;
         }
-        
+
     },
 
     async currentUser(token) {
@@ -39,17 +40,17 @@ const api = {
                     "Authorization": "Token " + token
                 }
             });
-    
+
             return res.data;
 
-        } catch(error) {
+        } catch (error) {
             this.errorHandle(error);
             return null;
         }
     },
 
     async getMeetings(past = false) {
-       
+
         try {
             const res = await axios.get(
                 OLD_API_KEY + API_PATHS['meetings'] + (past ? '?past=true' : '/')
@@ -73,7 +74,7 @@ const api = {
         } catch (error) {
             this.errorHandle(error);
             return {};
-        } 
+        }
     },
 
     async getClients() {
@@ -85,8 +86,8 @@ const api = {
 
         } catch (error) {
             this.errorHandle(error);
-            return new Map();
-        }     
+            return [];
+        }
     },
 
     async getContact(id) {
@@ -99,7 +100,7 @@ const api = {
         } catch (error) {
             this.errorHandle(error);
             return {};
-        }        
+        }
     },
 
     async getContacts() {
@@ -112,11 +113,24 @@ const api = {
         } catch (error) {
             this.errorHandle(error);
             return [];
-        }        
+        }
+    },
+
+    async getPlaces() {
+        try {
+            let places = await axios.get(
+                OLD_API_KEY + API_PATHS['place']
+            );
+            return places.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return [];
+        }
     },
 
     errorHandle(error) {
-        
+
         if (error.response) {
 
             switch (error.response.status) {
@@ -124,25 +138,25 @@ const api = {
                     this.error = "Неверный логин/пароль";
                     break;
                 case 401:
-                    this.error = 
-                        error.response.statusText 
-                        + "." 
+                    this.error =
+                        error.response.statusText
+                        + "."
                         + error.response.data.detail
-                    ;
+                        ;
                     break;
                 default:
                     this.error = error.message + "." + error.response.statusText;
             }
-            
+
         } else if (error.request) {
-            
+
             this.error = "Bad connection";
 
         } else {
 
             //
 
-        }    
+        }
     }
 
 };

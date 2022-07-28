@@ -9,7 +9,7 @@
             <button class="pencil-meet">
               <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
             </button>
-            <p class="client-wiindow">{{nearMeeting.client}}</p>
+            <p class="client-wiindow">{{nearMeeting.client.company}}</p>
             <div class="window-tel-and-contact">
               <p class="contact-window">
                 {{nearMeeting.contact.first_name}} {{nearMeeting.contact.second_name}} {{nearMeeting.contact.third_name}}
@@ -21,7 +21,7 @@
               <p class="data-window">{{nearMeeting.date}}</p>
               <p class="time-window">{{nearMeeting.start}} - {{nearMeeting.end}}</p>
             </div>
-            <p class="place-window">{{nearMeeting.place}}</p>
+            <p class="place-window">{{nearMeeting.place.name}}</p>
           </div>
         </div>
         <div class="green-button-add">
@@ -38,10 +38,10 @@
               <div class="data-time-place-item">
                 <p class="data-item">{{ meeting.date }}</p>
                 <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
-                <p class="place-item">{{ meeting.place }}</p>
+                <p class="place-item">{{ meeting.place.name }}</p>
               </div>
               <p class="theme-item">{{ meeting.topic }}</p>
-              <p class="client-item">{{ meeting.client }}</p>
+              <p class="client-item">{{ meeting.client.company }}</p>
             </li>
           </ul>
         </div>
@@ -59,8 +59,17 @@ export default {
 
   data() {
     return {
-      meetings: [],
-      nearMeeting: {contact: {}}
+      meetings: [
+        {
+          client: {},
+          place: {}
+        }
+      ],
+      nearMeeting: {
+        contact: {},
+        client: {},
+        place: {}
+      }
     };
   },
 
@@ -68,21 +77,28 @@ export default {
     this.meetings = await api.getMeetings();
     this.prepareMeetingsForDisplay();
     this.nearMeeting = this.meetings[0];
-    console.log(await api.getContacts());
   },
 
   methods: {
     async prepareMeetingsForDisplay() {
+      
       const clients = await api.getClients();
       const mathchIdToClient = new Map();
-      clients.forEach((item) => {
+      clients.forEach(item => {
         mathchIdToClient.set(item.id, item);
       });
 
+      const places = await api.getPlaces();
+      const matchIdToPlace = new Map();
+      places.forEach(item => {
+        matchIdToPlace.set(item.id, item);
+      });
+
       this.meetings.forEach(meeting => {
-        meeting.client = mathchIdToClient.get(meeting.client).company;
+        meeting.client = mathchIdToClient.get(meeting.client);
         meeting.start = meeting.start.substr(0, 5);
         meeting.end = meeting.end.substr(0, 5);
+        meeting.place = matchIdToPlace.get(meeting.place);
       });
 
       const contact = await api.getContact(this.meetings[0].contact);
