@@ -12,13 +12,13 @@
         </div>
 
         <ul class="nav-bar-list">
-          <li class="nav-bar-list-item">Главная страница</li>
+          <li class="nav-bar-list-item" @click="$router.push('/')">Главная страница</li>
 
-          <li class="nav-bar-list-item">Мои клиенты</li>
+          <li class="nav-bar-list-item" @click="$router.push('/clients')">Мои клиенты</li>
 
-          <li class="nav-bar-list-item">Календарь</li>
+          <li class="nav-bar-list-item" @click="$router.push('/calendar')">Календарь</li>
 
-          <li class="nav-bar-list-item">Отчёты по встречам</li>
+          <li class="nav-bar-list-item" @click="$router.push('/results')">Отчёты по встречам</li>
         </ul>
 
         <button class="nav-bar-notify-button">
