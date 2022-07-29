@@ -9,17 +9,19 @@
             <button class="pencil-meet">
               <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
             </button>
-            <p class="client-wiindow">Клиент</p>
+            <p class="client-wiindow">{{nearMeeting.client.name}}</p>
             <div class="window-tel-and-contact">
-              <p class="contact-window">Контактное лицо</p>
-              <p class="tel-window">Телефон</p>
+              <p class="contact-window">
+                {{nearMeeting.contact.first_name}} {{nearMeeting.contact.second_name}} {{nearMeeting.contact.third_name}}
+              </p>
+              <p class="tel-window">{{nearMeeting.contact.phone}}</p>
             </div>
-            <p class="theme-window">Тема</p>
+            <p class="theme-window">{{nearMeeting.topic}}</p>
             <div class="data-and-time-window">
-              <p class="data-window">Дата</p>
-              <p class="time-window">Время</p>
+              <p class="data-window">{{nearMeeting.date}}</p>
+              <p class="time-window">{{nearMeeting.start}} - {{nearMeeting.end}}</p>
             </div>
-            <p class="place-window">Место</p>
+            <p class="place-window">{{nearMeeting.place.name}}</p>
           </div>
         </div>
         <div class="green-button-add">
@@ -32,72 +34,14 @@
 
         <div class="all-meet">
           <ul class="list-all-meet">
-            <li class="all-meet-item first-item">
+            <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
               <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
+                <p class="data-item">{{ meeting.date }}</p>
+                <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
+                <p class="place-item">{{ meeting.place.name }}</p>
               </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-
-            
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li><li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
-            </li>
-
-            <li class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">Дата</p>
-                <p class="time-item">Время</p>
-                <p class="place-item">Место</p>
-              </div>
-              <p class="theme-item">Тема</p>
-              <p class="client-item">Клиент</p>
+              <p class="theme-item">{{ meeting.topic }}</p>
+              <p class="client-item">{{ meeting.client.name }}</p>
             </li>
           </ul>
         </div>
@@ -108,8 +52,60 @@
 
 <script>
 import buttons from "@/components/UI/button-add.vue";
+import api from "@/api";
+
 export default {
   components: { buttons },
+
+  data() {
+    return {
+      meetings: [
+        {
+          client: {},
+          place: {}
+        }
+      ],
+      nearMeeting: {
+        contact: {},
+        client: {},
+        place: {}
+      }
+    };
+  },
+
+  async mounted() {
+    this.meetings = await api.getMeetings();
+    this.prepareMeetingsForDisplay();
+    this.nearMeeting = this.meetings[0];
+  },
+
+  methods: {
+    async prepareMeetingsForDisplay() {
+      
+      const clients = await api.getClients();
+      const mathchIdToClient = new Map();
+      clients.forEach(item => {
+        mathchIdToClient.set(item.id, item);
+      });
+
+      const places = await api.getPlaces();
+      const matchIdToPlace = new Map();
+      places.forEach(item => {
+        matchIdToPlace.set(item.id, item);
+      });
+
+      this.meetings.forEach(meeting => {
+        meeting.client = mathchIdToClient.get(meeting.client);
+        meeting.start = meeting.start.substr(0, 5);
+        meeting.end = meeting.end.substr(0, 5);
+        meeting.place = matchIdToPlace.get(meeting.place);
+      });
+
+      const contact = await api.getContact(this.meetings[0].contact);
+      this.meetings[0].contact = contact;
+
+    },
+  },
 };
 </script>
 
@@ -148,7 +144,7 @@ p {
 }
 
 .data-time-place-item {
-    display: flex;
+  display: flex;
 }
 
 .window-tel-and-contact {
@@ -172,8 +168,8 @@ p {
   border-radius: 10px;
 }
 
-.all-meet-item{
-    margin-bottom: 19px;
+.all-meet-item {
+  margin-bottom: 19px;
 }
 
 .contact-window {
@@ -208,7 +204,7 @@ p {
 }
 
 .list-all-meet {
-    margin-left: 16px;
+  margin-left: 16px;
 }
 
 .data-window {
