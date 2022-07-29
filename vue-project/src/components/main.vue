@@ -1,50 +1,51 @@
 <template>
   <main>
-      <div class="near-meet">
-        <h4 class="near-meet-text">Ближайшая встреча:</h4>
+    <div class="near-meet">
+      <h4 class="near-meet-text">Ближайшая встреча:</h4>
 
-        <div class="window-near-meet">
-          <div class="container-window">
-            <button class="pencil-meet">
-              <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
-            </button>
-            <p class="client-wiindow">{{nearMeeting.client.name}}</p>
-            <div class="window-tel-and-contact">
-              <p class="contact-window">
-                {{nearMeeting.contact.first_name}} {{nearMeeting.contact.second_name}} {{nearMeeting.contact.third_name}}
-              </p>
-              <p class="tel-window">{{nearMeeting.contact.phone}}</p>
-            </div>
-            <p class="theme-window">{{nearMeeting.topic}}</p>
-            <div class="data-and-time-window">
-              <p class="data-window">{{nearMeeting.date}}</p>
-              <p class="time-window">{{nearMeeting.start}} - {{nearMeeting.end}}</p>
-            </div>
-            <p class="place-window">{{nearMeeting.place.name}}</p>
+      <div class="container-window">
+        <button class="pencil-meet">
+          <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
+        </button>
+        <p class="client-wiindow">{{ nearMeeting.client.name }}</p>
+        <div class="window-tel-and-contact">
+          <p class="contact-window">
+            {{ nearMeeting.contact.first_name }}
+            {{ nearMeeting.contact.second_name }}
+            {{ nearMeeting.contact.third_name }}
+          </p>
+          <p class="tel-window">{{ nearMeeting.contact.phone }}</p>
+        </div>
+        <p class="theme-window">{{ nearMeeting.topic }}</p>
+        <div class="data-and-time-window">
+          <p class="data-window">{{ nearMeeting.date }}</p>
+          <p class="time-window">
+            {{ nearMeeting.start }} - {{ nearMeeting.end }}
+          </p>
+        </div>
+        <p class="place-window">{{ nearMeeting.place.name }}</p>
+      </div>
+
+      <div class="green-button-add">
+        <buttons></buttons>
+      </div>
+    </div>
+
+    <div class="list-meet">
+      <h4 class="list-meet-text">Список встреч</h4>
+
+      <ul class="list-all-meet">
+        <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
+          <div class="data-time-place-item">
+            <p class="data-item">{{ meeting.date }}</p>
+            <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
+            <p class="place-item">{{ meeting.place.name }}</p>
           </div>
-        </div>
-        <div class="green-button-add">
-          <buttons></buttons>
-        </div>
-      </div>
-
-      <div class="list-meet">
-        <h4 class="list-meet-text">Список встреч</h4>
-
-        <div class="all-meet">
-          <ul class="list-all-meet">
-            <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
-              <div class="data-time-place-item">
-                <p class="data-item">{{ meeting.date }}</p>
-                <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
-                <p class="place-item">{{ meeting.place.name }}</p>
-              </div>
-              <p class="theme-item">{{ meeting.topic }}</p>
-              <p class="client-item">{{ meeting.client.name }}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
+          <p class="theme-item">{{ meeting.topic }}</p>
+          <p class="client-item">{{ meeting.client.name }}</p>
+        </li>
+      </ul>
+    </div>
   </main>
 </template>
 
@@ -60,14 +61,14 @@ export default {
       meetings: [
         {
           client: {},
-          place: {}
-        }
+          place: {},
+        },
       ],
       nearMeeting: {
         contact: {},
         client: {},
-        place: {}
-      }
+        place: {},
+      },
     };
   },
 
@@ -79,20 +80,19 @@ export default {
 
   methods: {
     async prepareMeetingsForDisplay() {
-      
       const clients = await api.getClients();
       const mathchIdToClient = new Map();
-      clients.forEach(item => {
+      clients.forEach((item) => {
         mathchIdToClient.set(item.id, item);
       });
 
       const places = await api.getPlaces();
       const matchIdToPlace = new Map();
-      places.forEach(item => {
+      places.forEach((item) => {
         matchIdToPlace.set(item.id, item);
       });
 
-      this.meetings.forEach(meeting => {
+      this.meetings.forEach((meeting) => {
         meeting.client = mathchIdToClient.get(meeting.client);
         meeting.start = meeting.start.substr(0, 5);
         meeting.end = meeting.end.substr(0, 5);
@@ -101,19 +101,15 @@ export default {
 
       const contact = await api.getContact(this.meetings[0].contact);
       this.meetings[0].contact = contact;
-
     },
   },
 };
 </script>
 
 <style scoped>
-.window-near-meet {
-  background: #ffffff;
-  border: 1px solid #bdbdbd;
-  border-radius: 30px;
-  margin-bottom: 60px;
-  height: 72%; 
+ul {
+  list-style: none;
+  padding: 0;
 }
 
 p {
@@ -137,6 +133,7 @@ p {
 
 .data-time-place-item {
   display: flex;
+  justify-content: space-between;
 }
 
 .window-tel-and-contact {
@@ -145,60 +142,98 @@ p {
 
 .pencil-meet {
   margin-top: 38px;
-
   margin-right: 23px;
   margin-left: auto;
   display: flex;
+  background: #ffffff;
+  border: 0;
+  padding: 0;
+}
+
+.contact-window {
+  flex: 1;
+}
+
+.tel-window {
+  flex: 1;
 }
 
 .all-meet-item {
-  width: 356px;
   height: 127px;
   background: #f1fbf2;
   border: 0.714062px solid #f1fbf2;
   box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  margin-bottom: 19px;
-}
-
-.contact-window {
-  margin-right: 334px;
-  margin-bottom: 53px;
+  margin-bottom: 9px;
+  margin-top: 9px;
 }
 
 .data-and-time-window {
   display: flex;
 }
 
+.near-meet {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
 .container-window {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid #bdbdbd;
+  border-radius: 30px;
+  margin-bottom: 60px;
+  justify-content: space-around;
+  height: 80vh;
+}
+
+.client-wiindow,
+.contact-window,
+.theme-window,
+.data-window,
+.place-window {
   margin-left: 40px;
+}
+
+.place-window {
+  margin-bottom: 60px;
 }
 
 main {
   display: flex;
   justify-content: space-around;
-  height: 80vh;
+  width: 100vw;
 }
 
-.all-meet {
-  width: 406px;
+.theme-window {
+  margin-bottom: 123px;
+  font-weight: bolder;
+}
+
+.list-all-meet {
   height: 86%;
   background: #00b268;
   border-radius: 20px;
   overflow: auto;
 }
-.theme-window {
-  margin-bottom: 123px;
-}
 
-.list-all-meet {
+.list-all-meet li {
+  font-weight: 700;
   margin-left: 16px;
+  margin-right: 16px;
 }
 
 .data-window {
-  margin-bottom: 18px;
-  margin-right: 439px;
+  flex: 1;
 }
+
+.time-window {
+  flex: 1;
+}
+
 .client-wiindow {
   margin-bottom: 26px;
 }
@@ -206,11 +241,22 @@ main {
 .list-meet {
   flex: 1;
   margin-right: 10.14%;
+  height: 87vh;
+}
+
+.data-window,
+.time-window,
+.place-window {
+  font-weight: bolder;
+}
+
+.pencil-icon {
+  max-width: 100%;
 }
 
 /* Responsive layout */
 
-@media (max-width: 1200px){
+@media (max-width: 1200px) {
   main {
     flex-direction: column;
     align-content: center;
@@ -218,18 +264,63 @@ main {
 
   .list-meet {
     margin-left: 2rem;
-    height: 500px;
+    margin-right: 40px;
+    margin-left: 40px;
+    height: 50vh;
   }
 
   .near-meet {
-    margin-left: 2rem;
+    margin-left: 40px;
+    flex: 1;
   }
+
+  .container-window {
+    height: 300px;
+  }
+
+  .green-button-add {
+    display: none;
+  }
+
+  .theme-window,
+  .client-wiindow {
+    margin-bottom: 0;
+  }
+
+  .pencil-meet {
+    margin: 1rem 1rem 1rem 1rem;
+    justify-content: flex-end;
+  }
+
+  .pencil-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
 }
 
 @media (max-width: 992px) {
+  .container-window {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .near-meet {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .list-meet {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
 }
 
 @media (max-width: 768px) {
+  .container-window {
+    height: 350px;
+  }
 }
 
 @media (max-height: 415px) {

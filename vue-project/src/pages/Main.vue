@@ -32,4 +32,9 @@ export default {
 body {
   margin: 0;
 }
+
+.wrapper {
+  height: 100%;
+  width: 100%;
+}
 </style>
