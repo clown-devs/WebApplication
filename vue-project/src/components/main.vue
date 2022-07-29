@@ -109,7 +109,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped >
 .window-near-meet {
   width: 774px;
   height: 567px;
@@ -117,6 +117,13 @@ export default {
   border: 1px solid #bdbdbd;
   border-radius: 30px;
   margin-bottom: 60px;
+}
+
+button {
+  background-color: white;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 p {
@@ -179,6 +186,9 @@ p {
 }
 
 .container {
+  max-width: 1520px;
+  margin-left: 200px;
+  margin-right: 200px;
   display: flex;
 }
 
@@ -203,5 +213,11 @@ p {
 }
 .client-wiindow {
   margin-bottom: 26px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+      display: none;
+  }
 }
 </style>
