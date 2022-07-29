@@ -5,7 +5,7 @@
         <h3 class="logo-name">Sber clients</h3>
       </div>
 
-      <ul class="nav-bar-list">
+        <ul class="nav-bar-list">
         <li class="nav-bar-list-item" @click="$router.push('/')">
           Главная страница
         </li>
@@ -21,7 +21,7 @@
         <li class="nav-bar-list-item" @click="$router.push('/results')">
           Отчёты по встречам
         </li>
-      </ul>
+        </ul>
 
       <button class="nav-bar-notify-button">
         <img src="/svg/notify.svg" alt="" class="nav-bar-notify-icon" />
@@ -39,13 +39,44 @@
           <div class="line line1"></div>
           <div class="line line2"></div>
           <div class="line line3"></div>
-        </div>
-        <button @click="logOutWrapper" class="log-out">Выйти</button>
       </div>
+        <button @click="logOutWrapper" class="log-out">Выйти</button>
+    </div>
     </nav>
 
     <hr class="line-header" />
   </header>
+
+  <!-- <main>
+    <div class="container">
+      <div class="content-text">
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
+          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
+          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
+          vel alias facere ratione nihil!
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
+          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
+          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
+          vel alias facere ratione nihil!
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
+          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
+          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
+          vel alias facere ratione nihil!
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis
+          iusto cum voluptatum veniam itaque, earum, veritatis reiciendis
+          distinctio eaque unde magni illo adipisci consequuntur, dignissimos
+          vel alias facere ratione nihil!
+        </p>
+      </div>
+    </div>
+  </main> -->
 </template>
 
 <script>
@@ -147,7 +178,7 @@ nav {
   cursor: pointer;
   display: none;
   align-self: center;
-}
+  }
 
 .line {
   width: 25px;
@@ -176,12 +207,12 @@ nav {
     margin-left: 100px;
     margin-right: 100px;
   }
-}
+  }
 
 @media screen and (max-width: 768px) {
   .burger {
     display: block;
-  }
+}
 
   .nav-bar-icon-button {
     width: 55%;
@@ -192,9 +223,9 @@ nav {
     align-items: center;
     min-height: 110px;
     margin: 0;
-  }
+}
 
-  .nav-bar-list {
+.nav-bar-list {
     width: 10%;
 
     position: absolute;
@@ -292,6 +323,8 @@ nav {
 
 ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .line-header {
