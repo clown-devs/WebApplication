@@ -123,6 +123,13 @@ export default {
   margin-bottom: 60px;
 }
 
+button {
+  background-color: white;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 p {
   font-size: 20px;
   margin: 0;
@@ -210,5 +217,11 @@ p {
 }
 .client-wiindow {
   margin-bottom: 26px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+      display: none;
+  }
 }
 </style>
