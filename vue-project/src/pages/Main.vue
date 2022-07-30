@@ -1,9 +1,7 @@
 <template>
   <div class="wrapper">
     <nav-bar></nav-bar>
-
     <mains></mains>
-    
   </div>
 </template>
 
@@ -22,4 +20,8 @@ body {
   margin: 0;
 }
 
+.wrapper {
+  height: 100%;
+  width: 100%;
+}
 </style>
