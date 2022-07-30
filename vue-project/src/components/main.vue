@@ -112,6 +112,13 @@ ul {
   padding: 0;
 }
 
+button {
+  background-color: white;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 p {
   font-size: 20px;
   margin: 0;
@@ -320,9 +327,11 @@ main {
 @media (max-width: 768px) {
   .container-window {
     height: 350px;
+    display: none;
   }
 }
 
 @media (max-height: 415px) {
+  
 }
 </style>
