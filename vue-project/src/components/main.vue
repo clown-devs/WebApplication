@@ -123,6 +123,7 @@ p {
   font-size: 20px;
   margin: 0;
 }
+
 .near-meet-text {
   margin-top: 31px;
   margin-bottom: 31px;
@@ -133,6 +134,7 @@ p {
   margin-left: 10.14%;
   flex: 2;
 }
+
 .green-button-add {
   display: flex;
   justify-content: center;
@@ -192,7 +194,7 @@ p {
   background: #ffffff;
   border: 1px solid #bdbdbd;
   border-radius: 30px;
-  margin-bottom: 60px;
+  margin-bottom: 2rem;
   justify-content: space-around;
   height: 80vh;
 }
@@ -267,6 +269,7 @@ main {
   main {
     flex-direction: column;
     align-content: center;
+    background-color: #e2eee3;
   }
 
   .list-meet {
@@ -300,16 +303,17 @@ main {
   }
 
   .pencil-icon {
-    width: 30px;
-    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
   }
-  
 }
 
 @media (max-width: 992px) {
   .container-window {
     width: 100%;
     margin-bottom: 0;
+    margin-top: 1rem;
+    height: 250px;
   }
 
   .near-meet {
@@ -322,16 +326,66 @@ main {
     margin-right: 10px;
   }
 
+  .near-meet-text,
+  .pencil-meet,
+  .list-meet-text {
+    display: none;
+  }
+
+  .place-window {
+    margin-bottom: 0;
+  }
 }
 
 @media (max-width: 768px) {
   .container-window {
-    height: 350px;
-    display: none;
+    height: 200px;
+    gap: 0;
+    justify-content: space-around;
+    margin-top: 1rem;
+  }
+
+  main p {
+    font-size: 1rem;
   }
 }
 
 @media (max-height: 415px) {
-  
+  .container-window {
+    height: 180px;
+    justify-content: center;
+    margin-top: 0.5rem;
+    gap: 0;
+  }
+
+  .near-meet-text,
+  .pencil-meet,
+  .list-meet-text {
+    display: none;
+  }
+
+  .place-window {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-height: 851px) {
+  .container-window {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .client-wiindow,
+  .contact-window,
+  .theme-window,
+  .data-window,
+  .place-window {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .pencil-meet {
+    display: none;
+  }
 }
 </style>

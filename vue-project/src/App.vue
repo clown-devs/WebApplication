@@ -38,6 +38,10 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+}
+
 .app {
   height: 100vh;
   width: 100vw;

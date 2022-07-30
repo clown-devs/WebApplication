@@ -18,7 +18,7 @@ button {
 
 .add-meet-but {
   width: 558px;
-  height: 70px;
+  height: 6.48vh;
   background-color: #00b268;
   font-size: 24px;
   color: #ffffff;
