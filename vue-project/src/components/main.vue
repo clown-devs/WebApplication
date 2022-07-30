@@ -276,7 +276,11 @@ main {
     margin-left: 2rem;
     margin-right: 40px;
     margin-left: 40px;
-    height: 50vh;
+    height: auto;
+  }
+
+  .list-all-meet {
+    overflow: none;
   }
 
   .near-meet {
@@ -350,25 +354,6 @@ main {
   }
 }
 
-@media (max-height: 415px) {
-  .container-window {
-    height: 180px;
-    justify-content: center;
-    margin-top: 0.5rem;
-    gap: 0;
-  }
-
-  .near-meet-text,
-  .pencil-meet,
-  .list-meet-text {
-    display: none;
-  }
-
-  .place-window {
-    margin-bottom: 0;
-  }
-}
-
 @media (max-height: 851px) {
   .container-window {
     justify-content: center;
@@ -388,4 +373,24 @@ main {
     display: none;
   }
 }
+
+@media (max-height: 415px) {
+  .container-window {
+    height: 180px;
+    justify-content: center;
+    margin-top: 0.5rem;
+    gap: 0;
+  }
+
+  .near-meet-text,
+  .pencil-meet,
+  .list-meet-text {
+    display: none;
+  }
+
+  .place-window {
+    margin-bottom: 0;
+  }
+}
+
 </style>
