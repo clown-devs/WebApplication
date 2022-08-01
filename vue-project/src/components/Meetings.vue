@@ -165,9 +165,13 @@ li p {
   justify-content: center;
 }
 
+.theme-item {
+  white-space: normal;
+}
 .data-time-place-item {
   display: flex;
   justify-content: space-between;
+  white-space: normal;
 }
 
 .window-tel-and-contact {
@@ -199,7 +203,7 @@ li p {
   box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   margin-bottom: 9px;
-  margin-top: 9px;
+  margin-top: 14px;
 }
 
 .data-and-time-window {
@@ -304,6 +308,9 @@ main {
     background-color: #e2eee3;
   }
 
+  .nav-bar-add-meet-main {
+    display: block;
+  }
   .list-meet {
     margin-left: 2rem;
     margin-right: 40px;
@@ -473,7 +480,7 @@ main {
 }
 
 .all-meet-item:hover {
-  border: 3px solid red;
+  border: 3px solid #00B268;
   transition: 0.5s;
 }
 </style>
