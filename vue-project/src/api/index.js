@@ -10,8 +10,8 @@ const API_PATHS = {
     meetings: 'meeting',
     client: 'clients/',
     contact: 'contact/',
-    place: 'place/',
-    employeelist: 'employeelist/'
+    place: 'meetings/place/',
+    employeelist: 'employeelist/',
 }
 
 const api = {
@@ -129,7 +129,11 @@ const api = {
     async getPlaces() {
         try {
             let places = await axios.get(
-                OLD_API_KEY + API_PATHS['place']
+                API_KEY + API_PATHS['place'], {
+                    headers: {
+                        "Authorization": "Token " + auth.state.token
+                    }
+                }
             );
             return places.data;
 
@@ -142,11 +146,12 @@ const api = {
     async getFreePlaces(start, end, date) {
         try {
             let places = await axios.get(
-                OLD_API_KEY
+                API_KEY
                 + API_PATHS['place']
                 + '?date=' + date
                 + '&start=' + start
                 + '&end=' + end
+                + '&my=true' 
             );
             return places.data;
 
