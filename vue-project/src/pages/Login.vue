@@ -13,19 +13,25 @@
       <small v-if="v$.username.$error" class="validate-error-message" id="test">
         Логин не должен быть пустым!
       </small>
-      
+
       <input
         type="password"
         id="password"
         name="user_password"
         v-model="password"
         placeholder="Введите пароль..."
-        :class="{ invalid: v$.password.$error}"
+        :class="{ invalid: v$.password.$error }"
       />
-      <small v-if="v$.password.$dirty && v$.password.required.$invalid" class="validate-error-message">
+      <small
+        v-if="v$.password.$dirty && v$.password.required.$invalid"
+        class="validate-error-message"
+      >
         Пароль является обязательным полем!
       </small>
-      <small v-if="v$.password.minLength.$invalid" class="validate-error-message">
+      <small
+        v-if="v$.password.minLength.$invalid"
+        class="validate-error-message"
+      >
         Длина пароля должна быть больше 3 символов!
       </small>
 
@@ -80,7 +86,6 @@ export default {
     ...mapActions(["logIn"]),
 
     async touchLogIn() {
-
       const isCorrectForm = await this.v$.$validate();
       if (!isCorrectForm) {
         return;
@@ -120,8 +125,8 @@ export default {
 </script>
 
 <style scoped>
-@import url('../assests/fonts/Inter/stylesheet.css');
-@import url('../assests/fonts/Exo_2/stylesheet.css');
+@import url("../assests/fonts/Inter/stylesheet.css");
+@import url("../assests/fonts/Exo_2/stylesheet.css");
 /* Main */
 
 .login-container {
@@ -152,7 +157,7 @@ h1 {
   margin-top: 16.36%;
   margin-bottom: 13.03%;
   width: 80.8%;
-  font-family: 'Exo 2';
+  font-family: "Exo 2";
 }
 
 input {
@@ -168,10 +173,9 @@ input,
 label {
   font-size: 1.25rem;
   color: #00000085;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 400;
 }
-
 
 input[type="text"] {
   margin-bottom: 18.18%;
@@ -204,7 +208,7 @@ button {
   border-width: 0;
   width: 237px;
   height: 60px;
-  font-family: 'Exo 2';
+  font-family: "Exo 2";
   font-weight: 700;
 }
 
@@ -299,5 +303,30 @@ input[type="password"].invalid {
   .validate-error-message {
     margin: 0;
   }
+}
+
+/* Hovers and animations */
+
+.title:hover {
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+input:hover {
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.save-label:hover {
+  color: #00b268;
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+button:hover,
+:focus {
+  transform: translateY(-6px);
+  border: 1px solid #fff;
+  transition: 0.3s;
 }
 </style>

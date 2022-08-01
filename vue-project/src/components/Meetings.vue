@@ -448,4 +448,31 @@ main {
   }
 }
 
+/* Hovers and animations */
+.container-window:hover {
+  border: 3px solid #00B268;
+  transition: 0.5s;
+}
+
+.near-meet-text:hover,
+.client-wiindow:hover,
+.contact-window:hover,
+.tel-window:hover,
+.theme-window:hover,
+.data-window:hover,
+.time-window:hover,
+.place-window:hover,
+.data-item:hover,
+.time-item:hover,
+.place-item:hover,
+.theme-item:hover,
+.client-item:hover {
+  color: #00B268;
+  transition: 0.3s;
+}
+
+.all-meet-item:hover {
+  border: 3px solid red;
+  transition: 0.5s;
+}
 </style>
