@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="near-meet">
+    <div v-if="isLoadedMeetings" class="near-meet">
       <h4 class="near-meet-text">Ближайшая встреча:</h4>
 
       <div class="container-window">
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="list-meet">
+    <div v-if="isLoadedMeetings" class="list-meet">
       <h4 class="list-meet-text">Список встреч</h4>
 
       <ul class="list-all-meet">
@@ -46,15 +46,18 @@
         </li>
       </ul>
     </div>
+
+    <loading-indicate v-else class="indicator"></loading-indicate>
   </main>
 </template>
 
 <script>
 import buttons from "@/components/UI/button-add.vue";
 import api from "@/api";
+import LoadingIndicate from "@/components/UI/LoadingIndicate.vue" ;
 
 export default {
-  components: { buttons },
+  components: { buttons, LoadingIndicate},
 
   data() {
     return {
@@ -69,6 +72,7 @@ export default {
         client: {},
         place: {},
       },
+      isLoadedMeetings: false
     };
   },
 
@@ -76,6 +80,7 @@ export default {
     this.meetings = await api.getMeetings();
     this.prepareMeetingsForDisplay();
     this.nearMeeting = this.meetings[0];
+    this.isLoadedMeetings = true
   },
 
   methods: {
@@ -107,6 +112,7 @@ export default {
 </script>
 
 <style scoped>
+
 ul {
   list-style: none;
   padding: 0;

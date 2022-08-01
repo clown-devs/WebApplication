@@ -1,17 +1,17 @@
 <template>
   <div class="wrapper">
     <nav-bar></nav-bar>
-    <mains></mains>
+    <meetings></meetings>
   </div>
 </template>
 
 <script>
 
 import NavBar from "@/components/NavBar.vue";
-import mains from "@/components/main.vue";
+import meetings from "@/components/Meetings.vue";
 
 export default {
-  components: { NavBar, mains },
+  components: { NavBar, meetings },
 };
 </script>
 
