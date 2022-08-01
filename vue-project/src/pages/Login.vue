@@ -120,6 +120,8 @@ export default {
 </script>
 
 <style scoped>
+@import url('../assests/fonts/Inter/stylesheet.css');
+@import url('../assests/fonts/Exo_2/stylesheet.css');
 /* Main */
 
 .login-container {
@@ -146,10 +148,11 @@ h1 {
   color: #00b268;
   font-size: 2rem;
   text-align: center;
-  font-weight: normal;
+  font-weight: 700;
   margin-top: 16.36%;
   margin-bottom: 13.03%;
   width: 80.8%;
+  font-family: 'Exo 2';
 }
 
 input {
@@ -165,7 +168,10 @@ input,
 label {
   font-size: 1.25rem;
   color: #00000085;
+  font-family: 'Inter';
+  font-weight: 400;
 }
+
 
 input[type="text"] {
   margin-bottom: 18.18%;
@@ -198,6 +204,8 @@ button {
   border-width: 0;
   width: 237px;
   height: 60px;
+  font-family: 'Exo 2';
+  font-weight: 700;
 }
 
 .error-container {

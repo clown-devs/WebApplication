@@ -72,6 +72,9 @@ export default {
 </script>
 
 <style scoped>
+
+@import url('../assests/fonts/Exo_2/stylesheet.css');
+
 button {
   background-color: white;
   border: none;
@@ -86,8 +89,18 @@ button {
 * {
   padding: 0;
   margin: 0;
-
+  font-family: 'Exo 2';
   box-sizing: border-box;
+  font-weight: 700;
+}
+
+.log-out {
+  font-size: 1rem;
+}
+
+.logo-name {
+  font-weight: 900;
+  font-size: 1.5rem;
 }
 
 .menu-items {

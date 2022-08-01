@@ -112,6 +112,11 @@ export default {
 </script>
 
 <style scoped>
+@import url('../assests/fonts/Exo_2/stylesheet.css');
+
+* {
+  font-family: 'Exo 2';
+}
 
 ul {
   list-style: none;
@@ -128,6 +133,20 @@ button {
 p {
   font-size: 20px;
   margin: 0;
+}
+
+li p {
+  font-family: 'Exo 2';
+  font-weight: 700;
+  font-size: 0.75rem;
+  margin-left: 17px;
+  margin-right: 17px;
+}
+
+.theme-item {
+  font-size: 0.88rem;
+  overflow: auto;
+  word-break: break-all;
 }
 
 .near-meet-text {
@@ -225,7 +244,10 @@ main {
 
 .theme-window {
   margin-bottom: 123px;
-  font-weight: bolder;
+  font-weight: 700;
+  font-size: 2rem;
+  word-break: break-all;
+  overflow: auto;
 }
 
 .list-all-meet {
@@ -243,10 +265,14 @@ main {
 
 .data-window {
   flex: 1;
+  font-size: 1.125rem;
+  font-weight: 700;
 }
 
 .time-window {
   flex: 1;
+  font-weight: 700;
+  font-size: 1.25rem;
 }
 
 .client-wiindow {
@@ -287,6 +313,7 @@ main {
 
   .list-all-meet {
     overflow: none;
+    width: 100%;
   }
 
   .near-meet {
@@ -296,6 +323,7 @@ main {
 
   .container-window {
     height: 300px;
+    width: 100%;
   }
 
   .green-button-add {
@@ -315,6 +343,10 @@ main {
   .pencil-icon {
     max-width: 30px;
     max-height: 30px;
+  }
+  
+  .theme-window {
+    margin-right: 1rem;
   }
 }
 
@@ -344,6 +376,8 @@ main {
 
   .place-window {
     margin-bottom: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
   }
 }
 
@@ -357,6 +391,21 @@ main {
 
   main p {
     font-size: 1rem;
+  }
+
+  .data-window,
+  .time-window,
+  .place-window {
+    font-size: 1rem;
+  }
+
+  .theme-window {
+    font-size: 1.1rem;
+  }
+  
+  .list-all-meet li p,
+  .data-time-place-item p {
+    font-size: 0.7rem;
   }
 }
 
