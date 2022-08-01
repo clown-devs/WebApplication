@@ -32,15 +32,35 @@
           </li>
         </div>
       </ul>
-
       <button class="nav-bar-notify-button">
         <img src="/svg/notify.svg" alt="" class="nav-bar-notify-icon" />
       </button>
 
-      <button class="nav-bar-add-meet">
+  <v-popup 
+  v-if="isInfoPopupVisible"
+   @closePopup="closeInfoPopup"
+
+  > 
+  <div class="roo">
+  <!-- <button class="free-room">
+  Доступные комнаты
+  </button> -->
+  <h1 class="qwe">Доступные комнаты</h1>
+
+  <select name="" id="" v-if="isLoadedPlaces" class="select-room">
+  <option value="" v-for="place in places" :key="place">{{ place }}></option>
+  </select>
+    <loading-indicate v-else></loading-indicate>
+  </div>
+  </v-popup>
+      <button class="nav-bar-add-meet v-modal_add-meet" id="btn-add" 
+      @click="showPopupInfo"
+
+      >
         <img src="/svg/add-meet.svg" alt="" class="nav-bar-icon-add" />
       </button>
 
+      
       <button class="nav-bar-profile">
         <img src="/svg/profile.svg" alt="" class="nav-bar-profile-icon" />
       </button>
@@ -54,12 +74,13 @@
 
 <script>
 import { mapMutations } from "vuex";
+import vPopup from '@/components/UI/v-popup.vue'
+import NavBar from "@/components/NavBar.vue";
+import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
+import api from "@/api";
 
 export default {
-  components: {},
-  data: () => ({
-    width: 0,
-  }),
+  components: {vPopup, LoadingIndicate},
   methods: {
     ...mapMutations(["logOut"]),
 
@@ -67,6 +88,27 @@ export default {
       this.$router.push("/login");
       this.logOut();
     },
+
+    showPopupInfo() {
+      this.isInfoPopupVisible = true;
+    },
+    closeInfoPopup() {
+      this.isInfoPopupVisible = false;
+
+    }
+    
+  },
+  data() {
+    return {
+      isInfoPopupVisible: false,
+      isLoadedPlaces: false,
+      places: [],
+    }
+  },
+  async mounted() {
+    const places = await api.getPlaces();
+    this.places = places;
+    this.isLoadedPlaces = true;
   },
 };
 </script>
@@ -94,6 +136,16 @@ button {
   font-weight: 700;
 }
 
+.free-room {
+  border: 1px solid green;
+  margin-bottom: 20px;
+  width: 150px;
+  
+}
+
+.qwe {
+  margin-bottom: 30px;
+}
 .log-out {
   font-size: 1rem;
 }
@@ -103,9 +155,13 @@ button {
   font-size: 1.5rem;
 }
 
+.select-room {
+width: 250px;
+}
+
 .menu-items {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -113,31 +169,59 @@ html,
 body {
   overflow-x: hidden;
 }
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.roo {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+color: #aaa;
+float: right;
+font-size: 28px;
+font-weight: bold;
+}
+
 .button-exit {
   display: none;
 }
 nav {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   min-height: 110px;
-  margin-left: 200px;
-  margin-right: 200px;
+  margin-left: 10.14%;
+  flex: 2;
+  margin-right: 10.14%;
 }
 
 .nav-bar-list {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 50%;
 }
 
 .nav-bar-list li {
   list-style: none;
-}
-
-.nav-bar-list {
-  display: flex;
-  justify-content: space-around;
 }
 
 .nav-bar-icon-button {
@@ -194,12 +278,11 @@ ul {
 
   background-color: white;
   border: none;
-  margin: 0;
   padding: 0;
 }
 
 .nav-bar-add-meet {
-  height: 60px;
+  height: 55px;
 
   background-color: white;
   border: none;
@@ -212,7 +295,6 @@ ul {
 
 .nav-bar-profile {
   height: 70px;
-
   background-color: white;
   border: none;
   margin-top: 0;
@@ -224,7 +306,7 @@ ul {
 
 .nav-bar-icon-button {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 20%;
 }
 
@@ -241,9 +323,9 @@ ul {
 .hamburger-line {
   background-color: #47af52;
   display: block;
-  height: 2px;
+  height: 4px;
   position: relative;
-  width: 24px;
+  width: 35px;
 }
 
 .hamburger-line::before,
@@ -258,12 +340,14 @@ ul {
 }
 
 .hamburger-line::before {
-  top: 8px;
+  top: 9px;
 }
 
 .hamburger-line::after {
-  top: -8px;
+  top: -9px;
 }
+
+/*
 
 @media (max-width: 1200px) {
   nav {
@@ -271,18 +355,15 @@ ul {
     display: flex;
     flex-direction: row-reverse;
   }
-
   nav .nav-bar-notify-button {
     margin-right: auto;
   }
   .button-exit {
     display: block;
   }
-
   .log-out-item {
     font-size: 24px;
   }
-
   .menu-items li {
     transition: all 0.5s;
     display: block;
@@ -294,12 +375,10 @@ ul {
   .menu-items li:hover {
     background-color: #46d554;
   }
-
   .title-name,
   .log-out {
     display: none;
   }
-
   .menu-items {
     display: none;
     max-height: 0;
@@ -311,7 +390,6 @@ ul {
     left: 0;
     margin-top: 77px;
   }
-
   .hamburger {
     display: block;
     padding: 20px 0;
@@ -323,11 +401,86 @@ ul {
     max-height: 100%;
     transition: all 0.5s;
   }
-
   #checkbox_toggle:checked ~ .hamburger .hamburger-line {
     background-color: transparent;
   }
+  #checkbox_toggle:checked ~ .hamburger .hamburger-line::before {
+    transform: rotate(-45deg);
+    top: 0;
+  }
+  #checkbox_toggle:checked ~ .hamburger .hamburger-line::after {
+    transform: rotate(45deg);
+    top: 0;
+  }
+}
+*/
 
+@media (max-width: 1200px) {
+  nav {
+    margin: 0;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  nav .nav-bar-notify-button {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+  .button-exit {
+    display: block;
+  }
+
+  .nav-bar-profile {
+    margin-right: 0;
+  }
+  .log-out-item {
+    font-size: 24px;
+  }
+
+  .nav-bar-add-meet {
+    margin-right: 20px;
+  }
+  .menu-items li {
+    transition: all 0.5s;
+    display: block;
+    padding: 25px;
+    font-size: 24px;
+    margin-right: 0;
+    border: 1px solid white;
+  }
+  .menu-items li:hover {
+    background-color: #46d554;
+  }
+  .title-name,
+  .log-out {
+    display: none;
+  }
+  .menu-items {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    position: absolute;
+    background-color: #90dc97;
+    text-align: center;
+    right: 0;
+    left: 0;
+    margin-top: 77px;
+  }
+  .hamburger {
+    display: block;
+    padding: 20px 0;
+    margin-right: auto;
+  }
+  #checkbox_toggle:checked ~ .menu-items {
+    display: block;
+    max-height: 100%;
+    transition: all 0.5s;
+  }
+  #checkbox_toggle:checked ~ .hamburger .hamburger-line {
+    background-color: transparent;
+  }
   #checkbox_toggle:checked ~ .hamburger .hamburger-line::before {
     transform: rotate(-45deg);
     top: 0;
