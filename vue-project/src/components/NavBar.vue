@@ -337,4 +337,26 @@ ul {
     top: 0;
   }
 }
+
+/* Hovers and animations */
+
+.logo-name:hover,
+.log-out:hover {
+  opacity: 0.9;
+  transition: 0.5s;
+  color: #00B268;
+}
+
+.nav-bar-list-item:hover {
+  opacity: 0.9;
+  transition: 0.5s;
+  color: #00B268;
+}
+
+.nav-bar-notify-button:hover,
+.nav-bar-icon-add:hover,
+.nav-bar-profile-icon:hover {
+  opacity: 0.7;
+  transition: 0.5s;
+}
 </style>
