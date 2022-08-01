@@ -466,7 +466,8 @@ main {
 .time-item:hover,
 .place-item:hover,
 .theme-item:hover,
-.client-item:hover {
+.client-item:hover,
+.list-meet-text:hover {
   color: #00B268;
   transition: 0.3s;
 }
