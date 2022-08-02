@@ -480,7 +480,7 @@ main {
 }
 
 .all-meet-item:hover {
-  border: 3px solid #00B268;
+  border: 3px solid black;
   transition: 0.5s;
 }
 </style>

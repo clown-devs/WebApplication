@@ -36,31 +36,32 @@
         <img src="/svg/notify.svg" alt="" class="nav-bar-notify-icon" />
       </button>
 
-  <v-popup 
-  v-if="isInfoPopupVisible"
-   @closePopup="closeInfoPopup"
+      <v-popup v-if="isInfoPopupVisible" @closePopup="closeInfoPopup">
+        <div class="roo">
+          <h1 class="qwe">Доступные комнаты</h1>
 
-  > 
-  <div class="roo">
-  <!-- <button class="free-room">
-  Доступные комнаты
-  </button> -->
-  <h1 class="qwe">Доступные комнаты</h1>
-
-  <select name="" id="" v-if="isLoadedPlaces" class="select-room">
-  <option value="" v-for="place in places" :key="place">{{ place }}></option>
-  </select>
-    <loading-indicate v-else></loading-indicate>
-  </div>
-  </v-popup>
-      <button class="nav-bar-add-meet v-modal_add-meet" id="btn-add" 
-      @click="showPopupInfo"
-
+          <select 
+            name="" 
+            id="" 
+            v-if="isLoadedPlaces" 
+            class="select-room"
+            v-model="places"
+            >
+            <option value="" v-for="place in places" :key="place">
+              {{ place }}>
+            </option>
+          </select>
+          <loading-indicate v-else></loading-indicate>
+        </div>
+      </v-popup>
+      <button
+        class="nav-bar-add-meet v-modal_add-meet"
+        id="btn-add"
+        @click="showPopupInfo"
       >
         <img src="/svg/add-meet.svg" alt="" class="nav-bar-icon-add" />
       </button>
 
-      
       <button class="nav-bar-profile">
         <img src="/svg/profile.svg" alt="" class="nav-bar-profile-icon" />
       </button>
@@ -74,13 +75,13 @@
 
 <script>
 import { mapMutations } from "vuex";
-import vPopup from '@/components/UI/v-popup.vue'
-import NavBar from "@/components/NavBar.vue";
+import vPopup from "@/components/UI/v-popup.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import api from "@/api";
 
 export default {
-  components: {vPopup, LoadingIndicate},
+  components: { vPopup, LoadingIndicate },
+
   methods: {
     ...mapMutations(["logOut"]),
 
@@ -94,16 +95,14 @@ export default {
     },
     closeInfoPopup() {
       this.isInfoPopupVisible = false;
-
-    }
-    
+    },
   },
   data() {
     return {
       isInfoPopupVisible: false,
       isLoadedPlaces: false,
       places: [],
-    }
+    };
   },
   async mounted() {
     const places = await api.getPlaces();
@@ -114,8 +113,7 @@ export default {
 </script>
 
 <style scoped>
-
-@import url('../assests/fonts/Exo_2/stylesheet.css');
+@import url("../assests/fonts/Exo_2/stylesheet.css");
 
 button {
   background-color: white;
@@ -131,7 +129,7 @@ button {
 * {
   padding: 0;
   margin: 0;
-  font-family: 'Exo 2';
+  font-family: "Exo 2";
   box-sizing: border-box;
   font-weight: 700;
 }
@@ -140,7 +138,6 @@ button {
   border: 1px solid green;
   margin-bottom: 20px;
   width: 150px;
-  
 }
 
 .qwe {
@@ -156,7 +153,7 @@ button {
 }
 
 .select-room {
-width: 250px;
+  width: 250px;
 }
 
 .menu-items {
@@ -195,10 +192,10 @@ body {
 }
 
 .close {
-color: #aaa;
-float: right;
-font-size: 28px;
-font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .button-exit {
@@ -347,74 +344,6 @@ ul {
   top: -9px;
 }
 
-/*
-
-@media (max-width: 1200px) {
-  nav {
-    margin: 0;
-    display: flex;
-    flex-direction: row-reverse;
-  }
-  nav .nav-bar-notify-button {
-    margin-right: auto;
-  }
-  .button-exit {
-    display: block;
-  }
-  .log-out-item {
-    font-size: 24px;
-  }
-  .menu-items li {
-    transition: all 0.5s;
-    display: block;
-    padding: 25px;
-    font-size: 24px;
-    margin-right: 0;
-    border: 1px solid white;
-  }
-  .menu-items li:hover {
-    background-color: #46d554;
-  }
-  .title-name,
-  .log-out {
-    display: none;
-  }
-  .menu-items {
-    display: none;
-    max-height: 0;
-    overflow: hidden;
-    position: absolute;
-    background-color: #90dc97;
-    text-align: center;
-    right: 0;
-    left: 0;
-    margin-top: 77px;
-  }
-  .hamburger {
-    display: block;
-    padding: 20px 0;
-    margin-right: 10px;
-    margin-left: auto;
-  }
-  #checkbox_toggle:checked ~ .menu-items {
-    display: block;
-    max-height: 100%;
-    transition: all 0.5s;
-  }
-  #checkbox_toggle:checked ~ .hamburger .hamburger-line {
-    background-color: transparent;
-  }
-  #checkbox_toggle:checked ~ .hamburger .hamburger-line::before {
-    transform: rotate(-45deg);
-    top: 0;
-  }
-  #checkbox_toggle:checked ~ .hamburger .hamburger-line::after {
-    transform: rotate(45deg);
-    top: 0;
-  }
-}
-*/
-
 @media (max-width: 1200px) {
   nav {
     margin: 0;
@@ -497,13 +426,13 @@ ul {
 .log-out:hover {
   opacity: 0.9;
   transition: 0.5s;
-  color: #00B268;
+  color: #00b268;
 }
 
 .nav-bar-list-item:hover {
   opacity: 0.9;
   transition: 0.5s;
-  color: #00B268;
+  color: #00b268;
 }
 
 .nav-bar-notify-button:hover,
@@ -512,6 +441,4 @@ ul {
   opacity: 0.7;
   transition: 0.5s;
 }
-
-
 </style>
