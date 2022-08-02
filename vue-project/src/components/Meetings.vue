@@ -198,7 +198,7 @@ li p {
 
 .all-meet-item {
   height: 127px;
-  background: #f1fbf2;
+  background: #fff;
   border: 0.714062px solid #f1fbf2;
   box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;

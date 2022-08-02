@@ -312,21 +312,21 @@ input[type="password"].invalid {
   transition: 0.3s;
 }
 
-input:hover {
-  opacity: 0.7;
+input[type="text"]:hover,
+input[type="password"]:hover {
   transition: 0.3s;
+  transform: translateY(-6px);
 }
 
 .save-label:hover {
   color: #00b268;
-  opacity: 0.7;
   transition: 0.3s;
 }
 
 button:hover,
-:focus {
+button:focus {
   transform: translateY(-6px);
-  border: 1px solid #fff;
+  border: 2px solid darkgreen;
   transition: 0.3s;
 }
 </style>
