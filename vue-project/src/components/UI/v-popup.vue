@@ -10,9 +10,6 @@
       <div class="v-popup__content">
         <slot></slot>
       </div>
-      <div class="v-popup__footer">
-        <button class="close_modal" @click="closePopup">Close</button>
-      </div>
     </div>
   </div>
 </template>
@@ -20,14 +17,17 @@
 <script>
 export default {
   props: {},
+
   data() {
     return {};
   },
+
   methods: {
     closePopup() {
       this.$emit("closePopup");
     },
   },
+  
   mounted() {
     let vm = this;
     document.addEventListener('click', function (item) {

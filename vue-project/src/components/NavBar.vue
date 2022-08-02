@@ -6,9 +6,9 @@
       </div>
       <ul class="nav-bar-list">
         <input type="checkbox" name="" id="checkbox_toggle" />
-        <label for="checkbox_toggle" class="hamburger"
-          ><span class="hamburger-line"></span
-        ></label>
+        <label for="checkbox_toggle" class="hamburger">
+          <span class="hamburger-line"></span>
+        </label>
 
         <div class="menu-items">
           <li class="nav-bar-list-item" @click="$router.push('/')">
@@ -40,20 +40,15 @@
         <div class="roo">
           <h1 class="qwe">Доступные комнаты</h1>
 
-          <select 
-            name="" 
-            id="" 
-            v-if="isLoadedPlaces" 
-            class="select-room"
-            v-model="places"
-            >
-            <option value="" v-for="place in places" :key="place">
-              {{ place.name }}>
+          <select name="" id="" v-if="isLoadedPlaces" class="select-room" v-model="selected">
+            <option v-for="place in places" :key="place">
+              {{ place.name }}
             </option>
           </select>
           <loading-indicate v-else></loading-indicate>
         </div>
       </v-popup>
+
       <button
         class="nav-bar-add-meet v-modal_add-meet"
         id="btn-add"
@@ -102,6 +97,7 @@ export default {
       isInfoPopupVisible: false,
       isLoadedPlaces: false,
       places: [],
+      selected: "test"
     };
   },
   async mounted() {

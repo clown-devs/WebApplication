@@ -129,7 +129,7 @@ const api = {
     async getPlaces() {
         try {
             let places = await axios.get(
-                API_KEY + API_PATHS['place'], {
+                API_KEY + API_PATHS['place'] + '?my=true', {
                     headers: {
                         "Authorization": "Token " + auth.state.token
                     }
