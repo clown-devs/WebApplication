@@ -48,7 +48,7 @@
             v-model="places"
             >
             <option value="" v-for="place in places" :key="place">
-              {{ place }}>
+              {{ place.name }}>
             </option>
           </select>
           <loading-indicate v-else></loading-indicate>
