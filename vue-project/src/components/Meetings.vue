@@ -32,7 +32,7 @@
     </div>
 
     <div v-if="isLoadedMeetings" class="list-meet">
-      <h4 class="list-meet-text">Список встреч</h4>
+      <h4 class="list-meet-text">Список встреч:</h4>
 
       <ul class="list-all-meet">
         <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
