@@ -481,6 +481,6 @@ main {
 
 .all-meet-item:hover {
   border: 3px solid darkgreen;
-  transition: 0.5s;
+  transition: 1s;
 }
 </style>
