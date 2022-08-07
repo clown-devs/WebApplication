@@ -3,18 +3,16 @@
     <div v-if="isLoadedMeetings" class="near-meet">
       <h4 class="near-meet-text">Ближайшая встреча:</h4>
 
-      <div class="container-window">
+      <div class="container-window" v-if="meetings.lenght">
         <button class="pencil-meet">
           <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
         </button>
-        <p class="client-wiindow">{{ nearMeeting.client.name }}</p>
+        <p class="client-wiindow">{{ nearMeeting.client_name }}</p>
         <div class="window-tel-and-contact">
           <p class="contact-window">
-            {{ nearMeeting.contact.first_name }}
-            {{ nearMeeting.contact.second_name }}
-            {{ nearMeeting.contact.third_name }}
+            {{ nearMeeting.contact_name }}
           </p>
-          <p class="tel-window">{{ nearMeeting.contact.phone }}</p>
+          <p class="tel-window">Номера добавятся позже</p>
         </div>
         <p class="theme-window">{{ nearMeeting.topic }}</p>
         <div class="data-and-time-window">
@@ -23,7 +21,11 @@
             {{ nearMeeting.start }} - {{ nearMeeting.end }}
           </p>
         </div>
-        <p class="place-window">{{ nearMeeting.place.name }}</p>
+        <p class="place-window">{{ nearMeeting.place_name }}</p>
+      </div>
+
+      <div class="container-window empty" v-else>
+        <p>Нет ближайшей встречи</p>
       </div>
 
       <div class="green-button-add">
@@ -34,15 +36,20 @@
     <div v-if="isLoadedMeetings" class="list-meet">
       <h4 class="list-meet-text">Список встреч:</h4>
 
-      <ul class="list-all-meet">
+      <ul class="list-all-meet" v-if="meetings.lenght">
         <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
           <div class="data-time-place-item">
             <p class="data-item">{{ meeting.date }}</p>
             <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
-            <p class="place-item">{{ meeting.place.name }}</p>
+            <p class="place-item">{{ meeting.place_name }}</p>
           </div>
           <p class="theme-item">{{ meeting.topic }}</p>
-          <p class="client-item">{{ meeting.client.name }}</p>
+          <p class="client-item">{{ meeting.client_name }}</p>
+        </li>
+      </ul>
+      <ul class="list-all-meet" v-else>
+        <li class="all-meet-item empty">
+          <p>Нет встреч</p>
         </li>
       </ul>
     </div>
@@ -54,73 +61,57 @@
 <script>
 import buttons from "@/components/UI/button-add.vue";
 import api from "@/api";
-import LoadingIndicate from "@/components/UI/LoadingIndicate.vue" ;
+import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 
 export default {
-  components: { buttons, LoadingIndicate},
+  components: { buttons, LoadingIndicate },
 
   data() {
     return {
       meetings: [
-        {
-          client: {},
-          place: {},
-        },
+        {},
       ],
-      nearMeeting: {
-        contact: {},
-        client: {},
-        place: {},
-      },
-      isLoadedMeetings: false
+      nearMeeting: {},
+      isLoadedMeetings: false,
     };
   },
 
   async mounted() {
     this.meetings = await api.getMeetings();
-    this.prepareMeetingsForDisplay();
     this.nearMeeting = this.meetings[0];
-    this.isLoadedMeetings = true
+    this.prepareMeetingsForDisplay();
+    this.isLoadedMeetings = true;
   },
 
   methods: {
     async prepareMeetingsForDisplay() {
-      const clients = await api.getClients();
-      const mathchIdToClient = new Map();
-      clients.forEach((item) => {
-        mathchIdToClient.set(item.id, item);
-      });
-
-      const places = await api.getPlaces();
-      const matchIdToPlace = new Map();
-      places.forEach((item) => {
-        matchIdToPlace.set(item.id, item);
-      });
-
       this.meetings.forEach((meeting) => {
         meeting.client = mathchIdToClient.get(meeting.client);
         meeting.start = meeting.start.substr(0, 5);
         meeting.end = meeting.end.substr(0, 5);
         meeting.place = matchIdToPlace.get(meeting.place);
       });
-
-      const contact = await api.getContact(this.meetings[0].contact);
-      this.meetings[0].contact = contact;
     },
   },
 };
 </script>
 
 <style scoped>
-@import url('../assests/fonts/Exo_2/stylesheet.css');
+@import url("../assests/fonts/Exo_2/stylesheet.css");
 
 * {
-  font-family: 'Exo 2';
+  font-family: "Exo 2";
 }
 
 ul {
   list-style: none;
   padding: 0;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
@@ -136,7 +127,7 @@ p {
 }
 
 li p {
-  font-family: 'Exo 2';
+  font-family: "Exo 2";
   font-weight: 700;
   font-size: 0.75rem;
   margin-left: 17px;
@@ -351,7 +342,7 @@ main {
     max-width: 30px;
     max-height: 30px;
   }
-  
+
   .theme-window {
     margin-right: 1rem;
   }
@@ -409,7 +400,7 @@ main {
   .theme-window {
     font-size: 1.1rem;
   }
-  
+
   .list-all-meet li p,
   .data-time-place-item p {
     font-size: 0.7rem;
@@ -457,7 +448,7 @@ main {
 
 /* Hovers and animations */
 .container-window:hover {
-  border: 3px solid #00B268;
+  border: 3px solid #00b268;
   transition: 0.5s;
 }
 
@@ -475,7 +466,7 @@ main {
 .theme-item:hover,
 .client-item:hover,
 .list-meet-text:hover {
-  color: #00B268;
+  color: #00b268;
   transition: 0.3s;
 }
 

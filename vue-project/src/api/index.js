@@ -7,7 +7,7 @@ const OLD_API_KEY = 'api/v1/';
 const API_PATHS = {
     auth: 'users/auth/token/login/',
     user: 'users/employee/current/',
-    meetings: 'meeting',
+    meetings: 'meetings/',
     client: 'clients/',
     contact: 'contact/',
     place: 'meetings/place/',
@@ -55,7 +55,7 @@ const api = {
 
         try {
             const res = await axios.get(
-                OLD_API_KEY + API_PATHS['meetings'] + (past ? '?past=true' : '/')
+                API_KEY + API_PATHS['meetings'] + (past ? '?past=true' : '')
             );
             return res.data;
 

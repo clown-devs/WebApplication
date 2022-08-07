@@ -1,4 +1,5 @@
 import api from '@/api'
+import {setAuthHeaders} from '@/api/instance'
 
 export default {
     actions: {
@@ -50,6 +51,7 @@ export default {
     mutations: {
         setToken(state, token) {
             state.token = token;
+            setAuthHeaders();
         },
 
         saveSessionToLocalStorage(state) {
@@ -69,11 +71,13 @@ export default {
         loadDataFromLocalStorage(state) {
             state.token = localStorage.getItem("token");
             state.user = JSON.parse(localStorage.getItem("user"));
+            setAuthHeaders();
         },
 
         loadDataFromSessionStorage(state) {
             state.token = sessionStorage.getItem("token");
             state.user = JSON.parse(sessionStorage.getItem("user"));
+            setAuthHeaders();
         },
 
         logOut(state) {
