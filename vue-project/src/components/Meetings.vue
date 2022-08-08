@@ -3,7 +3,7 @@
     <div v-if="isLoadedMeetings" class="near-meet">
       <h4 class="near-meet-text">Ближайшая встреча:</h4>
 
-      <div class="container-window" v-if="meetings.lenght">
+      <div class="container-window" v-if="meetings.length">
         <button class="pencil-meet">
           <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
         </button>
@@ -36,7 +36,7 @@
     <div v-if="isLoadedMeetings" class="list-meet">
       <h4 class="list-meet-text">Список встреч:</h4>
 
-      <ul class="list-all-meet" v-if="meetings.lenght">
+      <ul class="list-all-meet" v-if="meetings.length">
         <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
           <div class="data-time-place-item">
             <p class="data-item">{{ meeting.date }}</p>
@@ -86,10 +86,8 @@ export default {
   methods: {
     async prepareMeetingsForDisplay() {
       this.meetings.forEach((meeting) => {
-        meeting.client = mathchIdToClient.get(meeting.client);
         meeting.start = meeting.start.substr(0, 5);
         meeting.end = meeting.end.substr(0, 5);
-        meeting.place = matchIdToPlace.get(meeting.place);
       });
     },
   },
