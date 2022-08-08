@@ -66,31 +66,10 @@ const api = {
 
     },
 
-    async getClient(id) {
-        try {
-            const res = await axios.get(
-                API_KEY + API_PATHS['client'] + String(id), {
-                headers: {
-                    "Authorization": "Token " + auth.state.token
-                }
-            }
-            );
-            return res.data;
-
-        } catch (error) {
-            this.errorHandle(error);
-            return {};
-        }
-    },
-
     async getClients() {
         try {
             let clients = await axios.get(
-                API_KEY + API_PATHS['client'], {
-                headers: {
-                    "Authorization": "Token " + auth.state.token
-                }
-            }
+                API_KEY + API_PATHS['client'] + "?employee=" + auth.state.user.id
             );
             return clients.data;
 
