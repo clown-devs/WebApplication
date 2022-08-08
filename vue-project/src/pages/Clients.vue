@@ -1,7 +1,6 @@
 <template>
   <div>
     <nav-bar></nav-bar>
-    <h1>Clients page</h1>
     <loading-indicate></loading-indicate>
   </div>
 </template>
@@ -14,7 +13,9 @@ export default {
   components: { NavBar, LoadingIndicate },
 
   data() {
-    return {};
+    return {
+      clients: []
+    };
   }
 };
 </script>
