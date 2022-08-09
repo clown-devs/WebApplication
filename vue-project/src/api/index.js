@@ -55,7 +55,9 @@ const api = {
 
         try {
             const res = await axios.get(
-                API_KEY + API_PATHS['meetings'] + (past ? '?past=true' : '')
+                API_KEY + API_PATHS['meetings'] 
+                + ("?employee=" + auth.state.user.id)
+                + (past ? '&past=true' : '') 
             );
             return res.data;
 
