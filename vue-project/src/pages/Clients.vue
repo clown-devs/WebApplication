@@ -33,16 +33,23 @@ export default {
 </script>
 
 <style scoped>
+/* Main styles */
+
 h1 {
   margin: 53px 10.14% 21px 10.14%;
   font-family: "Exo 2";
   font-weight: 700;
   font-size: 1.43rem;
-  transition-duration: 0.5s;
 }
 
 main {
   background-color: #e2eee3;
+}
+
+/* Animations and hovers */
+
+h1 {
+    transition-duration: 0.5s;
 }
 
 h1:hover {

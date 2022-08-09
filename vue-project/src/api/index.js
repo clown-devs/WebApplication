@@ -9,7 +9,7 @@ const API_PATHS = {
     user: 'users/employee/current/',
     meetings: 'meetings/',
     client: 'clients/',
-    contact: 'contact/',
+    contact: 'clients/contacts/',
     place: 'meetings/place/',
     employeelist: 'employeelist/',
 }
@@ -79,23 +79,10 @@ const api = {
         }
     },
 
-    async getContact(id) {
-        try {
-            let contact = await axios.get(
-                OLD_API_KEY + API_PATHS['contact'] + String(id)
-            );
-            return contact.data;
-
-        } catch (error) {
-            this.errorHandle(error);
-            return {};
-        }
-    },
-
-    async getContacts() {
+    async getClientContacts(clientId) {
         try {
             let contacts = await axios.get(
-                OLD_API_KEY + API_PATHS['contact']
+                API_KEY + API_PATHS['contact'] + "?client=" + clientId
             );
             return contacts.data;
 

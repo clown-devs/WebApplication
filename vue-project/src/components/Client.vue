@@ -9,7 +9,11 @@
           <p class="client-item-inn-content">ИНН: {{ client.inn }}</p>
         </div>
         <div class="client-info">
-          <a class="client-info-content">Подробнее</a>
+          <a
+            class="client-info-content"
+            @click="touchClientInfoButton(client.id)"
+            >Подробнее</a
+          >
         </div>
       </li>
     </ul>
@@ -22,10 +26,13 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   data() {
     return {
       clients: this.clientsInput,
+      contacts: new Map(),
     };
   },
 
@@ -35,11 +42,17 @@ export default {
       default: [],
     },
   },
+
+  methods: {
+    async touchClientInfoButton(clientId) {
+      const contacts = await api.getClientContacts(clientId);
+      this.contacts.set(clientId, contacts);
+    },
+  },
 };
 </script>
 
 <style scoped>
-
 /* Main styles */
 
 .clients-list {
@@ -112,7 +125,7 @@ export default {
 /* Animations and hovers */
 
 .clients-item {
-    transition-duration: 1s;
+  transition-duration: 1s;
 }
 
 .client-info-content,
