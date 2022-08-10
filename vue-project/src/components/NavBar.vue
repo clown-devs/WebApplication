@@ -35,19 +35,36 @@
       <button class="nav-bar-notify-button">
         <img src="/svg/notify.svg" alt="" class="nav-bar-notify-icon" />
       </button>
+      <div class="popup_wrapper">
+        <v-popup
+          v-if="isInfoPopupVisible"
+          @closePopup="closeInfoPopup"
+          class="modal-window"
+        >
+          <div class="roo"> 
+            <h1 class="qwe">Доступные комнаты</h1>
 
-      <v-popup v-if="isInfoPopupVisible" @closePopup="closeInfoPopup">
-        <div class="roo">
-          <h1 class="qwe">Доступные комнаты</h1>
-
-          <select name="" id="" v-if="isLoadedPlaces" class="select-room" v-model="selected">
-            <option v-for="place in places" :key="place">
-              {{ place.name }}
-            </option>
-          </select>
-          <loading-indicate v-else></loading-indicate>
-        </div>
-      </v-popup>
+            <div class="v-popup__header">
+        <span>Доступные переговорки</span>
+        <span>
+          <i class="material-icons" @click="closePopup"> close </i>
+        </span>
+      </div>
+            <select
+              name=""
+              id=""
+              v-if="isLoadedPlaces"
+              class="select-room"
+              v-model="selected"
+            >
+              <option v-for="place in places" :key="place">
+                {{ place.name }}
+              </option>
+            </select>
+            <loading-indicate v-else></loading-indicate>
+          </div>
+        </v-popup>
+      </div>
 
       <button
         class="nav-bar-add-meet v-modal_add-meet"
@@ -70,7 +87,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import vPopup from "@/components/UI/v-popup.vue";
+import vPopup from "@/components/UI/Popup.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import api from "@/api";
 
@@ -97,7 +114,7 @@ export default {
       isInfoPopupVisible: false,
       isLoadedPlaces: false,
       places: [],
-      selected: "test"
+      selected: "test",
     };
   },
   async mounted() {
@@ -134,6 +151,17 @@ button {
   border: 1px solid green;
   margin-bottom: 20px;
   width: 150px;
+}
+
+.modal-window {
+  padding: 16px;
+  position: fixed;
+  top: 50px;
+  width: 450px;
+  height: 500px;
+  background: #ffffff;
+  box-shadow: 0 0 17px 0 #e7e7e7;
+  z-index: 10;
 }
 
 .qwe {
@@ -344,6 +372,41 @@ ul {
   nav {
     margin: 0;
     display: flex;
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  nav .nav-bar-notify-button {
+    margin-right: 20px;
+  }
+  .button-exit {
+    display: block;
+  }
+
+  .nav-bar-profile {
+    margin-right: 20px;
+  }
+  .log-out-item {
+    display: none;
+  }
+
+  .nav-bar-add-meet {
+    margin-right: 20px;
+  }
+
+  .title-name {
+    display: none;
+  }
+  .nav-bar-list {
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 992px) {
+  nav {
+    margin: 0;
+    display: flex;
     margin-left: 10px;
     margin-right: 10px;
     display: flex;
@@ -358,12 +421,44 @@ ul {
   }
 
   .nav-bar-profile {
+    margin-right: 20px;
+  }
+  .log-out-item {
+    display: none;
+  }
+
+  .nav-bar-add-meet {
+    margin-right: 20px;
+  }
+
+  .title-name {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    margin: 0;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  nav .nav-bar-notify-button {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+  .button-exit {
+    display: block;
+  }
+  .nav-bar-profile {
     margin-right: 0;
   }
   .log-out-item {
     font-size: 24px;
+    display: block;
   }
-
   .nav-bar-add-meet {
     margin-right: 20px;
   }
