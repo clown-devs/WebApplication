@@ -1,25 +1,26 @@
 <template>
   <div class="client-container">
-    <ul class="clients-list" v-if="clients.length">
-      <li class="clients-item" v-for="client in clients" :key="client">
-        <div class="client-item-name">
-          <p class="client-item-name-content">{{ client.name }}</p>
-        </div>
-        <div class="client-item-inn">
-          <p class="client-item-inn-content">ИНН: {{ client.inn }}</p>
-        </div>
-        <div class="client-info">
-          <a
-            class="client-info-content"
-            @click="touchClientInfoButton(client.id)"
-            >Подробнее</a
-          >
-        </div>
-      </li>
-    </ul>
-    <ul class="clients-list empty" v-else>
-      <li class="clients-item clients-item-empty">
-        <span class="empty-message">Нет клиентов</span>
+    <div class="client">
+      <div class="client-name">
+        <p class="client-name-content">{{ clientData.name }}</p>
+      </div>
+
+      <div class="client-inn">
+        <p class="client-inn-content">ИНН: {{ clientData.inn }}</p>
+      </div>
+
+      <div class="client-info">
+        <a
+          class="client-info-content"
+          @click="touchClientInfoButton()"
+          >{{ buttonTitle }}</a
+        >
+      </div>
+    </div>
+
+    <ul class="contact-list" v-if="isShowContactList">
+      <li class="contact-item" v-for="contact in contacts" :key="contact">
+        <contact :contact="contact"></contact>
       </li>
     </ul>
   </div>
@@ -27,26 +28,37 @@
 
 <script>
 import api from "@/api";
+import Contact from "@/components/Contact.vue";
 
 export default {
+  components: { Contact },
+
   data() {
     return {
-      clients: this.clientsInput,
-      contacts: new Map(),
+      isShowContactList: false,
+      contacts: [],
+      buttonTitle: "Подробнее",
     };
   },
 
   props: {
-    clientsInput: {
-      type: Array,
-      default: [],
+    clientData: {
+      type: Object,
+      default: {},
     },
   },
 
   methods: {
-    async touchClientInfoButton(clientId) {
-      const contacts = await api.getClientContacts(clientId);
-      this.contacts.set(clientId, contacts);
+    async touchClientInfoButton() {
+  
+      if (!this.isShowContactList) {
+        this.contacts = await api.getClientContacts(this.clientData.id);
+        this.buttonTitle = "Скрыть";
+      } else {
+        this.buttonTitle = "Подробнее";
+      }
+
+      this.isShowContactList = !this.isShowContactList;
     },
   },
 };
@@ -55,42 +67,41 @@ export default {
 <style scoped>
 /* Main styles */
 
-.clients-list {
-  margin: 0 10.14% 0 10.14%;
-  list-style: none;
-  padding: 0;
+.client-container {
+  margin: 1rem 0 1rem 0;
 }
 
-.clients-item {
+.client {
   display: grid;
-  background: #ffffff;
+  background-color: #f1fbf2;
   border: 0.71px solid #f1fbf2;
   box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  margin: 1rem 0 1rem 0;
   height: 94px;
   grid-template-rows: [start] 1fr [row2] 0.5fr [row3] 1fr [row-end];
   grid-template-columns: [start] 1fr [col2] 1fr [col-end];
   font-family: "Exo 2";
   font-weight: 500;
+  cursor: pointer;
 }
 
-.client-item-name {
+.client-name {
   margin-left: 2rem;
   grid-row: start / row2;
   grid-column: start / col2;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
   transition-duration: 1s;
+  font-weight: 700;
 }
 
-.client-item-inn {
+.client-inn {
   margin-left: 2rem;
   grid-row: row3 / row-end;
   grid-column: start / col2;
-  font-size: 1.25rem;
+  font-size: 1rem;
   transition-duration: 1s;
   display: flex;
   align-items: flex-start;
@@ -110,40 +121,33 @@ export default {
   transition-duration: 1s;
 }
 
-.clients-item-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.empty-message {
-  font-family: "Exo 2";
-  font-weight: 700;
-  font-size: 1rem;
+.contact-list {
+  list-style: none;
+  padding: 0;
 }
 
 /* Animations and hovers */
 
-.clients-item {
+.client {
+  transition-duration: 1s;
+}
+
+.client:hover {
+  border: 3px solid green;
   transition-duration: 1s;
 }
 
 .client-info-content,
-.client-item-inn-content,
-.client-item-name-content {
+.client-inn-content,
+.client-name-content {
   transition-duration: 1s;
   margin: 0;
 }
 
 .client-info-content:hover,
-.client-item-inn-content:hover,
-.client-item-name-content:hover {
+.client-inn-content:hover,
+.client-name-content:hover {
   transition-duration: 1s;
   color: #00b268;
-}
-
-.clients-item:hover {
-  border: 3px solid green;
-  transition-duration: 1s;
 }
 </style>
