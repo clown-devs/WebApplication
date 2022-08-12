@@ -41,15 +41,10 @@
           @closePopup="closeInfoPopup"
           class="modal-window"
         >
-          <div class="roo"> 
+          <div class="roo">
             <h1 class="qwe">Доступные комнаты</h1>
 
-            <div class="v-popup__header">
-        <span>Доступные переговорки</span>
-        <span>
-          <i class="material-icons" @click="closePopup"> close </i>
-        </span>
-      </div>
+            <div class="v-popup__header"></div>
             <select
               name=""
               id=""
@@ -151,17 +146,6 @@ button {
   border: 1px solid green;
   margin-bottom: 20px;
   width: 150px;
-}
-
-.modal-window {
-  padding: 16px;
-  position: fixed;
-  top: 50px;
-  width: 450px;
-  height: 500px;
-  background: #ffffff;
-  box-shadow: 0 0 17px 0 #e7e7e7;
-  z-index: 10;
 }
 
 .qwe {
@@ -275,10 +259,6 @@ ul {
   margin-right: 52px;
 }
 
-.nav-bar-add-meet {
-  margin-right: 34px;
-}
-
 .log-out {
   background-color: white;
   border: none;
@@ -304,7 +284,7 @@ ul {
 
 .nav-bar-add-meet {
   height: 55px;
-
+  margin-right: 34px;
   background-color: white;
   border: none;
   margin-top: 0;
@@ -375,6 +355,7 @@ ul {
     margin-left: 40px;
     margin-right: 40px;
     display: flex;
+    min-height: 90px;
     justify-content: center;
   }
   nav .nav-bar-notify-button {
@@ -409,6 +390,7 @@ ul {
     display: flex;
     margin-left: 10px;
     margin-right: 10px;
+    min-height: 90px;
     display: flex;
     justify-content: center;
   }
@@ -442,25 +424,44 @@ ul {
     display: flex;
     margin-left: 10px;
     margin-right: 10px;
+    min-height: 70px;
     display: flex;
+    align-items: center;
     justify-content: center;
   }
   nav .nav-bar-notify-button {
     margin-left: auto;
     margin-right: 20px;
+    height: 30px;
   }
   .button-exit {
     display: block;
   }
   .nav-bar-profile {
     margin-right: 0;
+    height: 55px;
+  }
+
+  .nav-bar-profile-icon {
+    height: 55px;
+  }
+
+  .nav-bar-icon-add {
+    height: 45px;
+  }
+
+  .nav-bar-notify-icon {
+    height: 30px;
   }
   .log-out-item {
     font-size: 24px;
-    display: block;
+    display: flex;
+
+
   }
   .nav-bar-add-meet {
     margin-right: 20px;
+    height: 45px;
   }
   .menu-items li {
     transition: all 0.5s;
@@ -478,15 +479,15 @@ ul {
     display: none;
   }
   .menu-items {
-    display: none;
+    display: flex;
     max-height: 0;
     overflow: hidden;
     position: absolute;
     background-color: #90dc97;
-    text-align: center;
+    
     right: 0;
     left: 0;
-    margin-top: 77px;
+    margin-top: 57px;
   }
   .hamburger {
     display: block;
