@@ -71,7 +71,7 @@ export default {
   border-radius: 10px;
   background-color: #f1fbf2;
   margin: 10px 0 10px 0;
-  margin-left: 223px;
+  margin-left: 11.5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
