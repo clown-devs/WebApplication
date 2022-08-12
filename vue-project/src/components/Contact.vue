@@ -17,8 +17,8 @@
       </div>
     </div>
     <div class="contact-details__content" v-if="showContactInfo">
-      <div class="contact-inn">
-        <p class="contact-inn-content">ИНН: {{ contact.client_inn }}</p>
+      <div class="contact-email">
+        <p class="contact-email-content">Почта: {{ contact.email }}</p>
       </div>
       <div class="contact-position">
         <p class="contact-position-content">
@@ -71,7 +71,7 @@ export default {
   border-radius: 10px;
   background-color: #f1fbf2;
   margin: 10px 0 10px 0;
-  margin-left: 223px;
+  margin-left: 11.5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -81,6 +81,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 70px;
   width: 100%;
 }
 
@@ -89,7 +90,7 @@ export default {
   font-family: "Exo 2";
   font-weight: 700;
   font-size: 1.25rem;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 
 .header-buttons {
@@ -104,6 +105,7 @@ export default {
   font-weight: 700;
   font-size: 1.25rem;
   color: #7a7474;
+  cursor: pointer;
 }
 
 .contact-details__content {
@@ -129,7 +131,10 @@ export default {
 
 /* Animations and hovers */
 
-.contact-item {
+.contact-item,
+.contact-email-content,
+.contact-position-content,
+.contact-number-content {
   transition-duration: 0.5s;
 }
 
@@ -138,7 +143,10 @@ export default {
   transition-duration: 0.5s;
 }
 
-.contact-name-content:hover {
+.contact-name-content:hover,
+.contact-email-content:hover,
+.contact-position-content:hover,
+.contact-number-content:hover {
   transition-duration: 0.5s;
   color: #00b268;
 }

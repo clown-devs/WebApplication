@@ -92,7 +92,7 @@ export default {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
   font-weight: 700;
 }
 
@@ -100,7 +100,7 @@ export default {
   grid-row: row3 / row-end;
   grid-column: col2 / col3;
   font-size: 1rem;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -128,7 +128,7 @@ export default {
 
 .client-icon {
   height: auto;
-  max-width: 100%;
+  min-width: 40px;
 }
 
 .contact-list {
