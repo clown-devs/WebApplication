@@ -42,7 +42,6 @@ export default {
 <style scoped lang="scss">
 .popup_wrapper {
   display: flex;
-  
   justify-content: center;
   align-items: center;
   position: absolute;
