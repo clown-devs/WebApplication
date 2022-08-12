@@ -1,6 +1,9 @@
 <template>
   <div class="client-container">
     <div class="client">
+      <div class="client-icon-container">
+        <img class="client-icon" src="/svg/client-icon.svg"/>
+      </div>
       <div class="client-name">
         <p class="client-name-content">{{ clientData.name }}</p>
       </div>
@@ -79,15 +82,14 @@ export default {
   border-radius: 10px;
   height: 94px;
   grid-template-rows: [start] 1fr [row2] 0.5fr [row3] 1fr [row-end];
-  grid-template-columns: [start] 1fr [col2] 1fr [col-end];
+  grid-template-columns: [start] 0.185fr [col2] 1fr [col3] 1fr [col-end];
   font-family: "Exo 2";
   font-weight: 500;
 }
 
 .client-name {
-  margin-left: 2rem;
   grid-row: start / row2;
-  grid-column: start / col2;
+  grid-column: col2 / col3;
   font-size: 1.5rem;
   display: flex;
   align-items: flex-end;
@@ -97,9 +99,8 @@ export default {
 }
 
 .client-inn {
-  margin-left: 2rem;
   grid-row: row3 / row-end;
-  grid-column: start / col2;
+  grid-column: col2 / col3;
   font-size: 1rem;
   transition-duration: 1s;
   display: flex;
@@ -110,7 +111,7 @@ export default {
 .client-info {
   margin-right: 2rem;
   grid-row: row2 / row3;
-  grid-column: col2 / col-end;
+  grid-column: col3 / col-end;
   font-size: 1.25rem;
   display: flex;
   align-items: center;
@@ -118,6 +119,21 @@ export default {
   font-weight: 700;
   color: #7a7474;
   transition-duration: 1s;
+}
+
+.client-icon-container {
+  grid-row: start / row-end;
+  grid-column: start / col2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 23px;
+  margin-left: 19px;
+}
+
+.client-icon {
+  height: auto;
+  max-width: 100%;
 }
 
 .contact-list {
