@@ -9,7 +9,7 @@ const API_PATHS = {
     user: 'users/employee/current/',
     meetings: 'meetings/',
     client: 'clients/',
-    contact: 'contact/',
+    contact: 'clients/contacts/',
     place: 'meetings/place/',
     employeelist: 'employeelist/',
 }
@@ -68,31 +68,10 @@ const api = {
 
     },
 
-    async getClient(id) {
-        try {
-            const res = await axios.get(
-                API_KEY + API_PATHS['client'] + String(id), {
-                headers: {
-                    "Authorization": "Token " + auth.state.token
-                }
-            }
-            );
-            return res.data;
-
-        } catch (error) {
-            this.errorHandle(error);
-            return {};
-        }
-    },
-
     async getClients() {
         try {
             let clients = await axios.get(
-                API_KEY + API_PATHS['client'], {
-                headers: {
-                    "Authorization": "Token " + auth.state.token
-                }
-            }
+                API_KEY + API_PATHS['client'] + "?employee=" + auth.state.user.id
             );
             return clients.data;
 
@@ -102,23 +81,10 @@ const api = {
         }
     },
 
-    async getContact(id) {
-        try {
-            let contact = await axios.get(
-                OLD_API_KEY + API_PATHS['contact'] + String(id)
-            );
-            return contact.data;
-
-        } catch (error) {
-            this.errorHandle(error);
-            return {};
-        }
-    },
-
-    async getContacts() {
+    async getClientContacts(clientId) {
         try {
             let contacts = await axios.get(
-                OLD_API_KEY + API_PATHS['contact']
+                API_KEY + API_PATHS['contact'] + "?client=" + clientId
             );
             return contacts.data;
 

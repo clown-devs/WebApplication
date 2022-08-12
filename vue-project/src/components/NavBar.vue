@@ -139,6 +139,7 @@ button {
 .qwe {
   margin-bottom: 30px;
 }
+
 .log-out {
   font-size: 1rem;
 }
