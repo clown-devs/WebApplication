@@ -1,6 +1,6 @@
 <template>
   <div class="popup_wrapper" ref="popup_wrapper">
-    <div class="v-popup">
+    <div class="v-popup animation">
       <div class="v-popup__header">
         <span>Доступные переговорки</span>
         <span>
@@ -42,7 +42,6 @@ export default {
 <style scoped lang="scss">
 .popup_wrapper {
   display: flex;
-  
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -56,6 +55,7 @@ export default {
 }
 
 .v-popup {
+  border-radius: 25px;
   padding: 16px;
   position: fixed;
   top: 50px;
@@ -84,6 +84,22 @@ export default {
   }
 
 }
+.animation {
+  animation-duration: 0.55s;
+  animation-fill-mode: both;
+  animation-name: fadeInDown;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0px, -100%, 0px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
 
 @media (max-width: 1200px) {
   nav {
@@ -97,6 +113,7 @@ export default {
   nav .nav-bar-notify-button {
     margin-left: auto;
     margin-right: 20px;
+    border-radius: 25px;
   }
   .button-exit {
     display: block;
@@ -135,6 +152,7 @@ export default {
   }
 
 }
+
   .log-out-item {
     font-size: 24px;
   }
