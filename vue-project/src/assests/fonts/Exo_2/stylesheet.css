@@ -24,3 +24,12 @@
     unicode-range: U+000-5FF;
     src: url('~@/assests/fonts/Exo_2/static/Exo2-Bold.ttf') format('truetype'); 
 }
+
+@font-face {
+    font-family: 'Exo 2';
+    font-weight: 500;
+    font-style: normal;
+    font-display: auto;
+    unicode-range: U+000-5FF;
+    src: url('~@/assests/fonts/Exo_2/static/Exo2-Medium.ttf') format('truetype'); 
+}
