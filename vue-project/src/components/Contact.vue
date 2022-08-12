@@ -8,11 +8,12 @@
         </span>
       </div>
       <div class="header-buttons">
-        <div class="contact-info">
-          <a class="contact-info-content" @click="touchContactInfoButton">{{
-            buttonTitle
-          }}</a>
-        </div>
+        <show-info-btn
+          class="show-info-btn"
+          @click="touchContactInfoButton"
+          :showInfo="showContactInfo"
+        ></show-info-btn>
+
         <a class="edit-contact">...</a>
       </div>
     </div>
@@ -28,9 +29,7 @@
       <div class="contact-number">
         <p class="contact-number-content">Телефон: {{ contact.phone }}</p>
         <div class="contact-managers">
-          <a class="contact-managers-content">
-            Менеджеры
-          </a>
+          <a class="contact-managers-content"> Менеджеры </a>
         </div>
       </div>
     </div>
@@ -38,10 +37,13 @@
 </template>
 
 <script>
+import ShowInfoBtn from "@/components/UI/ShowInfoButton.vue";
+
 export default {
+  components: { ShowInfoBtn },
+
   data() {
     return {
-      buttonTitle: "Подробнее",
       showContactInfo: false,
     };
   },
@@ -55,12 +57,6 @@ export default {
 
   methods: {
     touchContactInfoButton() {
-      if (!this.showContactInfo) {
-        this.buttonTitle = "Скрыть";
-      } else {
-        this.buttonTitle = "Подробнее";
-      }
-
       this.showContactInfo = !this.showContactInfo;
     },
   },
@@ -78,6 +74,7 @@ export default {
   margin-left: 223px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .contact-item__header {
@@ -110,16 +107,8 @@ export default {
   color: #7a7474;
 }
 
-.contact-info,
 .edit-contact {
   cursor: pointer;
-}
-
-.contact-info-content {
-  font-size: 1.25rem;
-  font-weight: 700;
-  font-family: "Exo 2";
-  color: #7a7474;
 }
 
 .contact-details__content {
@@ -146,7 +135,6 @@ export default {
 /* Animations and hovers */
 
 .contact-item,
-.contact-info-content,
 .edit-contact {
   transition-duration: 0.5s;
 }
@@ -157,7 +145,6 @@ export default {
 }
 
 .contact-name-content:hover,
-.contact-info-content:hover,
 .edit-contact:hover {
   transition-duration: 0.5s;
   color: #00b268;

@@ -2,7 +2,7 @@
   <div class="client-container">
     <div class="client">
       <div class="client-icon-container">
-        <img class="client-icon" src="/svg/client-icon.svg"/>
+        <img class="client-icon" src="/svg/client-icon.svg" />
       </div>
       <div class="client-name">
         <p class="client-name-content">{{ clientData.name }}</p>
@@ -12,13 +12,11 @@
         <p class="client-inn-content">ИНН: {{ clientData.inn }}</p>
       </div>
 
-      <div class="client-info">
-        <a
-          class="client-info-content"
-          @click="touchClientInfoButton()"
-          >{{ buttonTitle }}</a
-        >
-      </div>
+      <show-info-btn
+        class="show-info-btn"
+        @click="touchClientInfoButton"
+        :showInfo=isShowContactList>
+      </show-info-btn>
     </div>
 
     <ul class="contact-list" v-if="isShowContactList">
@@ -32,15 +30,15 @@
 <script>
 import api from "@/api";
 import Contact from "@/components/Contact.vue";
+import ShowInfoBtn from "@/components/UI/ShowInfoButton.vue";
 
 export default {
-  components: { Contact },
+  components: { Contact, ShowInfoBtn },
 
   data() {
     return {
       isShowContactList: false,
-      contacts: [],
-      buttonTitle: "Подробнее",
+      contacts: []
     };
   },
 
@@ -53,12 +51,8 @@ export default {
 
   methods: {
     async touchClientInfoButton() {
-  
       if (!this.isShowContactList) {
         this.contacts = await api.getClientContacts(this.clientData.id);
-        this.buttonTitle = "Скрыть";
-      } else {
-        this.buttonTitle = "Подробнее";
       }
 
       this.isShowContactList = !this.isShowContactList;
@@ -108,17 +102,10 @@ export default {
   justify-content: flex-start;
 }
 
-.client-info {
+.show-info-btn {
   margin-right: 2rem;
   grid-row: row2 / row3;
   grid-column: col3 / col-end;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-weight: 700;
-  color: #7a7474;
-  transition-duration: 1s;
 }
 
 .client-icon-container {
@@ -141,10 +128,6 @@ export default {
   padding: 0;
 }
 
-.client-info-content {
-  cursor: pointer;
-}
-
 /* Animations and hovers */
 
 .client {
@@ -156,14 +139,12 @@ export default {
   transition-duration: 0.5s;
 }
 
-.client-info-content,
 .client-inn-content,
 .client-name-content {
   transition-duration: 0.5s;
   margin: 0;
 }
 
-.client-info-content:hover,
 .client-inn-content:hover,
 .client-name-content:hover {
   transition-duration: 0.5s;
