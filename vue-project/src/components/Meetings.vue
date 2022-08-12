@@ -12,7 +12,7 @@
           <p class="contact-window">
             {{ nearMeeting.contact_name }}
           </p>
-          <p class="tel-window">Номера добавятся позже</p>
+          <p class="tel-window">{{ nearMeeting.contact_phone }}</p>
         </div>
         <p class="theme-window">{{ nearMeeting.topic }}</p>
         <div class="data-and-time-window">
@@ -68,9 +68,7 @@ export default {
 
   data() {
     return {
-      meetings: [
-        {},
-      ],
+      meetings: [{}],
       nearMeeting: {},
       isLoadedMeetings: false,
     };

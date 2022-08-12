@@ -148,18 +148,18 @@ export default {
 .contact-item,
 .contact-info-content,
 .edit-contact {
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 
 .contact-item:hover {
   border: 3px solid green;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 
 .contact-name-content:hover,
 .contact-info-content:hover,
 .edit-contact:hover {
-  transition-duration: 1s;
+  transition-duration: 0.5s;
   color: #00b268;
 }
 </style>

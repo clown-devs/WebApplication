@@ -82,7 +82,6 @@ export default {
   grid-template-columns: [start] 1fr [col2] 1fr [col-end];
   font-family: "Exo 2";
   font-weight: 500;
-  cursor: pointer;
 }
 
 .client-name {
@@ -126,28 +125,32 @@ export default {
   padding: 0;
 }
 
+.client-info-content {
+  cursor: pointer;
+}
+
 /* Animations and hovers */
 
 .client {
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 
 .client:hover {
   border: 3px solid green;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 
 .client-info-content,
 .client-inn-content,
 .client-name-content {
-  transition-duration: 1s;
+  transition-duration: 0.5s;
   margin: 0;
 }
 
 .client-info-content:hover,
 .client-inn-content:hover,
 .client-name-content:hover {
-  transition-duration: 1s;
+  transition-duration: 0.5s;
   color: #00b268;
 }
 </style>
