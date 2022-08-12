@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <nav-bar></nav-bar>
     <h1>Список клиентов</h1>
     <input
@@ -74,7 +74,10 @@ h1 {
 main {
   background-color: #e2eee3;
 }
-
+  
+.wrapper {
+  padding-top: 100px;
+}
 .clients-list {
   margin: 0 10.14% 0 10.14%;
   list-style: none;
@@ -111,5 +114,24 @@ h1 {
 h1:hover {
   color: #00b268;
   transition-duration: 0.5s;
+}
+
+@media (max-width: 1200px) {
+  .wrapper {
+    padding-top: 80px;
+  }
+}
+
+
+@media (max-width: 992px) {
+  .wrapper {
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-top: 50px;
+  }
 }
 </style>

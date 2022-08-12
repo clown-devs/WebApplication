@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="qwe">
     <nav-bar></nav-bar>
     <h1>Calendar page</h1>
     <loading-indicate></loading-indicate>
@@ -22,5 +22,6 @@ export default {
 
 .loading-indicate {
 }
+
 
 </style>

@@ -12,23 +12,28 @@
 
         <div class="menu-items">
           <li class="nav-bar-list-item" @click="$router.push('/')">
-            Главная страница
+            
+            <router-link to="/" class="unactive" active-class="active">Главная страница</router-link>
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/clients')">
-            Мои клиенты
+            
+            <router-link to="/clients" class="unactive" active-class="active">Мои клиенты</router-link>
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/calendar')">
-            Календарь
+            
+            <router-link to="/calendar" class="unactive" active-class="active">Календарь</router-link>
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/results')">
-            Отчёты по встречам
+            
+            <router-link to="/results" class="unactive" active-class="active">Отчёты по встречам</router-link>
           </li>
 
           <li class="nav-bar-list-item button-exit" @click="logOutWrapper">
             <button class="log-out-item">Выйти</button>
+
           </li>
         </div>
       </ul>
@@ -132,6 +137,12 @@ button {
 
 .header {
   background-color: #fff;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+
 }
 
 * {
@@ -142,11 +153,23 @@ button {
   font-weight: 700;
 }
 
+
+
 .free-room {
   border: 1px solid green;
   margin-bottom: 20px;
   width: 150px;
 }
+
+.unactive {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color:#00b268;
+}
+
 
 .qwe {
   margin-bottom: 30px;
@@ -159,6 +182,7 @@ button {
 .logo-name {
   font-weight: 900;
   font-size: 1.5rem;
+  cursor: default;
 }
 
 .select-room {
@@ -258,13 +282,17 @@ ul {
 .nav-bar-list-item {
   font-size: 16px;
   margin-right: 52px;
+  cursor: pointer;
+  
 }
+
 
 .log-out {
   background-color: white;
   border: none;
   margin: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .log-out-item {
@@ -293,6 +321,7 @@ ul {
   margin-left: 0;
   padding: 0;
   display: flex;
+  cursor: pointer;
 }
 
 .nav-bar-profile {
@@ -497,7 +526,7 @@ ul {
   }
   #checkbox_toggle:checked ~ .menu-items {
     display: block;
-    max-height: 100%;
+    max-height: 400px;
     transition: all 0.5s;
   }
   #checkbox_toggle:checked ~ .hamburger .hamburger-line {
@@ -521,7 +550,11 @@ ul {
   transition: 0.5s;
   color: #00b268;
 }
-
+.unactive:hover {
+  opacity: 0.9;
+  transition: 0.5s;
+  color: #00b268;
+}
 .nav-bar-list-item:hover {
   opacity: 0.9;
   transition: 0.5s;
