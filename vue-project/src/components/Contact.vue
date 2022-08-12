@@ -8,13 +8,12 @@
         </span>
       </div>
       <div class="header-buttons">
+        <edit-button></edit-button>
         <show-info-btn
           class="show-info-btn"
           @click="touchContactInfoButton"
           :showInfo="showContactInfo"
         ></show-info-btn>
-
-        <a class="edit-contact">...</a>
       </div>
     </div>
     <div class="contact-details__content" v-if="showContactInfo">
@@ -38,9 +37,10 @@
 
 <script>
 import ShowInfoBtn from "@/components/UI/ShowInfoButton.vue";
+import EditButton from "@/components/UI/EditButton.vue";
 
 export default {
-  components: { ShowInfoBtn },
+  components: { ShowInfoBtn, EditButton },
 
   data() {
     return {
@@ -66,8 +66,8 @@ export default {
 <style scoped>
 .contact-item {
   min-height: 70px;
-  border: 0.714062px solid #f1fbf2;
-  box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
+  border: 0.72px solid #f1fbf2;
+  box-shadow: 0px 2.86px 2.86px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   background-color: #f1fbf2;
   margin: 10px 0 10px 0;
@@ -96,19 +96,14 @@ export default {
   margin-right: 2rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
-.edit-contact,
 .contact-managers-content {
   font-family: "Exo 2";
   font-weight: 700;
   font-size: 1.25rem;
   color: #7a7474;
-}
-
-.edit-contact {
-  cursor: pointer;
 }
 
 .contact-details__content {
@@ -134,8 +129,7 @@ export default {
 
 /* Animations and hovers */
 
-.contact-item,
-.edit-contact {
+.contact-item {
   transition-duration: 0.5s;
 }
 
@@ -144,8 +138,7 @@ export default {
   transition-duration: 0.5s;
 }
 
-.contact-name-content:hover,
-.edit-contact:hover {
+.contact-name-content:hover {
   transition-duration: 0.5s;
   color: #00b268;
 }

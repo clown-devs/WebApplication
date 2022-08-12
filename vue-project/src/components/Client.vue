@@ -12,11 +12,14 @@
         <p class="client-inn-content">ИНН: {{ clientData.inn }}</p>
       </div>
 
-      <show-info-btn
-        class="show-info-btn"
-        @click="touchClientInfoButton"
-        :showInfo=isShowContactList>
-      </show-info-btn>
+      <div class="header-buttons">
+        <edit-button class="edit-btn"></edit-button>
+        <show-info-btn
+          class="show-info-btn"
+          @click="touchClientInfoButton"
+          :showInfo="isShowContactList"
+        ></show-info-btn>
+      </div>
     </div>
 
     <ul class="contact-list" v-if="isShowContactList">
@@ -31,14 +34,15 @@
 import api from "@/api";
 import Contact from "@/components/Contact.vue";
 import ShowInfoBtn from "@/components/UI/ShowInfoButton.vue";
+import EditButton from "@/components/UI/EditButton.vue";
 
 export default {
-  components: { Contact, ShowInfoBtn },
+  components: { Contact, ShowInfoBtn, EditButton },
 
   data() {
     return {
       isShowContactList: false,
-      contacts: []
+      contacts: [],
     };
   },
 
@@ -103,7 +107,11 @@ export default {
 }
 
 .show-info-btn {
-  margin-right: 2rem;
+  grid-row: row2 / row3;
+  grid-column: col3 / col-end;
+}
+
+.edit-btn {
   grid-row: row2 / row3;
   grid-column: col3 / col-end;
 }
@@ -126,6 +134,16 @@ export default {
 .contact-list {
   list-style: none;
   padding: 0;
+}
+
+.header-buttons {
+  margin-right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  grid-row: row2 / row3;
+  grid-column: col3 / col-end;
 }
 
 /* Animations and hovers */
