@@ -177,6 +177,20 @@ const api = {
         }
     },
 
+    async createClient(client) {
+        try {
+            let newClient = await axios.post(
+                API_KEY + API_PATHS['client'], 
+                client
+            );
+            return newClient.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
     errorHandle(error) {
 
         if (error.response) {

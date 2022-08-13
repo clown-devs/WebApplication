@@ -1,6 +1,8 @@
 <template>
   <div class="button-add-meet">
-    <button class="add-meet-but">Добавить встречу</button>
+    <button class="add-meet-but">
+      <slot></slot>
+    </button>
   </div>
 </template>
 
@@ -14,7 +16,7 @@ button {
   border: none;
   margin: 0;
   padding: 0;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .add-meet-but {

@@ -24,6 +24,7 @@
           </li>
         </ul>
       </div>
+      <add-button class="add-button" @click="createClient">Добавить</add-button>
     </main>
     <loading-indicate v-else></loading-indicate>
   </div>
@@ -34,9 +35,15 @@ import NavBar from "@/components/NavBar.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import Client from "@/components/Client.vue";
 import api from "@/api";
+import AddButton from "@/components/UI/AddButton.vue";
 
 export default {
-  components: { NavBar, LoadingIndicate, Client },
+  components: { 
+    NavBar,
+    LoadingIndicate,
+    Client,
+    AddButton 
+  },
 
   data() {
     return {
@@ -73,6 +80,15 @@ export default {
         return item;
       });
       
+    },
+
+    async createClient() {
+      // const newClient = await api.createClient({
+      //   name: "TestClient",
+      //   inn: "1234567890"
+      // });
+
+      // this.clients.push(newClient);
     }
   }
 };
@@ -90,6 +106,8 @@ h1 {
 
 main {
   background-color: #e2eee3;
+  display:flex;
+  flex-direction: column;
 }
   
 .wrapper {
@@ -120,6 +138,11 @@ main {
 
 .search-input {
   margin: 0 10.14% 21px 10.14%;
+}
+
+.add-button {
+  align-self: center;
+  margin-top: 5rem;
 }
 
 /* Animations and hovers */
