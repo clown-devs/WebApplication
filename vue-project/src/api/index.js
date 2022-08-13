@@ -84,11 +84,24 @@ const api = {
     async editClient(client) {
         try {
             let changedClient = await axios.patch(
-                API_KEY + API_PATHS['client'] + client.id + "/", {
-                    inn: client.inn
-                }
+                API_KEY + API_PATHS['client'] + client.id + "/", 
+                client
             );
             return changedClient.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
+    async editContact(contact) {
+        try {
+            let changedContact = await axios.patch(
+                API_KEY + API_PATHS['contact'] + contact.id + "/", 
+                contact
+            );
+            return changedContact.data;
 
         } catch (error) {
             this.errorHandle(error);

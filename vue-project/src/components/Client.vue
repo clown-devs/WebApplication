@@ -24,7 +24,10 @@
 
     <ul class="contact-list" v-if="isShowContactList">
       <li class="contact-item" v-for="contact in contacts" :key="contact">
-        <contact :contact="contact"></contact>
+        <contact 
+          :contactData="contact"
+          @edit="editedContact"
+        ></contact>
       </li>
     </ul>
   </div>
@@ -67,10 +70,22 @@ export default {
       this.client = await api.editClient({
         id: this.clientData.id,
         name: this.clientData.name,
-        inn: "5555555555"
+        inn: "77771231423"
       });
       
       this.$emit("edit", this.client);
+    },
+
+    editedContact(contact) {
+
+      this.contacts = this.contacts.map(item => {
+        if (item.id === contact.id) {
+          return contact;
+        }
+
+        return item;
+      });
+
     }
   },
 };
