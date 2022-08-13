@@ -191,6 +191,20 @@ const api = {
         }
     },
 
+    async createContact(contact) {
+        try {
+            let newContact = await axios.post(
+                API_KEY + API_PATHS['contact'], 
+                contact
+            );
+            return newContact.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
     errorHandle(error) {
 
         if (error.response) {
