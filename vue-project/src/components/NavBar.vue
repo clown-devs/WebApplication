@@ -147,6 +147,7 @@ button {
 .logo-name {
   font-weight: 900;
   font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .select-room {
@@ -212,6 +213,7 @@ nav {
   display: flex;
   justify-content: space-between;
   width: 50%;
+  cursor: pointer;
 }
 
 .nav-bar-list li {
@@ -250,6 +252,7 @@ ul {
 
 .nav-bar-add-meet {
   margin-right: 34px;
+  cursor: pointer;
 }
 
 .log-out {
@@ -257,6 +260,7 @@ ul {
   border: none;
   margin: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .log-out-item {
@@ -265,11 +269,12 @@ ul {
   font-size: 16px;
   margin: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .nav-bar-notify-button {
   height: 40px;
-
+  cursor: pointer;
   background-color: white;
   border: none;
   padding: 0;
@@ -277,7 +282,7 @@ ul {
 
 .nav-bar-add-meet {
   height: 55px;
-
+  cursor: pointer;
   background-color: white;
   border: none;
   margin-top: 0;
@@ -296,6 +301,7 @@ ul {
   margin-left: 0;
   padding: 0;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .nav-bar-icon-button {
