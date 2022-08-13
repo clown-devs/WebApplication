@@ -7,29 +7,44 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
     { 
-        path: '/', component: Main
+        path: '/', 
+        component: Main,
+        name: 'Главная'
     },
 
     { 
-        path: '/login', component: Login
+        path: '/login', 
+        component: Login,
+        name: 'Вход'
     },
 
     { 
-        path: '/calendar', component: Calendar
+        path: '/calendar',
+        component: Calendar,
+        name: 'Календарь'
     },
 
     { 
-        path: '/results', component: MeetingResults
+        path: '/results',
+        component: MeetingResults,
+        name: 'Отчеты'
     },
 
     { 
-        path: '/clients', component: Clients
+        path: '/clients', 
+        component: Clients,
+        name: 'Клиенты'
     }
 ]
 
 const router = createRouter({
     routes,
     history: createWebHistory()
+})
+
+router.beforeEach((to, from, next) => {
+    document.title = to.name
+    next()
 })
 
 export default router;
