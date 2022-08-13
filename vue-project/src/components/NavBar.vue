@@ -12,42 +12,59 @@
 
         <div class="menu-items">
           <li class="nav-bar-list-item" @click="$router.push('/')">
-            Главная страница
+            
+            <router-link to="/" class="unactive" active-class="active">Главная страница</router-link>
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/clients')">
-            Мои клиенты
+            
+            <router-link to="/clients" class="unactive" active-class="active">Мои клиенты</router-link>
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/calendar')">
-            Календарь
+            
+            <router-link to="/calendar" class="unactive" active-class="active">Календарь</router-link>
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/results')">
-            Отчёты по встречам
+            
+            <router-link to="/results" class="unactive" active-class="active">Отчёты по встречам</router-link>
           </li>
 
           <li class="nav-bar-list-item button-exit" @click="logOutWrapper">
             <button class="log-out-item">Выйти</button>
+
           </li>
         </div>
       </ul>
       <button class="nav-bar-notify-button">
         <img src="/svg/notify.svg" alt="" class="nav-bar-notify-icon" />
       </button>
+      <div class="popup_wrapper">
+        <v-popup
+          v-if="isInfoPopupVisible"
+          @closePopup="closeInfoPopup"
+          class="modal-window"
+        >
+          <div class="roo">
+            <h1 class="qwe">Доступные комнаты</h1>
 
-      <v-popup v-if="isInfoPopupVisible" @closePopup="closeInfoPopup">
-        <div class="roo">
-          <h1 class="qwe">Доступные комнаты</h1>
-
-          <select name="" id="" v-if="isLoadedPlaces" class="select-room" v-model="selected">
-            <option v-for="place in places" :key="place">
-              {{ place.name }}
-            </option>
-          </select>
-          <loading-indicate v-else></loading-indicate>
-        </div>
-      </v-popup>
+            <div class="v-popup__header"></div>
+            <select
+              name=""
+              id=""
+              v-if="isLoadedPlaces"
+              class="select-room"
+              v-model="selected"
+            >
+              <option v-for="place in places" :key="place">
+                {{ place.name }}
+              </option>
+            </select>
+            <loading-indicate v-else></loading-indicate>
+          </div>
+        </v-popup>
+      </div>
 
       <button
         class="nav-bar-add-meet v-modal_add-meet"
@@ -70,7 +87,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import vPopup from "@/components/UI/v-popup.vue";
+import vPopup from "@/components/UI/Popup.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import api from "@/api";
 
@@ -97,7 +114,7 @@ export default {
       isInfoPopupVisible: false,
       isLoadedPlaces: false,
       places: [],
-      selected: "test"
+      selected: "test",
     };
   },
   async mounted() {
@@ -120,6 +137,12 @@ button {
 
 .header {
   background-color: #fff;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+
 }
 
 * {
@@ -130,11 +153,23 @@ button {
   font-weight: 700;
 }
 
+
+
 .free-room {
   border: 1px solid green;
   margin-bottom: 20px;
   width: 150px;
 }
+
+.unactive {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color:#00b268;
+}
+
 
 .qwe {
   margin-bottom: 30px;
@@ -148,6 +183,7 @@ button {
   font-weight: 900;
   font-size: 1.5rem;
   cursor: pointer;
+
 }
 
 .select-room {
@@ -248,6 +284,8 @@ ul {
 .nav-bar-list-item {
   font-size: 16px;
   margin-right: 52px;
+  cursor: pointer;
+  
 }
 
 .nav-bar-add-meet {
@@ -282,7 +320,7 @@ ul {
 
 .nav-bar-add-meet {
   height: 55px;
-  cursor: pointer;
+  margin-right: 34px;
   background-color: white;
   border: none;
   margin-top: 0;
@@ -290,6 +328,7 @@ ul {
   margin-left: 0;
   padding: 0;
   display: flex;
+  cursor: pointer;
 }
 
 .nav-bar-profile {
@@ -351,8 +390,45 @@ ul {
   nav {
     margin: 0;
     display: flex;
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    min-height: 90px;
+    justify-content: center;
+  }
+  nav .nav-bar-notify-button {
+    margin-right: 20px;
+  }
+  .button-exit {
+    display: block;
+  }
+
+  .nav-bar-profile {
+    margin-right: 20px;
+  }
+  .log-out-item {
+    display: none;
+  }
+
+  .nav-bar-add-meet {
+    margin-right: 20px;
+  }
+
+  .title-name {
+    display: none;
+  }
+  .nav-bar-list {
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 992px) {
+  nav {
+    margin: 0;
+    display: flex;
     margin-left: 10px;
     margin-right: 10px;
+    min-height: 90px;
     display: flex;
     justify-content: center;
   }
@@ -365,14 +441,65 @@ ul {
   }
 
   .nav-bar-profile {
-    margin-right: 0;
+    margin-right: 20px;
   }
   .log-out-item {
-    font-size: 24px;
+    display: none;
   }
 
   .nav-bar-add-meet {
     margin-right: 20px;
+  }
+
+  .title-name {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    margin: 0;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  nav .nav-bar-notify-button {
+    margin-left: auto;
+    margin-right: 20px;
+    height: 30px;
+  }
+  .button-exit {
+    display: block;
+  }
+  .nav-bar-profile {
+    margin-right: 0;
+    height: 55px;
+  }
+
+  .nav-bar-profile-icon {
+    height: 55px;
+  }
+
+  .nav-bar-icon-add {
+    height: 45px;
+  }
+
+  .nav-bar-notify-icon {
+    height: 30px;
+  }
+  .log-out-item {
+    font-size: 24px;
+    display: flex;
+
+
+  }
+  .nav-bar-add-meet {
+    margin-right: 20px;
+    height: 45px;
   }
   .menu-items li {
     transition: all 0.5s;
@@ -390,15 +517,15 @@ ul {
     display: none;
   }
   .menu-items {
-    display: none;
+    display: flex;
     max-height: 0;
     overflow: hidden;
     position: absolute;
     background-color: #90dc97;
-    text-align: center;
+    
     right: 0;
     left: 0;
-    margin-top: 77px;
+    margin-top: 57px;
   }
   .hamburger {
     display: block;
@@ -407,7 +534,7 @@ ul {
   }
   #checkbox_toggle:checked ~ .menu-items {
     display: block;
-    max-height: 100%;
+    max-height: 400px;
     transition: all 0.5s;
   }
   #checkbox_toggle:checked ~ .hamburger .hamburger-line {
@@ -431,7 +558,11 @@ ul {
   transition: 0.5s;
   color: #00b268;
 }
-
+.unactive:hover {
+  opacity: 0.9;
+  transition: 0.5s;
+  color: #00b268;
+}
 .nav-bar-list-item:hover {
   opacity: 0.9;
   transition: 0.5s;

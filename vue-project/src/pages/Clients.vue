@@ -1,12 +1,18 @@
 <template>
-  <div>
+  <div class="wrapper">
     <nav-bar></nav-bar>
     <h1>Список клиентов</h1>
+    <input
+      type="text"
+      class="search-input"
+      v-model="searchQuery"
+      placeholder="Поиск..."
+    />
     <main v-if="isLoadedClientsFromApi">
       <div class="client-container">
         <ul class="clients-list" v-if="clients.length">
-          <li v-for="client in clients" :key="client">
-            <client :clientData=client></client>
+          <li v-for="client in searchedClients" :key="client">
+            <client :clientData="client"></client>
           </li>
         </ul>
         <ul class="clients-list empty" v-else>
@@ -33,12 +39,24 @@ export default {
     return {
       clients: [],
       isLoadedClientsFromApi: false,
+      searchQuery: "",
     };
   },
 
   async mounted() {
     this.clients = await api.getClients();
     this.isLoadedClientsFromApi = true;
+  },
+
+  computed: {
+    searchedClients() {
+      
+      return this.clients.filter(client => 
+        (client.name.toLowerCase().includes(this.searchQuery.toLowerCase()) 
+          || client.inn.includes(this.searchQuery))
+      );
+
+    },
   },
 };
 </script>
@@ -56,7 +74,10 @@ h1 {
 main {
   background-color: #e2eee3;
 }
-
+  
+.wrapper {
+  padding-top: 100px;
+}
 .clients-list {
   margin: 0 10.14% 0 10.14%;
   list-style: none;
@@ -68,7 +89,7 @@ main {
   align-items: center;
   justify-content: center;
   height: 94px;
-  background-color: #F1FBF2;
+  background-color: #f1fbf2;
   border: 0.71px solid #f1fbf2;
   box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
@@ -80,6 +101,10 @@ main {
   font-size: 1rem;
 }
 
+.search-input {
+  margin: 0 10.14% 21px 10.14%;
+}
+
 /* Animations and hovers */
 
 h1 {
@@ -89,5 +114,24 @@ h1 {
 h1:hover {
   color: #00b268;
   transition-duration: 0.5s;
+}
+
+@media (max-width: 1200px) {
+  .wrapper {
+    padding-top: 80px;
+  }
+}
+
+
+@media (max-width: 992px) {
+  .wrapper {
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-top: 50px;
+  }
 }
 </style>

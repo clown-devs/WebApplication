@@ -104,6 +104,10 @@ ul {
   padding: 0;
 }
 
+main {
+  padding-top: 120px;
+}
+
 .empty {
   display: flex;
   align-items: center;
@@ -293,6 +297,7 @@ main {
     flex-direction: column;
     align-content: center;
     background-color: #e2eee3;
+    padding-top: 100px;
   }
 
   .nav-bar-add-meet-main {
@@ -351,6 +356,10 @@ main {
     margin-top: 1rem;
     height: 250px;
   }
+  
+  main {
+    padding-top: 100px;
+  }
 
   .near-meet {
     margin-left: 10px;
@@ -385,6 +394,10 @@ main {
 
   main p {
     font-size: 1rem;
+  }
+
+  main {
+    padding-top: 80px;
   }
 
   .data-window,
