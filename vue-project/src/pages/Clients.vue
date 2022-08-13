@@ -12,7 +12,10 @@
       <div class="client-container">
         <ul class="clients-list" v-if="clients.length">
           <li v-for="client in searchedClients" :key="client">
-            <client :clientData="client"></client>
+            <client 
+              :clientData="client"
+              @edit="editedClient"
+            ></client>
           </li>
         </ul>
         <ul class="clients-list empty" v-else>
@@ -58,6 +61,20 @@ export default {
 
     },
   },
+
+  methods: {
+    editedClient(client) {
+      
+      this.clients = this.clients.map(item => {
+        if (item.id === client.id) {
+          return client;
+        }
+
+        return item;
+      });
+      
+    }
+  }
 };
 </script>
 

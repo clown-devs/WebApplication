@@ -35,7 +35,7 @@ const api = {
 
     },
 
-    async currentUser(token) {
+    async currentUser() {
         try {
             const res = await axios.get(API_KEY + API_PATHS['user'], {
                 headers: {
@@ -78,6 +78,21 @@ const api = {
         } catch (error) {
             this.errorHandle(error);
             return [];
+        }
+    },
+
+    async editClient(client) {
+        try {
+            let changedClient = await axios.patch(
+                API_KEY + API_PATHS['client'] + client.id + "/", {
+                    inn: client.inn
+                }
+            );
+            return changedClient.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
         }
     },
 
