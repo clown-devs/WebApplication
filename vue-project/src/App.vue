@@ -51,4 +51,24 @@ body {
 .loginColor {
   background-color: #eaeaea;
 }
+
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1px rgba(255, 255, 255, 0);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #D3D3D3;
+  box-shadow: 0px 3px 2.85625px rgba(0, 0, 0, 0.25);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D3D3D3;
+}
 </style>
