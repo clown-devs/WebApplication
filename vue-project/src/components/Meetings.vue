@@ -1,9 +1,9 @@
 <template>
   <main>
     <div v-if="isLoadedMeetings" class="near-meet">
-      <h4 class="near-meet-text">Ближайшая встреча:</h4>
+      <h2 class="near-meet-text">Ближайшая встреча:</h2>
 
-      <div class="container-window" v-if="meetings.length">
+      <div class="container-window" v-if="nearMeeting !== undefined">
         <button class="pencil-meet">
           <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
         </button>
@@ -34,7 +34,19 @@
     </div>
 
     <div v-if="isLoadedMeetings" class="list-meet">
-      <h4 class="list-meet-text">Список встреч:</h4>
+      <h2 class="list-meet-text">Список встреч:</h2>
+
+      <segmented-control
+        class="segmented-control"
+        @selected="selectedSegmentedControl"
+      >
+        <template v-slot:item1>
+          <span>Текущие</span>
+        </template>
+        <template v-slot:item2>
+          <span>Прошедшие</span>
+        </template>
+      </segmented-control>
 
       <ul class="list-all-meet" v-if="meetings.length">
         <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
@@ -62,22 +74,30 @@
 import AddButton from "@/components/UI/AddButton.vue";
 import api from "@/api";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
+import SegmentedControl from "@/components/UI/SegmentedControl.vue";
 
 export default {
-  components: { AddButton, LoadingIndicate },
+  components: {
+    AddButton,
+    LoadingIndicate,
+    SegmentedControl,
+  },
 
   data() {
     return {
       meetings: [{}],
-      nearMeeting: {},
+      nearMeeting: undefined,
       isLoadedMeetings: false,
     };
   },
 
   async mounted() {
     this.meetings = await api.getMeetings();
-    this.nearMeeting = this.meetings[0];
-    this.prepareMeetingsForDisplay();
+    if (this.meetings.length) {
+      this.nearMeeting = this.meetings[0];
+      this.prepareMeetingsForDisplay();
+    }
+
     this.isLoadedMeetings = true;
   },
 
@@ -87,6 +107,15 @@ export default {
         meeting.start = meeting.start.substr(0, 5);
         meeting.end = meeting.end.substr(0, 5);
       });
+    },
+
+    async selectedSegmentedControl(selectedFirstControl) {
+      if (selectedFirstControl) {
+        this.meetings = await api.getMeetings();
+        return;
+      }
+
+      this.meetings = await api.getMeetings(true);
     },
   },
 };
@@ -141,8 +170,19 @@ li p {
 }
 
 .near-meet-text {
-  margin-top: 31px;
-  margin-bottom: 31px;
+  margin-top: 32px;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-family: "Exo 2";
+  font-weight: 700;
+}
+
+.list-meet-text {
+  margin-top: 32px;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-family: "Exo 2";
+  font-weight: 700;
 }
 
 .near-meet {
@@ -246,9 +286,11 @@ main {
 }
 
 .list-all-meet {
+  margin-top: 0;
+  margin-bottom: 0;
   height: 86%;
   background: #00b268;
-  border-radius: 20px;
+  border-radius: 0px 0px 20px 20px;
   overflow: auto;
 }
 
@@ -277,7 +319,7 @@ main {
 .list-meet {
   flex: 1;
   margin-right: 10.14%;
-  height: 87vh;
+  max-height: 100%;
 }
 
 .data-window,
@@ -288,6 +330,10 @@ main {
 
 .pencil-icon {
   max-width: 100%;
+}
+
+.segmented-control {
+  height: 40px;
 }
 
 /* Responsive layout */
@@ -356,7 +402,7 @@ main {
     margin-top: 1rem;
     height: 250px;
   }
-  
+
   main {
     padding-top: 100px;
   }
@@ -456,6 +502,7 @@ main {
 }
 
 /* Hovers and animations */
+
 .container-window:hover {
   border: 3px solid #00b268;
   transition: 0.5s;
