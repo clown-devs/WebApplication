@@ -29,7 +29,7 @@
       </div>
 
       <div class="green-button-add">
-        <buttons></buttons>
+        <add-button>Добавить встречу</add-button>
       </div>
     </div>
 
@@ -59,12 +59,12 @@
 </template>
 
 <script>
-import buttons from "@/components/UI/button-add.vue";
+import AddButton from "@/components/UI/AddButton.vue";
 import api from "@/api";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 
 export default {
-  components: { buttons, LoadingIndicate },
+  components: { AddButton, LoadingIndicate },
 
   data() {
     return {

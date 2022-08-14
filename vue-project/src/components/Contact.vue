@@ -8,7 +8,7 @@
         </span>
       </div>
       <div class="header-buttons">
-        <edit-button></edit-button>
+        <edit-button @click="editContact"></edit-button>
         <show-info-btn
           class="show-info-btn"
           @click="touchContactInfoButton"
@@ -45,11 +45,12 @@ export default {
   data() {
     return {
       showContactInfo: false,
+      contact: this.contactData
     };
   },
 
   props: {
-    contact: {
+    contactData: {
       type: Object,
       default: {},
     },
@@ -58,6 +59,14 @@ export default {
   methods: {
     touchContactInfoButton() {
       this.showContactInfo = !this.showContactInfo;
+    },
+
+    async editContact() {
+      const contact = this.contact;
+      contact.email = "test@gmail.com";
+      this.contact = await api.editContact(contact);
+
+      this.$emit("edit", this.contact);
     },
   },
 };

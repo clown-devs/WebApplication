@@ -5,15 +5,15 @@
         <img class="client-icon" src="/svg/client-icon.svg" />
       </div>
       <div class="client-name">
-        <p class="client-name-content">{{ clientData.name }}</p>
+        <p class="client-name-content">{{ client.name }}</p>
       </div>
 
       <div class="client-inn">
-        <p class="client-inn-content">ИНН: {{ clientData.inn }}</p>
+        <p class="client-inn-content">ИНН: {{ client.inn }}</p>
       </div>
 
       <div class="header-buttons">
-        <edit-button class="edit-btn"></edit-button>
+        <edit-button class="edit-btn" @click="editClient"></edit-button>
         <show-info-btn
           class="show-info-btn"
           @click="touchClientInfoButton"
@@ -24,7 +24,10 @@
 
     <ul class="contact-list" v-if="isShowContactList">
       <li class="contact-item" v-for="contact in contacts" :key="contact">
-        <contact :contact="contact"></contact>
+        <contact 
+          :contactData="contact"
+          @edit="editedContact"
+        ></contact>
       </li>
     </ul>
   </div>
@@ -43,6 +46,7 @@ export default {
     return {
       isShowContactList: false,
       contacts: [],
+      client: this.clientData
     };
   },
 
@@ -61,6 +65,28 @@ export default {
 
       this.isShowContactList = !this.isShowContactList;
     },
+
+    async editClient() {
+      this.client = await api.editClient({
+        id: this.clientData.id,
+        name: this.clientData.name,
+        inn: "77771231423"
+      });
+      
+      this.$emit("edit", this.client);
+    },
+
+    editedContact(contact) {
+
+      this.contacts = this.contacts.map(item => {
+        if (item.id === contact.id) {
+          return contact;
+        }
+
+        return item;
+      });
+
+    }
   },
 };
 </script>

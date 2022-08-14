@@ -35,7 +35,7 @@ const api = {
 
     },
 
-    async currentUser(token) {
+    async currentUser() {
         try {
             const res = await axios.get(API_KEY + API_PATHS['user'], {
                 headers: {
@@ -78,6 +78,34 @@ const api = {
         } catch (error) {
             this.errorHandle(error);
             return [];
+        }
+    },
+
+    async editClient(client) {
+        try {
+            let changedClient = await axios.patch(
+                API_KEY + API_PATHS['client'] + client.id + "/", 
+                client
+            );
+            return changedClient.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
+    async editContact(contact) {
+        try {
+            let changedContact = await axios.patch(
+                API_KEY + API_PATHS['contact'] + contact.id + "/", 
+                contact
+            );
+            return changedContact.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
         }
     },
 
@@ -142,6 +170,34 @@ const api = {
             });
 
             return newEmployee.data();
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
+    async createClient(client) {
+        try {
+            let newClient = await axios.post(
+                API_KEY + API_PATHS['client'], 
+                client
+            );
+            return newClient.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
+    async createContact(contact) {
+        try {
+            let newContact = await axios.post(
+                API_KEY + API_PATHS['contact'], 
+                contact
+            );
+            return newContact.data;
 
         } catch (error) {
             this.errorHandle(error);
