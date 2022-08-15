@@ -54,6 +54,7 @@ export default {
   vertical-align: middle;
   padding: 0;
   margin: 0;
+  cursor: pointer;
 }
 
 .active {
