@@ -564,9 +564,30 @@ main {
 
 /* Hovers and animations */
 
+.contact-window {
+  transition-duration: 0.5s;
+}
+
 .container-window:hover {
-  border: 3px solid #00b268;
+  transform: translateY(-3px);
   transition: 0.5s;
+}
+
+.near-meet-text,
+.client-name,
+.contact-window,
+.tel-window,
+.theme-window,
+.data-window,
+.time-window,
+.place-window,
+.data-item,
+.time-item,
+.place-item,
+.theme-item,
+.client-item,
+.list-meet-text {
+  transition: 0.3s;
 }
 
 .near-meet-text:hover,
@@ -587,8 +608,12 @@ main {
   transition: 0.3s;
 }
 
+.all-meet-item {
+  transition: 0.5s;
+}
+
 .all-meet-item:hover {
-  border: 3px solid darkgreen;
-  transition: 1s;
+  transform: translateY(-3px);
+  transition: 0.5s;
 }
 </style>
