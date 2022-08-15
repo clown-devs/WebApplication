@@ -5,28 +5,35 @@
         <p>x</p>
       </button>
     </div>
-    <ul class="client-history-list" v-if="historyList.length">
-      <li class="history-list-item" v-for="item in historyList" :key="item">
-        <span class="history-item-number"
-          >{{ this.historyList.indexOf(item) + 1 }}.</span
-        >
-        <span class="history-item-date">{{ item.date }}</span>
-        <span class="history-item-meeting-topic">{{ item.topic }}</span>
-      </li>
-    </ul>
-    <ul class="client-history-list empty" v-else>
-      <li class="history-list-item empty-item">История пуста...</li>
-    </ul>
+    <div class="history-list-container" v-if="isLoadedData">
+      <ul class="client-history-list" v-if="historyList.length">
+        <li class="history-list-item" v-for="item in historyList" :key="item">
+          <span class="history-item-number"
+            >{{ this.historyList.indexOf(item) + 1 }}.</span
+          >
+          <span class="history-item-date">{{ item.date }}</span>
+          <span class="history-item-meeting-topic">{{ item.topic }}</span>
+        </li>
+      </ul>
+      <ul class="client-history-list empty" v-else>
+        <li class="history-list-item empty-item">История пуста...</li>
+      </ul>
+    </div>
+    <loading-indicate class="loading-indicate" v-else></loading-indicate>
   </div>
 </template>
 
 <script>
 import api from "@/api";
+import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 
 export default {
+  components: { LoadingIndicate },
+
   data() {
     return {
       historyList: [],
+      isLoadedData: false,
     };
   },
 
@@ -40,6 +47,8 @@ export default {
           "Dsvpdkf;skf;sdfksd;fks;dfDsvpdkf; skf;sdfksd;fks;dfDsvpdkf; skf;sdfksd;fks ksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;df",
       });
     }
+
+    this.isLoadedData = true;
   },
 
   methods: {
@@ -115,6 +124,10 @@ export default {
 
 p {
   margin: 0;
+}
+
+.loading-indicate {
+    margin: 0;   
 }
 
 /* Animations and hovers */
