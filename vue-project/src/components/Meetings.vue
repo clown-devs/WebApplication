@@ -99,7 +99,6 @@ export default {
     }
 
     this.isLoadedMeetings = true;
-    this.test();
   },
 
   methods: {
@@ -117,42 +116,6 @@ export default {
       }
 
       this.meetings = await api.getMeetings(true);
-    },
-
-    test() {
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
-      this.meetings.push({
-        topic: "Topic"
-      });
     }
   },
 };
