@@ -1,13 +1,13 @@
 <template>
   <main>
     <div v-if="isLoadedMeetings" class="near-meet">
-      <h4 class="near-meet-text">Ближайшая встреча:</h4>
+      <h2 class="near-meet-text">Ближайшая встреча:</h2>
 
-      <div class="container-window" v-if="meetings.length">
+      <div class="container-window" v-if="nearMeeting !== undefined">
         <button class="pencil-meet">
           <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
         </button>
-        <p class="client-wiindow">{{ nearMeeting.client_name }}</p>
+        <p class="client-name">{{ nearMeeting.client_name }}</p>
         <div class="window-tel-and-contact">
           <p class="contact-window">
             {{ nearMeeting.contact_name }}
@@ -34,7 +34,19 @@
     </div>
 
     <div v-if="isLoadedMeetings" class="list-meet">
-      <h4 class="list-meet-text">Список встреч:</h4>
+      <h2 class="list-meet-text">Список встреч:</h2>
+
+      <segmented-control
+        class="segmented-control"
+        @selected="selectedSegmentedControl"
+      >
+        <template v-slot:item1>
+          <span>Текущие</span>
+        </template>
+        <template v-slot:item2>
+          <span>Прошедшие</span>
+        </template>
+      </segmented-control>
 
       <ul class="list-all-meet" v-if="meetings.length">
         <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
@@ -62,23 +74,32 @@
 import AddButton from "@/components/UI/AddButton.vue";
 import api from "@/api";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
+import SegmentedControl from "@/components/UI/SegmentedControl.vue";
 
 export default {
-  components: { AddButton, LoadingIndicate },
+  components: {
+    AddButton,
+    LoadingIndicate,
+    SegmentedControl,
+  },
 
   data() {
     return {
       meetings: [{}],
-      nearMeeting: {},
+      nearMeeting: undefined,
       isLoadedMeetings: false,
     };
   },
 
   async mounted() {
     this.meetings = await api.getMeetings();
-    this.nearMeeting = this.meetings[0];
-    this.prepareMeetingsForDisplay();
+    if (this.meetings.length) {
+      this.nearMeeting = this.meetings[0];
+      this.prepareMeetingsForDisplay();
+    }
+
     this.isLoadedMeetings = true;
+    this.test();
   },
 
   methods: {
@@ -88,6 +109,51 @@ export default {
         meeting.end = meeting.end.substr(0, 5);
       });
     },
+
+    async selectedSegmentedControl(selectedFirstControl) {
+      if (selectedFirstControl) {
+        this.meetings = await api.getMeetings();
+        return;
+      }
+
+      this.meetings = await api.getMeetings(true);
+    },
+
+    test() {
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+    }
   },
 };
 </script>
@@ -105,7 +171,7 @@ ul {
 }
 
 main {
-  padding-top: 120px;
+  padding-top: 110px;
 }
 
 .empty {
@@ -141,14 +207,25 @@ li p {
 }
 
 .near-meet-text {
-  margin-top: 31px;
-  margin-bottom: 31px;
+  margin-top: 32px;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-family: "Exo 2";
+  font-weight: 700;
+}
+
+.list-meet-text {
+  margin-top: 32px;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-family: "Exo 2";
+  font-weight: 700;
 }
 
 .near-meet {
   margin-right: 40px;
   margin-left: 10.14%;
-  flex: 2;
+  flex: 2.6;
 }
 
 .green-button-add {
@@ -204,7 +281,7 @@ li p {
 .near-meet {
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 100%;
 }
 
 .container-window {
@@ -216,10 +293,10 @@ li p {
   border-radius: 30px;
   margin-bottom: 2rem;
   justify-content: space-around;
-  height: 80vh;
+  height: 63.5%;
 }
 
-.client-wiindow,
+.client-name,
 .contact-window,
 .theme-window,
 .data-window,
@@ -235,6 +312,7 @@ main {
   display: flex;
   justify-content: space-around;
   width: 100vw;
+  height: calc(100vh - 110px);
 }
 
 .theme-window {
@@ -246,10 +324,13 @@ main {
 }
 
 .list-all-meet {
-  height: 86%;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 72%;
   background: #00b268;
-  border-radius: 20px;
+  border-radius: 0px 0px 20px 20px;
   overflow: auto;
+  min-width: 406px;
 }
 
 .list-all-meet li {
@@ -270,14 +351,16 @@ main {
   font-size: 1.25rem;
 }
 
-.client-wiindow {
+.client-name {
   margin-bottom: 26px;
 }
 
 .list-meet {
   flex: 1;
   margin-right: 10.14%;
-  height: 87vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .data-window,
@@ -290,6 +373,10 @@ main {
   max-width: 100%;
 }
 
+.segmented-control {
+  height: 40px;
+}
+
 /* Responsive layout */
 
 @media (max-width: 1200px) {
@@ -298,11 +385,14 @@ main {
     align-content: center;
     background-color: #e2eee3;
     padding-top: 100px;
+    height: auto;
+    gap: 1rem;
   }
 
   .nav-bar-add-meet-main {
     display: block;
   }
+  
   .list-meet {
     margin-left: 2rem;
     margin-right: 40px;
@@ -311,8 +401,9 @@ main {
   }
 
   .list-all-meet {
-    overflow: none;
-    width: 100%;
+    overflow: hidden;
+    height: auto;
+    min-width: 100%;
   }
 
   .near-meet {
@@ -330,7 +421,7 @@ main {
   }
 
   .theme-window,
-  .client-wiindow {
+  .client-name {
     margin-bottom: 0;
   }
 
@@ -347,6 +438,12 @@ main {
   .theme-window {
     margin-right: 1rem;
   }
+
+  .near-meet-text,
+  .list-meet-text {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 
 @media (max-width: 992px) {
@@ -356,7 +453,7 @@ main {
     margin-top: 1rem;
     height: 250px;
   }
-  
+
   main {
     padding-top: 100px;
   }
@@ -422,7 +519,7 @@ main {
     gap: 1rem;
   }
 
-  .client-wiindow,
+  .client-name,
   .contact-window,
   .theme-window,
   .data-window,
@@ -441,7 +538,17 @@ main {
     height: 180px;
     justify-content: center;
     margin-top: 0.5rem;
-    gap: 0;
+    gap: 0.5rem;
+  }
+
+  .client-name,
+  .contact-window,
+  .tel-window,
+  .theme-window,
+  .data-window,
+  .time-window,
+  .place-window {
+    font-size: 1.1rem;
   }
 
   .near-meet-text,
@@ -456,13 +563,35 @@ main {
 }
 
 /* Hovers and animations */
+
+.contact-window {
+  transition-duration: 0.5s;
+}
+
 .container-window:hover {
-  border: 3px solid #00b268;
+  transform: translateY(-3px);
   transition: 0.5s;
 }
 
+.near-meet-text,
+.client-name,
+.contact-window,
+.tel-window,
+.theme-window,
+.data-window,
+.time-window,
+.place-window,
+.data-item,
+.time-item,
+.place-item,
+.theme-item,
+.client-item,
+.list-meet-text {
+  transition: 0.3s;
+}
+
 .near-meet-text:hover,
-.client-wiindow:hover,
+.client-name:hover,
 .contact-window:hover,
 .tel-window:hover,
 .theme-window:hover,
@@ -479,8 +608,12 @@ main {
   transition: 0.3s;
 }
 
+.all-meet-item {
+  transition: 0.5s;
+}
+
 .all-meet-item:hover {
-  border: 3px solid darkgreen;
-  transition: 1s;
+  transform: translateY(-3px);
+  transition: 0.5s;
 }
 </style>
