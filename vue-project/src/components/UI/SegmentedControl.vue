@@ -38,6 +38,7 @@ export default {
 .segmented-control-container {
   display: flex;
   justify-content: space-between;
+  margin: 0;
 }
 
 .segmented-control-item {
@@ -52,6 +53,7 @@ export default {
   text-align: center;
   vertical-align: middle;
   padding: 0;
+  margin: 0;
 }
 
 .active {

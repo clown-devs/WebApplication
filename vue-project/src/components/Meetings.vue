@@ -7,7 +7,7 @@
         <button class="pencil-meet">
           <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
         </button>
-        <p class="client-wiindow">{{ nearMeeting.client_name }}</p>
+        <p class="client-name">{{ nearMeeting.client_name }}</p>
         <div class="window-tel-and-contact">
           <p class="contact-window">
             {{ nearMeeting.contact_name }}
@@ -99,6 +99,7 @@ export default {
     }
 
     this.isLoadedMeetings = true;
+    this.test();
   },
 
   methods: {
@@ -117,6 +118,42 @@ export default {
 
       this.meetings = await api.getMeetings(true);
     },
+
+    test() {
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+      this.meetings.push({
+        topic: "Topic"
+      });
+    }
   },
 };
 </script>
@@ -134,7 +171,7 @@ ul {
 }
 
 main {
-  padding-top: 120px;
+  padding-top: 110px;
 }
 
 .empty {
@@ -188,7 +225,7 @@ li p {
 .near-meet {
   margin-right: 40px;
   margin-left: 10.14%;
-  flex: 2;
+  flex: 2.6;
 }
 
 .green-button-add {
@@ -244,7 +281,7 @@ li p {
 .near-meet {
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 100%;
 }
 
 .container-window {
@@ -256,10 +293,10 @@ li p {
   border-radius: 30px;
   margin-bottom: 2rem;
   justify-content: space-around;
-  height: 80vh;
+  height: 63.5%;
 }
 
-.client-wiindow,
+.client-name,
 .contact-window,
 .theme-window,
 .data-window,
@@ -275,6 +312,7 @@ main {
   display: flex;
   justify-content: space-around;
   width: 100vw;
+  height: calc(100vh - 110px);
 }
 
 .theme-window {
@@ -288,10 +326,11 @@ main {
 .list-all-meet {
   margin-top: 0;
   margin-bottom: 0;
-  height: 86%;
+  height: 72%;
   background: #00b268;
   border-radius: 0px 0px 20px 20px;
   overflow: auto;
+  min-width: 406px;
 }
 
 .list-all-meet li {
@@ -312,14 +351,16 @@ main {
   font-size: 1.25rem;
 }
 
-.client-wiindow {
+.client-name {
   margin-bottom: 26px;
 }
 
 .list-meet {
   flex: 1;
   margin-right: 10.14%;
-  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .data-window,
@@ -344,11 +385,14 @@ main {
     align-content: center;
     background-color: #e2eee3;
     padding-top: 100px;
+    height: auto;
+    gap: 1rem;
   }
 
   .nav-bar-add-meet-main {
     display: block;
   }
+  
   .list-meet {
     margin-left: 2rem;
     margin-right: 40px;
@@ -357,8 +401,9 @@ main {
   }
 
   .list-all-meet {
-    overflow: none;
-    width: 100%;
+    overflow: hidden;
+    height: auto;
+    min-width: 100%;
   }
 
   .near-meet {
@@ -376,7 +421,7 @@ main {
   }
 
   .theme-window,
-  .client-wiindow {
+  .client-name {
     margin-bottom: 0;
   }
 
@@ -392,6 +437,12 @@ main {
 
   .theme-window {
     margin-right: 1rem;
+  }
+
+  .near-meet-text,
+  .list-meet-text {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -468,7 +519,7 @@ main {
     gap: 1rem;
   }
 
-  .client-wiindow,
+  .client-name,
   .contact-window,
   .theme-window,
   .data-window,
@@ -487,7 +538,17 @@ main {
     height: 180px;
     justify-content: center;
     margin-top: 0.5rem;
-    gap: 0;
+    gap: 0.5rem;
+  }
+
+  .client-name,
+  .contact-window,
+  .tel-window,
+  .theme-window,
+  .data-window,
+  .time-window,
+  .place-window {
+    font-size: 1.1rem;
   }
 
   .near-meet-text,
@@ -509,7 +570,7 @@ main {
 }
 
 .near-meet-text:hover,
-.client-wiindow:hover,
+.client-name:hover,
 .contact-window:hover,
 .tel-window:hover,
 .theme-window:hover,
