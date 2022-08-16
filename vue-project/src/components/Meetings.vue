@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="main-container">
     <div v-if="isLoadedMeetings" class="near-meet">
       <h2 class="near-meet-text">Ближайшая встреча:</h2>
 
@@ -116,7 +116,7 @@ export default {
       }
 
       this.meetings = await api.getMeetings(true);
-    }
+    },
   },
 };
 </script>
@@ -134,9 +134,12 @@ ul {
 }
 
 main {
-  padding-top: 110px;
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+  height: calc(100vh - 110px);
+  margin-top: 1rem;
 }
-
 .empty {
   display: flex;
   align-items: center;
@@ -163,6 +166,9 @@ li p {
   margin-right: 17px;
 }
 
+.main-container {
+  padding-top: 110px;
+}
 .theme-item {
   font-size: 0.88rem;
   overflow: auto;
@@ -271,13 +277,6 @@ li p {
   margin-bottom: 60px;
 }
 
-main {
-  display: flex;
-  justify-content: space-around;
-  width: 100vw;
-  height: calc(100vh - 110px);
-}
-
 .theme-window {
   margin-bottom: 123px;
   font-weight: 700;
@@ -347,15 +346,19 @@ main {
     flex-direction: column;
     align-content: center;
     background-color: #e2eee3;
-    padding-top: 100px;
     height: auto;
     gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .main-container {
+    padding-top: 90px;
   }
 
   .nav-bar-add-meet-main {
     display: block;
   }
-  
+
   .list-meet {
     margin-left: 2rem;
     margin-right: 40px;
@@ -413,12 +416,12 @@ main {
   .container-window {
     width: 100%;
     margin-bottom: 0;
-    margin-top: 1rem;
     height: 250px;
   }
 
-  main {
-    padding-top: 100px;
+  .main-container {
+    padding-top: 90px;
+    margin-top: 1rem;
   }
 
   .near-meet {
@@ -449,15 +452,16 @@ main {
     height: 200px;
     gap: 0;
     justify-content: space-around;
-    margin-top: 1rem;
+    margin-top: 0;
   }
 
   main p {
     font-size: 1rem;
   }
 
-  main {
-    padding-top: 80px;
+  .main-container {
+    padding-top: 70px;
+    margin-top: 1rem;
   }
 
   .data-window,
@@ -500,7 +504,6 @@ main {
   .container-window {
     height: 180px;
     justify-content: center;
-    margin-top: 0.5rem;
     gap: 0.5rem;
   }
 

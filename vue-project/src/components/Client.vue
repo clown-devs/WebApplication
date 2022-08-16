@@ -16,7 +16,7 @@
         <edit-button class="edit-btn" @click="editClient"></edit-button>
 
         <button class="show-client-history" @click="touchShowCLientHistory">
-          История
+          Встречи
         </button>
 
         <show-info-btn
@@ -199,6 +199,7 @@ export default {
   border: 0;
   background-color: inherit;
   cursor: pointer;
+  margin-left: 30px;  
 }
 
 /* Animations and hovers */

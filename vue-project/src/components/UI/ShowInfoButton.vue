@@ -36,6 +36,7 @@ export default {
   font-size: 1.25rem;
   font-family: "Exo 2";
   color: #7a7474;
+  margin-left: 20px;
 }
 
 /* Animations and hovers */
