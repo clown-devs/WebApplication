@@ -14,6 +14,11 @@
 
       <div class="header-buttons">
         <edit-button class="edit-btn" @click="editClient"></edit-button>
+
+        <button class="show-client-history" @click="touchShowCLientHistory">
+          История
+        </button>
+
         <show-info-btn
           class="show-info-btn"
           @click="touchClientInfoButton"
@@ -22,12 +27,14 @@
       </div>
     </div>
 
+    <client-history 
+      v-if="isShowClientHistory" 
+      @close="closeHistory"
+    ></client-history>
+
     <ul class="contact-list" v-if="isShowContactList">
       <li class="contact-item" v-for="contact in contacts" :key="contact">
-        <contact 
-          :contactData="contact"
-          @edit="editedContact"
-        ></contact>
+        <contact :contactData="contact" @edit="editedContact"></contact>
       </li>
     </ul>
   </div>
@@ -38,15 +45,22 @@ import api from "@/api";
 import Contact from "@/components/Contact.vue";
 import ShowInfoBtn from "@/components/UI/ShowInfoButton.vue";
 import EditButton from "@/components/UI/EditButton.vue";
+import ClientHistory from "@/components/ClientHistory.vue";
 
 export default {
-  components: { Contact, ShowInfoBtn, EditButton },
+  components: {
+    Contact,
+    ShowInfoBtn,
+    EditButton,
+    ClientHistory,
+  },
 
   data() {
     return {
       isShowContactList: false,
+      isShowClientHistory: false,
       contacts: [],
-      client: this.clientData
+      client: this.clientData,
     };
   },
 
@@ -72,20 +86,25 @@ export default {
       //   name: this.clientData.name,
       //   inn: "77771231423"
       // });
-      
       // this.$emit("edit", this.client);
     },
 
     editedContact(contact) {
-
-      this.contacts = this.contacts.map(item => {
+      this.contacts = this.contacts.map((item) => {
         if (item.id === contact.id) {
           return contact;
         }
 
         return item;
       });
+    },
 
+    touchShowCLientHistory() {
+      this.isShowClientHistory = true;
+    },
+
+    closeHistory() {
+      this.isShowClientHistory = false;
     }
   },
 };
@@ -172,14 +191,25 @@ export default {
   grid-column: col3 / col-end;
 }
 
+.show-client-history {
+  font-family: "Exo 2";
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #7a7474;
+  border: 0;
+  background-color: inherit;
+  cursor: pointer;
+}
+
 /* Animations and hovers */
 
-.client {
+.client,
+.show-client-history {
   transition-duration: 0.5s;
 }
 
 .client:hover {
-  border: 3px solid green;
+  transform: translateY(-3px);
   transition-duration: 0.5s;
 }
 
@@ -190,7 +220,8 @@ export default {
 }
 
 .client-inn-content:hover,
-.client-name-content:hover {
+.client-name-content:hover,
+.show-client-history:hover {
   transition-duration: 0.5s;
   color: #00b268;
 }

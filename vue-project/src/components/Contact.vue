@@ -148,7 +148,7 @@ export default {
 }
 
 .contact-item:hover {
-  border: 3px solid green;
+  transform: translateY(-3px);
   transition-duration: 0.5s;
 }
 

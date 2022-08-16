@@ -1,8 +1,10 @@
 <template>
   <div class="calendar-container">
     <nav-bar></nav-bar>
-    <h1>Calendar page</h1>
-    <loading-indicate></loading-indicate>
+    <main>
+      <h1>Calendar page</h1>
+      <loading-indicate></loading-indicate>
+    </main>
   </div>
 </template>
 
@@ -11,12 +13,20 @@ import NavBar from "@/components/NavBar.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 
 export default {
-  components: { 
+  components: {
     NavBar,
     LoadingIndicate
-  }
+  },
 };
 </script>
 
 <style scoped>
+main {
+  height: calc(100vh - 110px);
+  padding-top: 110px;
+}
+
+.calendar-container {
+  height: 100vh;
+}
 </style>
