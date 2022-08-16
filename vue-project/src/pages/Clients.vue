@@ -101,7 +101,7 @@ h1 {
   margin: 53px 10.14% 21px 10.14%;
   font-family: "Exo 2";
   font-weight: 700;
-  font-size: 1.43rem;
+  font-size: 2rem;
 }
 
 main {

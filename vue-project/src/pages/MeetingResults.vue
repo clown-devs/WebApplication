@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <nav-bar></nav-bar>
     <h1>Meeting results page</h1>
     <loading-indicate></loading-indicate>
@@ -16,4 +16,8 @@ export default {
 </script>
 
 <style>
+.wrapper {
+  height: calc(100vh - 110px);
+  padding-top: 110px;
+}
 </style>
