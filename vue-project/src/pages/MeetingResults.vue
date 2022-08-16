@@ -15,7 +15,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .wrapper {
   height: calc(100vh - 110px);
   padding-top: 110px;
