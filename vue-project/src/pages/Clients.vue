@@ -162,7 +162,8 @@ main {
   padding: 0;
   margin-bottom: 18px;
   outline: none;
-  
+  padding-left: 10px;
+  font-size:24px;
 }
 
 .search-input:focus {
@@ -294,4 +295,5 @@ h1:hover {
     padding-top: 50px;
   }
 }
+
 </style>
