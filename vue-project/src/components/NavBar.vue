@@ -12,28 +12,31 @@
 
         <div class="menu-items">
           <li class="nav-bar-list-item" @click="$router.push('/')">
-            
-            <router-link to="/" class="unactive" active-class="active">Главная страница</router-link>
+            <router-link to="/" class="unactive" active-class="active"
+              >Главная страница</router-link
+            >
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/clients')">
-            
-            <router-link to="/clients" class="unactive" active-class="active">Мои клиенты</router-link>
+            <router-link to="/clients" class="unactive" active-class="active"
+              >Мои клиенты</router-link
+            >
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/calendar')">
-            
-            <router-link to="/calendar" class="unactive" active-class="active">Календарь</router-link>
+            <router-link to="/calendar" class="unactive" active-class="active"
+              >Календарь</router-link
+            >
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/results')">
-            
-            <router-link to="/results" class="unactive" active-class="active">Отчёты по встречам</router-link>
+            <router-link to="/results" class="unactive" active-class="active"
+              >Отчёты по встречам</router-link
+            >
           </li>
 
           <li class="nav-bar-list-item button-exit" @click="logOutWrapper">
             <button class="log-out-item">Выйти</button>
-
           </li>
         </div>
       </ul>
@@ -46,10 +49,11 @@
           @closePopup="closeInfoPopup"
           class="modal-window"
         >
-          <div class="roo">
-            <h1 class="qwe">Доступные комнаты</h1>
+          <template v-slot:header>
+            <h1 class="popup-title">Доступные комнаты</h1>
+          </template>
 
-            <div class="v-popup__header"></div>
+          <template v-slot:content>
             <select
               name=""
               id=""
@@ -62,7 +66,7 @@
               </option>
             </select>
             <loading-indicate v-else></loading-indicate>
-          </div>
+          </template>
         </v-popup>
       </div>
 
@@ -152,7 +156,18 @@ button {
   font-weight: 700;
 }
 
+.popup-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 2;
+}
 
+.select-room {
+  display: flex;
+  width: 100%;
+  margin: 1rem;
+}
 
 .free-room {
   border: 1px solid green;
@@ -166,9 +181,8 @@ button {
 }
 
 .active {
-  color:#00b268;
+  color: #00b268;
 }
-
 
 .qwe {
   margin-bottom: 30px;
@@ -182,7 +196,6 @@ button {
   font-weight: 900;
   font-size: 1.5rem;
   cursor: pointer;
-
 }
 
 .select-room {
@@ -284,7 +297,6 @@ ul {
   font-size: 16px;
   margin-right: 52px;
   cursor: pointer;
-  
 }
 
 .nav-bar-add-meet {
@@ -493,8 +505,6 @@ ul {
   .log-out-item {
     font-size: 24px;
     display: flex;
-
-
   }
   .nav-bar-add-meet {
     margin-right: 20px;
@@ -521,7 +531,7 @@ ul {
     overflow: hidden;
     position: absolute;
     background-color: #90dc97;
-    
+
     right: 0;
     left: 0;
     margin-top: 57px;
