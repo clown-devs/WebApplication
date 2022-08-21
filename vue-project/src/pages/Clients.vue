@@ -5,8 +5,8 @@
       <h1>Список клиентов</h1>
 
       <div class="checkbox">
-        <h3 class="display">Показать всех клиентов</h3>
-        <input type="checkbox" name="highload1" id="highload1" />
+        <h3 class="display">Мои клиенты</h3>
+        <input type="checkbox" name="highload1" id="highload1" checked/>
         <label
           for="highload1"
           data-onlabel=""
