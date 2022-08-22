@@ -236,6 +236,8 @@ export default {
     },
 
     async createClient() {
+      this.isExistClient = false;
+
       const isCorrectForm = await this.v$.$validate();
       if (!isCorrectForm) {
         return;
