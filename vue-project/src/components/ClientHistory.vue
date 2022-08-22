@@ -38,16 +38,7 @@ export default {
   },
 
   async mounted() {
-    this.historyList = await api.getMeetings();
-
-    for (let index = 0; index < 50; index++) {
-      this.historyList.push({
-        date: "2022-08-25",
-        topic:
-          "Dsvpdkf;skf;sdfksd;fks;dfDsvpdkf; skf;sdfksd;fks;dfDsvpdkf; skf;sdfksd;fks ksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;dfDsvpdkf;skf;sdfksd;fks;df",
-      });
-    }
-
+    // this.historyList = await api.getMeetings();
     this.isLoadedData = true;
   },
 
