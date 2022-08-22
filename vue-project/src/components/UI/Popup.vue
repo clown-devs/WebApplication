@@ -1,6 +1,6 @@
 <template>
   <div class="popup_wrapper" ref="popup_wrapper">
-    <div class="v-popup animation">
+    <form class="v-popup animation" @submit.prevent>
       <div class="v-popup__header">
         <slot name="header"></slot>
         <span>
@@ -13,11 +13,12 @@
       <div class="v-popup__footer">
         <slot name="footer"></slot>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
+
 export default {
   props: {},
 
@@ -43,7 +44,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .material-icons {
   cursor: pointer;
 }
@@ -56,7 +56,7 @@ export default {
   right: 0;
   left: 0;
   top: 0;
-  background: rgba(70, 70, 70, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   bottom: 0;
 }
 
@@ -74,19 +74,26 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 1rem;
+    margin: 2rem;
+    font-family: "Exo 2";
+    font-weight: 700;
+    font-size: 1.5rem;
   }
 
   &__footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 2rem;
   }
 
   &__content {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 2rem;
   }
 
   .close_modal {
@@ -94,6 +101,7 @@ export default {
     background: #00b268;
   }
 }
+
 .animation {
   animation-duration: 0.55s;
   animation-fill-mode: both;
@@ -136,5 +144,4 @@ export default {
   transition-duration: 0.5s;
   color: #00b268;
 }
-
 </style>

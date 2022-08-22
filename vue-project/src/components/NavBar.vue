@@ -113,6 +113,7 @@ export default {
       this.isInfoPopupVisible = false;
     },
   },
+
   data() {
     return {
       isInfoPopupVisible: false,
@@ -121,6 +122,7 @@ export default {
       selected: "test",
     };
   },
+  
   async mounted() {
     const places = await api.getPlaces();
     this.places = places;
