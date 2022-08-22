@@ -68,10 +68,11 @@ const api = {
 
     },
 
-    async getClients() {
+    async getClients(isMy) {
         try {
             let clients = await axios.get(
-                API_KEY + API_PATHS['client'] + "?employee=" + auth.state.user.id
+                API_KEY + API_PATHS['client']
+                + ( isMy ? "?employee=" + auth.state.user.id : "" )
             );
             return clients.data;
 

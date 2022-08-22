@@ -5,8 +5,14 @@
       <h1>Список клиентов</h1>
 
       <div class="checkbox">
-        <h3 class="display">Мои клиенты</h3>
-        <input type="checkbox" name="highload1" id="highload1" checked/>
+        <h3 class="display">{{ checkboxTitle }}</h3>
+        <input
+          type="checkbox"
+          name="highload1"
+          id="highload1"
+          @click="touchCheckbox"
+          checked
+        />
         <label
           for="highload1"
           data-onlabel=""
@@ -15,7 +21,7 @@
         ></label>
       </div>
     </div>
-    <form action="">
+    <form action="" class="search-form">
       <input
         type="text"
         class="search-input"
@@ -65,11 +71,12 @@ export default {
       clients: [],
       isLoadedClientsFromApi: false,
       searchQuery: "",
+      isMyClients: true,
     };
   },
 
   async mounted() {
-    this.clients = await api.getClients();
+    this.clients = await api.getClients(true);
     this.isLoadedClientsFromApi = true;
   },
 
@@ -80,6 +87,10 @@ export default {
           client.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
           client.inn.includes(this.searchQuery)
       );
+    },
+
+    checkboxTitle() {
+      return this.isMyClients ? "Мои клиенты" : "Все клиенты";
     },
   },
 
@@ -100,6 +111,13 @@ export default {
       //   inn: "1234567890"
       // });
       // this.clients.push(newClient);
+    },
+
+    async touchCheckbox() {
+      this.isLoadedClientsFromApi = false;
+      this.isMyClients = !this.isMyClients;
+      this.clients = await api.getClients(this.isMyClients);
+      this.isLoadedClientsFromApi = true;
     },
   },
 };
@@ -163,22 +181,22 @@ main {
   margin-bottom: 18px;
   outline: none;
   padding-left: 10px;
-  font-size:24px;
-}
-
-.search-input:focus {
-border-color: #7A7474;
+  font-size: 24px;
 }
 
 .search-icon {
-  position: absolute; 
+  position: absolute;
   top: 3px;
   right: 21px;
   border: none;
   cursor: pointer;
 }
 
-/*checkbox*/
+.search-form {
+  margin-right: calc(10.14% + 10px);
+}
+/* Checkbox */
+
 .list-checkbox {
   display: flex;
   align-items: center;
@@ -278,6 +296,10 @@ h1:hover {
   transition-duration: 0.5s;
 }
 
+.search-input:focus {
+  border-color: #7a7474;
+}
+
 @media (max-width: 1200px) {
   .wrapper {
     padding-top: 80px;
@@ -295,5 +317,4 @@ h1:hover {
     padding-top: 50px;
   }
 }
-
 </style>
