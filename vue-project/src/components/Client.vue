@@ -85,13 +85,8 @@ export default {
       this.isShowContactList = !this.isShowContactList;
     },
 
-    async editClient() {
-      // this.client = await api.editClient({
-      //   id: this.clientData.id,
-      //   name: this.clientData.name,
-      //   inn: "77771231423"
-      // });
-      // this.$emit("edit", this.client);
+    editClient() {
+      this.$emit("edit", this.clientData);
     },
 
     editedContact(contact) {

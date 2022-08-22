@@ -37,7 +37,7 @@
         <div class="clients-container">
           <ul class="clients-list" v-if="clients.length">
             <li v-for="client in searchedClients" :key="client">
-              <client :clientData="client" @edit="editedClient"></client>
+              <client :clientData="client" @edit="touchEditClient"></client>
             </li>
           </ul>
           <ul class="clients-list empty" v-else>
@@ -51,12 +51,12 @@
         >
 
         <popup
-          v-if="showCreateClientPopup"
+          v-if="displayPopup"
           @closePopup="closePopup"
-          class="create-client__modal-window"
+          class="client__modal-window"
         >
           <template v-slot:header>
-            <span class="popup-title">Создание клиента</span>
+            <span class="popup-title">{{ popupTitle }}</span>
           </template>
           <template v-slot:content>
             <div class="company-name-container">
@@ -92,7 +92,10 @@
                 ИНН является обязательным полем!
               </small>
               <small
-                v-if="v$.newClientInn.minLength.$invalid"
+                v-if="
+                  v$.newClientInn.minLength.$invalid ||
+                  v$.newClientInn.maxLength.$invalid
+                "
                 class="validate-error-message"
               >
                 Длина ИНН должна быть длиной 12 символов!
@@ -100,13 +103,10 @@
             </div>
           </template>
           <template v-slot:footer>
-            <add-button class="create-client-btn" @click="createClient">
-              Создать
+            <add-button class="popup-footer-btn" @click="popupAction">
+              {{ popupButtonTitle }}
             </add-button>
-            <small
-              v-if="isExistClient"
-              class="validate-error-message"
-            >
+            <small v-if="isExistClient" class="validate-error-message">
               Клиент с таким ИНН уже существует!
             </small>
           </template>
@@ -125,7 +125,7 @@ import api from "@/api";
 import AddButton from "@/components/UI/AddButton.vue";
 import Popup from "@/components/UI/Popup.vue";
 import auth from "@/store/modules/auth";
-import { required, minLength } from "@vuelidate/validators";
+import { required, minLength, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
 export default {
@@ -146,7 +146,11 @@ export default {
   validations() {
     return {
       newClientName: { required },
-      newClientInn: { required, minLength: minLength(12) },
+      newClientInn: {
+        required,
+        minLength: minLength(12),
+        maxLength: maxLength(12),
+      },
     };
   },
 
@@ -156,10 +160,15 @@ export default {
       isLoadedClientsFromApi: false,
       searchQuery: "",
       isMyClients: true,
-      showCreateClientPopup: false,
+      displayPopup: false,
       newClientName: "",
       newClientInn: "",
       isExistClient: false,
+      isCreateClientMode: false,
+      editClientObject: {
+        name: "",
+        inn: ""
+      },
     };
   },
 
@@ -186,20 +195,43 @@ export default {
       res.push(auth.state.user.id);
       return res;
     },
+
+    popupButtonTitle() {
+      return this.isCreateClientMode ? "Создать" : "Сохранить";
+    },
+
+    popupTitle() {
+      return this.isCreateClientMode
+        ? "Создание клиента"
+        : "Редактирование клиента";
+    },
   },
 
   methods: {
-    editedClient(client) {
-      this.clients = this.clients.map((item) => {
-        if (item.id === client.id) {
-          return client;
-        }
+    async editClient() {
+      const isCorrectForm = await this.v$.$validate();
+      if (!isCorrectForm) {
+        return;
+      }
 
-        return item;
-      });
+      this.editClientObject.name = this.newClientName;
+      this.editClientObject.inn = this.newClientInn;
+      
+      const editedClient = await api.editClient(this.editClientObject);
+      this.closePopup();
+    },
+
+    touchEditClient(client) {
+      this.editClientObject = client;
+      this.newClientName = client.name;
+      this.newClientInn = client.inn;
+
+      this.isCreateClientMode = false;
+      this.showPopup();
     },
 
     touchCreateClient() {
+      this.isCreateClientMode = true;
       this.showPopup();
     },
 
@@ -216,7 +248,7 @@ export default {
       };
 
       this.isExistClient = await api.isExistClient(createdClient);
-      
+
       if (this.isExistClient) {
         return;
       }
@@ -235,19 +267,28 @@ export default {
     },
 
     closePopup() {
-      this.showCreateClientPopup = false;
+      this.displayPopup = false;
       this.cleareCreateClientPopup();
       this.isExistClient = false;
     },
 
     showPopup() {
-      this.showCreateClientPopup = true;
+      this.displayPopup = true;
     },
 
     cleareCreateClientPopup() {
       this.newClientName = "";
       this.newClientInn = "";
       this.v$.$reset();
+    },
+
+    async popupAction() {
+      if (this.isCreateClientMode) {
+        await this.createClient();
+        return;
+      }
+
+      await this.editClient();
     },
   },
 };
@@ -441,7 +482,7 @@ main {
   justify-content: center;
 }
 
-.create-client-btn {
+.popup-footer-btn {
   width: 80%;
   height: 40px;
 }
