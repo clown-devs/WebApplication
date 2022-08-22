@@ -48,4 +48,17 @@ export default {
   transition-duration: 0.5s;
   color: #00b268;
 }
+
+@media (max-width: 768px) { 
+.show-info-content {
+  cursor: pointer;
+  background-color: #f1fbf2;
+  border-width: 0;
+  font-weight: 700;
+  font-size: 1.25rem;
+  font-family: "Exo 2";
+  color: #7a7474;
+  margin-left: 0px;
+}
+}
 </style>

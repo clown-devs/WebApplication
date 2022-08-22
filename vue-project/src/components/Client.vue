@@ -68,7 +68,7 @@ export default {
       isShowClientHistory: false,
       contacts: [],
       client: this.clientData,
-      isCreateContactMode: true
+      isCreateContactMode: true,
     };
   },
 
@@ -80,8 +80,8 @@ export default {
 
     newContact: {
       type: Object,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
 
   methods: {
@@ -121,7 +121,7 @@ export default {
       if (this.newContact === undefined) {
         return this.contacts;
       }
-      
+
       const isNewContact = true;
       this.contacts = this.contacts.map((item, isNewContact) => {
         if (item.id === this.newContact.id) {
@@ -137,13 +137,12 @@ export default {
       }
 
       return this.contacts;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-
 /* Main styles */
 
 .create-contact-btn {
@@ -225,7 +224,7 @@ export default {
 }
 
 .header-buttons {
-  margin-right: 2rem;
+  margin-right: 2 rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -273,5 +272,53 @@ export default {
 .create-contact-btn:hover {
   transition-duration: 0.5s;
   color: #00b268;
+}
+
+@media (max-width: 768px) {
+  .client-icon-container {
+    display: none;
+  }
+
+  .client {
+    display: grid;
+    background-color: #f1fbf2;
+    border: 0.71px solid #f1fbf2;
+    box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    height: 94px;
+    grid-template-rows: [start] 1.2fr [row2] 0.5fr [row3] 1fr [row-end];
+    grid-template-columns: [start] 0.1fr [col2] 1fr [col3] 1fr [col-end];
+    font-family: "Exo 2";
+    font-weight: 500;
+  }
+
+  .client-inn-content {
+    font-size: 13px;
+  }
+
+  .client-name-content {
+    font-size: 19px;
+  }
+
+  .header-buttons {
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    grid-row: row2 / row3;
+    grid-column: col3 / col-end;
+  }
+
+  .show-client-history {
+    font-family: "Exo 2";
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #7a7474;
+    border: 0;
+    background-color: inherit;
+    cursor: pointer;
+    margin-left: 0px;
+  }
 }
 </style>

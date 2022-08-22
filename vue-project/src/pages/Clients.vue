@@ -279,6 +279,10 @@ export default {
       editContactObject: {},
       clientIdForNewContact: "",
       newContactForClient: new Map(),
+      editClientObject: {
+        name: "",
+        inn: "",
+      },
     };
   },
 
@@ -800,18 +804,111 @@ h1:hover {
 @media (max-width: 1200px) {
   .wrapper {
     padding-top: 80px;
+    margin-right: 40px;
+    margin-left: 40px;
+  }
+
+  .search-form {
+    margin-right: calc(10px);
+  }
+
+  .checkbox {
+    margin-right: 0;
+  }
+
+  h1 {
+    margin: 53px 0 21px 0;
+    font-size: 1.7rem;
+  }
+
+  .clients-list {
+    margin: 0;
+  }
+
+  form {
+    margin: 0;
   }
 }
 
 @media (max-width: 992px) {
   .wrapper {
     padding-top: 80px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .search-form {
+    margin-right: calc(10px);
+  }
+
+  .checkbox {
+    margin-right: 0;
+  }
+
+  h1 {
+    margin: 53px 0 21px 0;
+    font-size: 1.4rem;
+  }
+
+  .clients-list {
+    margin: 0;
+  }
+
+  form {
+    margin: 0;
   }
 }
 
 @media (max-width: 768px) {
   .wrapper {
     padding-top: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .search-form {
+    margin-right: calc(10px);
+  }
+
+  .checkbox {
+    margin-right: 0;
+  }
+
+  h1 {
+    margin: 53px 0 21px 0;
+    font-size: 1.3rem;
+  }
+
+  .clients-list {
+    margin: 0;
+  }
+
+  form {
+    margin: 0;
+  }
+
+  .lb1 {
+    margin: 2em 0 0 1em;
+  }
+
+  #highload1 + .lb1 {
+    display: inline-block;
+    position: relative;
+    width: 43px;
+    height: 25px;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+
+  #highload1 + .lb1::after {
+    border-radius: 50%;
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
   }
 }
 </style>
