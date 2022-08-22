@@ -1,53 +1,57 @@
 <template>
   <div class="wrapper">
     <nav-bar></nav-bar>
-    <div class="list-checkbox">
-      <h1>Список клиентов</h1>
+    <main>
+      <div class="list-checkbox">
+        <h1>Список клиентов</h1>
 
-      <div class="checkbox">
-        <h3 class="display">{{ checkboxTitle }}</h3>
+        <div class="checkbox">
+          <h3 class="display">{{ checkboxTitle }}</h3>
+          <input
+            type="checkbox"
+            name="highload1"
+            id="highload1"
+            @click="touchCheckbox"
+            checked
+          />
+          <label
+            for="highload1"
+            data-onlabel=""
+            data-offlabel=""
+            class="lb1"
+          ></label>
+        </div>
+      </div>
+
+      <form action="" class="search-form">
         <input
-          type="checkbox"
-          name="highload1"
-          id="highload1"
-          @click="touchCheckbox"
-          checked
+          type="text"
+          class="search-input"
+          v-model="searchQuery"
+          placeholder=""
         />
-        <label
-          for="highload1"
-          data-onlabel=""
-          data-offlabel=""
-          class="lb1"
-        ></label>
+        <img src="/svg/search.svg" alt="" class="search-icon" />
+      </form>
+
+      <div class="client-list-container" v-if="isLoadedClientsFromApi">
+        <div class="clients-container">
+          <ul class="clients-list" v-if="clients.length">
+            <li v-for="client in searchedClients" :key="client">
+              <client :clientData="client" @edit="editedClient"></client>
+            </li>
+          </ul>
+          <ul class="clients-list empty" v-else>
+            <li class="clients-item clients-item-empty">
+              <span class="empty-message">Нет клиентов</span>
+            </li>
+          </ul>
+        </div>
+        <add-button class="add-button" @click="createClient"
+          >Добавить нового клиента</add-button
+        >
       </div>
-    </div>
-    <form action="" class="search-form">
-      <input
-        type="text"
-        class="search-input"
-        v-model="searchQuery"
-        placeholder=""
-      />
-      <img src="/svg/search.svg" alt="" class="search-icon" />
-    </form>
-    <main v-if="isLoadedClientsFromApi">
-      <div class="client-container">
-        <ul class="clients-list" v-if="clients.length">
-          <li v-for="client in searchedClients" :key="client">
-            <client :clientData="client" @edit="editedClient"></client>
-          </li>
-        </ul>
-        <ul class="clients-list empty" v-else>
-          <li class="clients-item clients-item-empty">
-            <span class="empty-message">Нет клиентов</span>
-          </li>
-        </ul>
-      </div>
-      <add-button class="add-button" @click="createClient"
-        >Добавить нового клиента</add-button
-      >
+      <loading-indicate v-else></loading-indicate>
     </main>
-    <loading-indicate v-else></loading-indicate>
   </div>
 </template>
 
@@ -140,17 +144,29 @@ form {
 
 main {
   background-color: #e2eee3;
+  height: 100%;
+}
+
+.client-list-container {
+  background-color: #e2eee3;
   display: flex;
   flex-direction: column;
+  max-height: 70%;
 }
 
 .wrapper {
   padding-top: 100px;
+  height: calc(100% - 100px);
 }
+
 .clients-list {
   margin: 0 10.14% 0 10.14%;
   list-style: none;
   padding: 0;
+}
+
+.clients-container {
+  overflow-y: auto;
 }
 
 .clients-item-empty {
@@ -195,6 +211,13 @@ main {
 .search-form {
   margin-right: calc(10.14% + 10px);
 }
+
+.add-button {
+  align-self: center;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
 /* Checkbox */
 
 .list-checkbox {
@@ -270,6 +293,7 @@ main {
 #highload1:checked + .lb1::before {
   color: #fff;
 }
+
 .checkbox {
   display: flex;
   margin-left: auto;
@@ -279,10 +303,6 @@ main {
 
 .display {
   margin: 0;
-}
-.add-button {
-  align-self: center;
-  margin-top: 5rem;
 }
 
 /* Animations and hovers */
