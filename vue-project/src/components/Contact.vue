@@ -27,9 +27,6 @@
       </div>
       <div class="contact-number">
         <p class="contact-number-content">Телефон: {{ contact.phone }}</p>
-        <div class="contact-managers">
-          <a class="contact-managers-content"> Менеджеры </a>
-        </div>
       </div>
     </div>
   </div>
