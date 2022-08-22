@@ -15,7 +15,7 @@
       <div class="header-buttons">
         <edit-button class="edit-btn" @click="editClient"></edit-button>
 
-        <button class="create-contact-btn"></button>
+        <button class="create-contact-btn" @click="touchCreateContact"></button>
 
         <button class="show-client-history" @click="touchShowCLientHistory">
           Встречи
@@ -35,9 +35,9 @@
     ></client-history>
 
     <div class="contact-list-container"  v-if="isShowContactList">
-      <ul class="contact-list" v-if="contacts.length">
-        <li class="contact-item" v-for="contact in contacts" :key="contact">
-          <contact :contactData="contact" @edit="editedContact"></contact>
+      <ul class="contact-list" v-if="allContacts.length">
+        <li class="contact-item" v-for="contact in allContacts" :key="contact">
+          <contact :contactData="contact" @edit="touchEditContact(contact)"></contact>
         </li>
       </ul>
       <ul contact-list v-else>
@@ -68,6 +68,7 @@ export default {
       isShowClientHistory: false,
       contacts: [],
       client: this.clientData,
+      isCreateContactMode: true
     };
   },
 
@@ -76,6 +77,11 @@ export default {
       type: Object,
       default: {},
     },
+
+    newContact: {
+      type: Object,
+      default: undefined
+    }
   },
 
   methods: {
@@ -87,18 +93,18 @@ export default {
       this.isShowContactList = !this.isShowContactList;
     },
 
+    touchCreateContact() {
+      this.$emit("create", this.clientData);
+      this.isCreateContactMode = true;
+    },
+
     editClient() {
       this.$emit("edit", this.clientData);
     },
 
-    editedContact(contact) {
-      this.contacts = this.contacts.map((item) => {
-        if (item.id === contact.id) {
-          return contact;
-        }
-
-        return item;
-      });
+    touchEditContact(contact) {
+      this.$emit("editContact", contact);
+      this.isCreateContactMode = false;
     },
 
     touchShowCLientHistory() {
@@ -109,6 +115,30 @@ export default {
       this.isShowClientHistory = false;
     },
   },
+
+  computed: {
+    allContacts() {
+      if (this.newContact === undefined) {
+        return this.contacts;
+      }
+      
+      const isNewContact = true;
+      this.contacts = this.contacts.map((item, isNewContact) => {
+        if (item.id === this.newContact.id) {
+          isNewContact = false;
+          return this.newContact;
+        }
+
+        return item;
+      });
+
+      if (this.isCreateContactMode) {
+        this.contacts.push(this.newContact);
+      }
+
+      return this.contacts;
+    }
+  }
 };
 </script>
 
