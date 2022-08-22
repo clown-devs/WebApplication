@@ -100,9 +100,15 @@
             </div>
           </template>
           <template v-slot:footer>
-            <add-button class="create-client-btn" @click="createClient"
-              >Создать</add-button
+            <add-button class="create-client-btn" @click="createClient">
+              Создать
+            </add-button>
+            <small
+              v-if="isExistClient"
+              class="validate-error-message"
             >
+              Клиент с таким ИНН уже существует!
+            </small>
           </template>
         </popup>
       </div>
@@ -153,6 +159,7 @@ export default {
       showCreateClientPopup: false,
       newClientName: "",
       newClientInn: "",
+      isExistClient: false,
     };
   },
 
@@ -202,11 +209,19 @@ export default {
         return;
       }
 
-      const newClient = await api.createClient({
+      const createdClient = {
         name: this.newClientName,
         inn: this.newClientInn,
         employee_list: this.employee_list,
-      });
+      };
+
+      this.isExistClient = await api.isExistClient(createdClient);
+      
+      if (this.isExistClient) {
+        return;
+      }
+
+      const newClient = await api.createClient(createdClient);
 
       this.clients.push(newClient);
       this.closePopup();
@@ -221,10 +236,18 @@ export default {
 
     closePopup() {
       this.showCreateClientPopup = false;
+      this.cleareCreateClientPopup();
+      this.isExistClient = false;
     },
 
     showPopup() {
       this.showCreateClientPopup = true;
+    },
+
+    cleareCreateClientPopup() {
+      this.newClientName = "";
+      this.newClientInn = "";
+      this.v$.$reset();
     },
   },
 };
