@@ -27,16 +27,21 @@
       </div>
     </div>
 
-    <client-history 
-      v-if="isShowClientHistory" 
+    <client-history
+      v-if="isShowClientHistory"
       @close="closeHistory"
     ></client-history>
 
-    <ul class="contact-list" v-if="isShowContactList">
-      <li class="contact-item" v-for="contact in contacts" :key="contact">
-        <contact :contactData="contact" @edit="editedContact"></contact>
-      </li>
-    </ul>
+    <div class="contact-list-container"  v-if="isShowContactList">
+      <ul class="contact-list" v-if="contacts.length">
+        <li class="contact-item" v-for="contact in contacts" :key="contact">
+          <contact :contactData="contact" @edit="editedContact"></contact>
+        </li>
+      </ul>
+      <ul contact-list v-else>
+        <contact></contact>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -80,13 +85,8 @@ export default {
       this.isShowContactList = !this.isShowContactList;
     },
 
-    async editClient() {
-      // this.client = await api.editClient({
-      //   id: this.clientData.id,
-      //   name: this.clientData.name,
-      //   inn: "77771231423"
-      // });
-      // this.$emit("edit", this.client);
+    editClient() {
+      this.$emit("edit", this.clientData);
     },
 
     editedContact(contact) {
@@ -105,7 +105,7 @@ export default {
 
     closeHistory() {
       this.isShowClientHistory = false;
-    }
+    },
   },
 };
 </script>
@@ -199,7 +199,7 @@ export default {
   border: 0;
   background-color: inherit;
   cursor: pointer;
-  margin-left: 30px;  
+  margin-left: 30px;
 }
 
 /* Animations and hovers */

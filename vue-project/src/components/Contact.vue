@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-item">
+  <div class="contact-item" v-if="this.contact !== undefined">
     <div class="contact-item__header">
       <div class="contact-name">
         <span class="contact-name-content">
@@ -27,11 +27,11 @@
       </div>
       <div class="contact-number">
         <p class="contact-number-content">Телефон: {{ contact.phone }}</p>
-        <div class="contact-managers">
-          <a class="contact-managers-content"> Менеджеры </a>
-        </div>
       </div>
     </div>
+  </div>
+  <div class="contact-item empty" v-else>
+    <span>Нет контактов</span>
   </div>
 </template>
 
@@ -45,14 +45,14 @@ export default {
   data() {
     return {
       showContactInfo: false,
-      contact: this.contactData
+      contact: this.contactData,
     };
   },
 
   props: {
     contactData: {
       type: Object,
-      default: {},
+      default: undefined,
     },
   },
 
@@ -84,6 +84,12 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.empty {
+  align-items: center;
+  font-family: "Exo 2";
+  font-weight: 700;
 }
 
 .contact-item__header {

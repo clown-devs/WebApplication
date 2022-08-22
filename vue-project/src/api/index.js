@@ -206,6 +206,20 @@ const api = {
         }
     },
 
+    async isExistClient(client) {
+        try {
+            let res = await axios.get(
+                API_KEY + API_PATHS['client'] 
+                + "?inn=" + client.inn
+            );
+            return res.data.length ? true : false;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return false;
+        }
+    },
+
     errorHandle(error) {
 
         if (error.response) {
