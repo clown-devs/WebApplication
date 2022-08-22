@@ -1,9 +1,7 @@
 <template>
-  <div class="button-add-meet">
-    <button class="add-meet-but">
-      <slot></slot>
-    </button>
-  </div>
+  <button class="add-meet-but">
+    <slot></slot>
+  </button>
 </template>
 
 <script>
@@ -29,8 +27,13 @@ button {
   border-radius: 20px;
 }
 
-.add-meet-but:hover,
-:focus {
+/* Animations and hovers */
+
+.add-meet-but {
+  transition: 0.3s;
+}
+
+.add-meet-but:hover {
   transform: translateY(-6px);
   border: 1px solid #fff;
   transition: 0.3s;

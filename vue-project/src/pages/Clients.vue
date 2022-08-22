@@ -46,9 +46,65 @@
             </li>
           </ul>
         </div>
-        <add-button class="add-button" @click="createClient"
+        <add-button class="add-button" @click="touchCreateClient"
           >Добавить нового клиента</add-button
         >
+
+        <popup
+          v-if="showCreateClientPopup"
+          @closePopup="closePopup"
+          class="create-client__modal-window"
+        >
+          <template v-slot:header>
+            <span class="popup-title">Создание клиента</span>
+          </template>
+          <template v-slot:content>
+            <div class="company-name-container">
+              <input
+                type="text"
+                class="company-name-input"
+                placeholder="Имя клиента"
+                v-model="newClientName"
+                :class="{ invalid: v$.newClientName.$error }"
+              />
+              <small
+                v-if="v$.newClientName.$error"
+                class="validate-error-message"
+              >
+                Имя клиента не должно быть пустым!
+              </small>
+            </div>
+
+            <div class="company-inn-container">
+              <input
+                type="text"
+                class="company-inn-input"
+                placeholder="ИНН"
+                v-model="newClientInn"
+                :class="{ invalid: v$.newClientInn.$error }"
+              />
+              <small
+                v-if="
+                  v$.newClientInn.$dirty && v$.newClientInn.required.$invalid
+                "
+                class="validate-error-message"
+              >
+                ИНН является обязательным полем!
+              </small>
+              <small
+                v-if="v$.newClientInn.minLength.$invalid"
+                class="validate-error-message"
+              >
+                Длина ИНН должна быть длиной 12 символов!
+              </small>
+            </div>
+          </template>
+          <template v-slot:footer>
+            <add-button class="create-client-btn" @click="createClient"
+              >Создать</add-button
+            >
+          </template>
+        </popup>
       </div>
       <loading-indicate v-else></loading-indicate>
     </main>
@@ -61,6 +117,10 @@ import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import Client from "@/components/Client.vue";
 import api from "@/api";
 import AddButton from "@/components/UI/AddButton.vue";
+import Popup from "@/components/UI/Popup.vue";
+import auth from "@/store/modules/auth";
+import { required, minLength } from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 
 export default {
   components: {
@@ -68,6 +128,20 @@ export default {
     LoadingIndicate,
     Client,
     AddButton,
+    Popup,
+  },
+
+  setup() {
+    return {
+      v$: useVuelidate(),
+    };
+  },
+
+  validations() {
+    return {
+      newClientName: { required },
+      newClientInn: { required, minLength: minLength(12) },
+    };
   },
 
   data() {
@@ -76,6 +150,9 @@ export default {
       isLoadedClientsFromApi: false,
       searchQuery: "",
       isMyClients: true,
+      showCreateClientPopup: false,
+      newClientName: "",
+      newClientInn: "",
     };
   },
 
@@ -96,6 +173,12 @@ export default {
     checkboxTitle() {
       return this.isMyClients ? "Мои клиенты" : "Все клиенты";
     },
+
+    employee_list() {
+      let res = new Array();
+      res.push(auth.state.user.id);
+      return res;
+    },
   },
 
   methods: {
@@ -109,12 +192,24 @@ export default {
       });
     },
 
+    touchCreateClient() {
+      this.showPopup();
+    },
+
     async createClient() {
-      // const newClient = await api.createClient({
-      //   name: "TestClient",
-      //   inn: "1234567890"
-      // });
-      // this.clients.push(newClient);
+      const isCorrectForm = await this.v$.$validate();
+      if (!isCorrectForm) {
+        return;
+      }
+
+      const newClient = await api.createClient({
+        name: this.newClientName,
+        inn: this.newClientInn,
+        employee_list: this.employee_list,
+      });
+
+      this.clients.push(newClient);
+      this.closePopup();
     },
 
     async touchCheckbox() {
@@ -122,6 +217,14 @@ export default {
       this.isMyClients = !this.isMyClients;
       this.clients = await api.getClients(this.isMyClients);
       this.isLoadedClientsFromApi = true;
+    },
+
+    closePopup() {
+      this.showCreateClientPopup = false;
+    },
+
+    showPopup() {
+      this.showCreateClientPopup = true;
     },
   },
 };
@@ -216,6 +319,7 @@ main {
   align-self: center;
   margin-top: 1.5rem;
   justify-content: flex-end;
+  min-height: 40px;
 }
 
 /* Checkbox */
@@ -303,6 +407,55 @@ main {
 
 .display {
   margin: 0;
+}
+
+/* Popup styles */
+
+.popup-title {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-client-btn {
+  width: 80%;
+  height: 40px;
+}
+
+.company-inn-input,
+.company-name-input {
+  width: 100%;
+  height: 30px;
+  background: #f5f5f5;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid #7a7474;
+  border-radius: 10px;
+  padding-left: 13px;
+  font-family: "Exo 2";
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.company-name-container,
+.company-inn-container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input[type="text"].invalid {
+  border-bottom-color: red;
+  margin-bottom: 5px;
+}
+
+.validate-error-message {
+  margin-top: 5px;
+  color: red;
+  font-weight: bolder;
 }
 
 /* Animations and hovers */
