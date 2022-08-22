@@ -15,6 +15,8 @@
       <div class="header-buttons">
         <edit-button class="edit-btn" @click="editClient"></edit-button>
 
+        <button class="create-contact-btn"></button>
+
         <button class="show-client-history" @click="touchShowCLientHistory">
           Встречи
         </button>
@@ -111,7 +113,18 @@ export default {
 </script>
 
 <style scoped>
+
 /* Main styles */
+
+.create-contact-btn {
+  height: 20px;
+  width: 20px;
+  background-image: url("../../public/svg/AddButtonIcon.svg");
+  background-color: inherit;
+  border: 0;
+  cursor: pointer;
+  margin-left: 30px;
+}
 
 .client-container {
   margin: 1rem 0 1rem 0;
@@ -220,9 +233,14 @@ export default {
   margin: 0;
 }
 
+.create-contact-btn {
+  transition-duration: 0.5s;
+}
+
 .client-inn-content:hover,
 .client-name-content:hover,
-.show-client-history:hover {
+.show-client-history:hover,
+.create-contact-btn:hover {
   transition-duration: 0.5s;
   color: #00b268;
 }
