@@ -63,12 +63,12 @@ export default {
 .v-popup {
   border-radius: 25px;
   position: fixed;
-  top: 200px;
+  top: 150px;
   background: #ffffff;
   box-shadow: 0 0 17px 0 #e7e7e7;
   z-index: 10;
   width: 500px;
-  height: 500px;
+  min-height: 500px;
 
   &__header {
     display: flex;

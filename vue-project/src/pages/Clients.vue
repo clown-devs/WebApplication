@@ -37,7 +37,13 @@
         <div class="clients-container">
           <ul class="clients-list" v-if="clients.length">
             <li v-for="client in searchedClients" :key="client">
-              <client :clientData="client" @edit="touchEditClient"></client>
+              <client
+                :clientData="client"
+                @edit="touchEditClient"
+                @create="touchCreateContact"
+                @editContact="touchEditContact"
+                :newContact="prepareNewContactForChildComponent(client.id)"
+              ></client>
             </li>
           </ul>
           <ul class="clients-list empty" v-else>
@@ -49,70 +55,163 @@
         <add-button class="add-button" @click="touchCreateClient"
           >Добавить нового клиента</add-button
         >
-
-        <popup
-          v-if="displayPopup"
-          @closePopup="closePopup"
-          class="client__modal-window"
-        >
-          <template v-slot:header>
-            <span class="popup-title">{{ popupTitle }}</span>
-          </template>
-          <template v-slot:content>
-            <div class="company-name-container">
-              <input
-                type="text"
-                class="company-name-input"
-                placeholder="Имя клиента"
-                v-model="newClientName"
-                :class="{ invalid: v$.newClientName.$error }"
-              />
-              <small
-                v-if="v$.newClientName.$error"
-                class="validate-error-message"
-              >
-                Имя клиента не должно быть пустым!
-              </small>
-            </div>
-
-            <div class="company-inn-container">
-              <input
-                type="text"
-                class="company-inn-input"
-                placeholder="ИНН"
-                v-model="newClientInn"
-                :class="{ invalid: v$.newClientInn.$error }"
-              />
-              <small
-                v-if="
-                  v$.newClientInn.$dirty && v$.newClientInn.required.$invalid
-                "
-                class="validate-error-message"
-              >
-                ИНН является обязательным полем!
-              </small>
-              <small
-                v-if="
-                  v$.newClientInn.minLength.$invalid ||
-                  v$.newClientInn.maxLength.$invalid
-                "
-                class="validate-error-message"
-              >
-                Длина ИНН должна быть длиной 12 символов!
-              </small>
-            </div>
-          </template>
-          <template v-slot:footer>
-            <add-button class="popup-footer-btn" @click="popupAction">
-              {{ popupButtonTitle }}
-            </add-button>
-            <small v-if="isExistClient" class="validate-error-message">
-              Клиент с таким ИНН уже существует!
-            </small>
-          </template>
-        </popup>
       </div>
       <loading-indicate v-else></loading-indicate>
+
+      <popup
+        v-if="displayClientPopup"
+        @closePopup="closePopupForClient"
+        class="client__modal-window"
+      >
+        <template v-slot:header>
+          <span class="popup-title">{{ clientPopupTitle }}</span>
+        </template>
+        <template v-slot:content>
+          <div class="company-name-container">
+            <input
+              type="text"
+              class="company-name-input"
+              placeholder="Имя клиента"
+              v-model="newClientName"
+              :class="{ invalid: v$.newClientName.$error }"
+            />
+            <small
+              v-if="v$.newClientName.$error"
+              class="validate-error-message"
+            >
+              Имя клиента не должно быть пустым!
+            </small>
+          </div>
+
+          <div class="company-inn-container">
+            <input
+              type="text"
+              class="company-inn-input"
+              placeholder="ИНН"
+              v-model="newClientInn"
+              :class="{ invalid: v$.newClientInn.$error }"
+            />
+            <small
+              v-if="v$.newClientInn.$dirty && v$.newClientInn.required.$invalid"
+              class="validate-error-message"
+            >
+              ИНН является обязательным полем!
+            </small>
+            <small
+              v-if="
+                v$.newClientInn.minLength.$invalid ||
+                v$.newClientInn.maxLength.$invalid
+              "
+              class="validate-error-message"
+            >
+              Длина ИНН должна быть длиной 12 символов!
+            </small>
+          </div>
+        </template>
+        <template v-slot:footer>
+          <add-button
+            class="popup-footer-btn"
+            @click="clientPopupActionHandler"
+          >
+            {{ popupButtonTitle }}
+          </add-button>
+          <small v-if="isExistClient" class="validate-error-message">
+            Клиент с таким ИНН уже существует!
+          </small>
+        </template>
+      </popup>
+
+      <popup
+        v-if="displayContactPopup"
+        @closePopup="closePopupForContact"
+        class="contact__modal-window"
+      >
+        <template v-slot:header>
+          <span class="popup-title">{{ contactPopupTitle }}</span>
+        </template>
+
+        <template v-slot:content>
+          <div class="contact-name-container first-name">
+            <input
+              type="text"
+              class="contact-name-input"
+              placeholder="Имя"
+              v-model="newContactFirstName"
+              :class="{ invalid: v$.newContactFirstName.$error }"
+            />
+            <small
+              v-if="v$.newContactFirstName.$error"
+              class="validate-error-message"
+            >
+              Имя контакта не должно быть пустым!
+            </small>
+          </div>
+
+          <div class="contact-name-container second-name">
+            <input
+              type="text"
+              class="contact-name-input"
+              placeholder="Фамилия"
+              v-model="newContactSecondName"
+              :class="{ invalid: v$.newContactSecondName.$error }"
+            />
+            <small
+              v-if="v$.newContactSecondName.$error"
+              class="validate-error-message"
+            >
+              Фамилия контакта не должна быть пустой!
+            </small>
+          </div>
+
+          <div class="contact-name-container third-name">
+            <input
+              type="text"
+              class="contact-name-input"
+              placeholder="Отчество"
+              v-model="newContactThirdName"
+            />
+          </div>
+
+          <div class="contact-phone-container">
+            <input
+              type="text"
+              class="contact-phone-input"
+              placeholder="Телефон"
+              v-model="newContactPhone"
+            />
+          </div>
+
+          <div class="contact-position-container">
+            <input
+              type="text"
+              class="contact-position-input"
+              placeholder="Должность"
+              v-model="newContactPosition"
+            />
+          </div>
+
+          <div class="contact-email-container">
+            <input
+              type="text"
+              class="contact-email-input"
+              placeholder="Почта"
+              v-model="newContactEmail"
+            />
+          </div>
+        </template>
+
+        <template v-slot:footer>
+          <add-button
+            class="popup-footer-btn"
+            @click="contactPopupActionHandler"
+          >
+            {{ popupButtonTitle }}
+          </add-button>
+          <small v-if="isExistContact" class="validate-error-message">
+            Контакт с таким именем и клиентом уже существует!
+          </small>
+        </template>
+      </popup>
     </main>
   </div>
 </template>
@@ -151,6 +250,8 @@ export default {
         minLength: minLength(12),
         maxLength: maxLength(12),
       },
+      newContactFirstName: { required },
+      newContactSecondName: { required },
     };
   },
 
@@ -160,15 +261,24 @@ export default {
       isLoadedClientsFromApi: false,
       searchQuery: "",
       isMyClients: true,
-      displayPopup: false,
+      displayClientPopup: false,
+      displayContactPopup: false,
       newClientName: "",
       newClientInn: "",
+      newContactFirstName: "",
+      newContactThirdName: "",
+      newContactSecondName: "",
+      newContactPhone: "",
+      newContactPosition: "",
+      newContactEmail: "",
       isExistClient: false,
+      isExistContact: false,
       isCreateClientMode: false,
-      editClientObject: {
-        name: "",
-        inn: ""
-      },
+      isCreateContactMode: false,
+      editClientObject: {},
+      editContactObject: {},
+      clientIdForNewContact: "",
+      newContactForClient: new Map(),
     };
   },
 
@@ -197,28 +307,43 @@ export default {
     },
 
     popupButtonTitle() {
-      return this.isCreateClientMode ? "Создать" : "Сохранить";
+      return this.isCreateClientMode || this.isCreateContactMode
+        ? "Создать"
+        : "Сохранить";
     },
 
-    popupTitle() {
+    clientPopupTitle() {
       return this.isCreateClientMode
         ? "Создание клиента"
         : "Редактирование клиента";
     },
+
+    contactPopupTitle() {
+      return this.isCreateContactMode
+        ? "Создание контакта"
+        : "Редактирование контакта";
+    }
   },
 
   methods: {
+
+    prepareNewContactForChildComponent(clientId) {
+      const newContact = this.newContactForClient.get(clientId);
+      this.newContactForClient.delete(clientId);
+      return newContact;
+    },
+
     async editClient() {
-      const isCorrectForm = await this.v$.$validate();
+      const isCorrectForm = await this.isCorrectClientForm();
       if (!isCorrectForm) {
         return;
       }
 
       this.editClientObject.name = this.newClientName;
       this.editClientObject.inn = this.newClientInn;
-      
+
       const editedClient = await api.editClient(this.editClientObject);
-      this.closePopup();
+      this.closePopupForClient();
     },
 
     touchEditClient(client) {
@@ -227,18 +352,37 @@ export default {
       this.newClientInn = client.inn;
 
       this.isCreateClientMode = false;
-      this.showPopup();
+      this.showPopupForClient();
     },
 
     touchCreateClient() {
       this.isCreateClientMode = true;
-      this.showPopup();
+      this.showPopupForClient();
+    },
+
+    touchCreateContact(client) {
+      this.isCreateContactMode = true;
+      this.showPopupForContact();
+      this.clientIdForNewContact = client.id;
+    },
+
+    touchEditContact(contact) {
+      this.isCreateContactMode = false;
+      this.showPopupForContact();
+      this.editContactObject = contact;
+    
+      this.newContactFirstName = contact.first_name;
+      this.newContactSecondName = contact.second_name;
+      this.newContactThirdName = contact.third_name;
+      this.newContactPosition = contact.position;
+      this.newContactPhone = contact.phone;
+      this.newContactEmail = contact.email;
     },
 
     async createClient() {
       this.isExistClient = false;
 
-      const isCorrectForm = await this.v$.$validate();
+      const isCorrectForm = await this.isCorrectClientForm();
       if (!isCorrectForm) {
         return;
       }
@@ -258,7 +402,7 @@ export default {
       const newClient = await api.createClient(createdClient);
 
       this.clients.push(newClient);
-      this.closePopup();
+      this.closePopupForClient();
     },
 
     async touchCheckbox() {
@@ -268,14 +412,25 @@ export default {
       this.isLoadedClientsFromApi = true;
     },
 
-    closePopup() {
-      this.displayPopup = false;
+    closePopupForClient() {
+      this.displayClientPopup = false;
       this.cleareCreateClientPopup();
       this.isExistClient = false;
+      this.isCreateClientMode = false;
     },
 
-    showPopup() {
-      this.displayPopup = true;
+    closePopupForContact() {
+      this.displayContactPopup = false;
+      this.cleareCreateContactPopup();
+      this.isExistContact = false;
+    },
+
+    showPopupForClient() {
+      this.displayClientPopup = true;
+    },
+
+    showPopupForContact() {
+      this.displayContactPopup = true;
     },
 
     cleareCreateClientPopup() {
@@ -284,13 +439,108 @@ export default {
       this.v$.$reset();
     },
 
-    async popupAction() {
+    cleareCreateContactPopup() {
+      this.newContactFirstName = "";
+      this.newContactSecondName = "";
+      this.newContactThirdName = "";
+      this.newContactPhone = "";
+      this.newContactPosition = "";
+      this.newContactEmail = "";
+      this.v$.$reset();
+    },
+
+    async clientPopupActionHandler() {
       if (this.isCreateClientMode) {
         await this.createClient();
         return;
       }
 
       await this.editClient();
+    },
+
+    async contactPopupActionHandler() {
+      if (this.isCreateContactMode) {
+        await this.createContact();
+        return;
+      }
+
+      await this.editContact();
+    },
+
+    async createContact() {
+      this.isExistContact = false;
+
+      const isCorrect = await this.isCorrectContactForm();
+      if (!isCorrect) {
+        return;
+      }
+
+      const createdContact = {
+        client: this.clientIdForNewContact,
+        first_name: this.newContactFirstName,
+        second_name: this.newContactSecondName,
+        third_name: this.newContactThirdName,
+        phone: this.newContactPhone,
+        position: this.newContactPosition,
+        email: this.newContactEmail,
+      };
+
+      this.isExistContact = await api.isExistContact(createdContact);
+      if (this.isExistContact) {
+        return;
+      }
+
+      const newContact = await api.createContact(createdContact);
+      this.newContactForClient.set(createdContact.client, newContact);
+
+      this.closePopupForContact();
+    },
+
+    async editContact() {
+      const isCorrect = await this.isCorrectContactForm();
+      if (!isCorrect) {
+        return;
+      }
+
+      const changedContact = await api.editContact({
+        first_name: this.newContactFirstName,
+        second_name: this.newContactSecondName,
+        third_name: this.newContactThirdName,
+        phone: this.newContactPhone,
+        position: this.newContactPosition,
+        email: this.newContactEmail,
+        client: this.editContactObject.client,
+        id: this.editContactObject.id
+      });
+      
+      this.newContactForClient.set(
+        this.editContactObject.client,
+        changedContact
+      );
+
+      this.closePopupForContact();
+    },
+
+    async isCorrectContactForm() {
+      const isCorrectFirstName = await this.v$.newContactFirstName.$validate();
+      const isCorrectSecondName =
+        await this.v$.newContactSecondName.$validate();
+      if (isCorrectFirstName && isCorrectSecondName) {
+        return true;
+      }
+
+      return false;
+    },
+
+    async isCorrectClientForm() {
+      const isCorrectClientName = await this.v$.newClientName.$validate();
+      const isCorrectClientInn = await this.v$.newClientInn.$validate();
+
+      if (isCorrectClientName && isCorrectClientInn) {
+        return true;
+      }
+
+      return false;
     },
   },
 };
@@ -490,7 +740,11 @@ main {
 }
 
 .company-inn-input,
-.company-name-input {
+.company-name-input,
+.contact-name-input,
+.contact-phone-input,
+.contact-position-input,
+.contact-email-input {
   width: 100%;
   height: 30px;
   background: #f5f5f5;
@@ -506,7 +760,11 @@ main {
 }
 
 .company-name-container,
-.company-inn-container {
+.company-inn-container,
+.contact-name-container,
+.contact-phone-container,
+.contact-position-container,
+.contact-email-container {
   width: 80%;
   display: flex;
   flex-direction: column;

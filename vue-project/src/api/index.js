@@ -220,6 +220,22 @@ const api = {
         }
     },
 
+    async isExistContact(contact) {
+        try {
+            let res = await axios.get(
+                API_KEY + API_PATHS['contact'] 
+                + "?client=" + contact.client
+                + "&first_name=" + contact.first_name 
+                + "&second_name=" + contact.second_name
+            );
+            return res.data.length ? true : false;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return false;
+        }
+    },
+
     errorHandle(error) {
 
         if (error.response) {

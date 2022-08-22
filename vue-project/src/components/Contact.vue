@@ -62,9 +62,9 @@ export default {
     },
 
     async editContact() {
-      const contact = this.contact;
-      contact.email = "test@gmail.com";
-      this.contact = await api.editContact(contact);
+      // const contact = this.contact;
+      // contact.email = "test@gmail.com";
+      // this.contact = await api.editContact(contact);
 
       this.$emit("edit", this.contact);
     },
