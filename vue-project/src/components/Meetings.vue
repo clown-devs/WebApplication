@@ -54,6 +54,7 @@
             <p class="data-item">{{ meeting.date }}</p>
             <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
             <p class="place-item">{{ meeting.place_name }}</p>
+            <edit-button class="edit-btn"></edit-button>
           </div>
           <p class="theme-item">{{ meeting.topic }}</p>
           <p class="client-item">{{ meeting.client_name }}</p>
@@ -75,17 +76,19 @@ import AddButton from "@/components/UI/AddButton.vue";
 import api from "@/api";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import SegmentedControl from "@/components/UI/SegmentedControl.vue";
+import EditButton from "@/components/UI/EditButton.vue";
 
 export default {
   components: {
     AddButton,
     LoadingIndicate,
     SegmentedControl,
+    EditButton,
   },
 
   data() {
     return {
-      meetings: [{}],
+      meetings: [],
       nearMeeting: undefined,
       isLoadedMeetings: false,
     };
@@ -97,6 +100,17 @@ export default {
       this.nearMeeting = this.meetings[0];
       this.prepareMeetingsForDisplay();
     }
+
+    // this.meetings.push(
+    //     {
+    //       id: 1,
+    //       date: '12.05.2022',
+    //       start: '12:30',
+    //       end: '13:00',
+    //       place_name: 'Peregovorka 1',
+    //       topic: 'Hahahahaha'
+    //     }
+    // );
 
     this.isLoadedMeetings = true;
   },
@@ -337,6 +351,11 @@ li p {
 
 .segmented-control {
   height: 40px;
+}
+
+.edit-btn {
+  background-color: #ffffff;
+  margin-right: 10px;
 }
 
 /* Responsive layout */
