@@ -17,7 +17,13 @@ export default {
     buttonTitle: function() {
         return !this.showInfo ? "Подробнее" : "Скрыть";
     }  
-  }
+  },
+
+  data() {
+    return {
+      isShowContactList: false
+    };
+  },
 };
 </script>
 
@@ -37,6 +43,7 @@ export default {
   font-family: "Exo 2";
   color: #7a7474;
   margin-left: 20px;
+  margin-right: 10px;
 }
 
 /* Animations and hovers */
