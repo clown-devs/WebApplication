@@ -19,14 +19,17 @@
     <div class="contact-details__content" v-if="showContactInfo">
       <div class="contact-email">
         <p class="contact-email-content">Почта: {{ contact.email }}</p>
+        <i class="material-icons copy-btn" @click="copyContentToBuffer(contact.email)"> content_copy </i>
       </div>
       <div class="contact-position">
         <p class="contact-position-content">
           Должность: {{ contact.position }}
         </p>
+        <i class="material-icons copy-btn" @click="copyContentToBuffer(contact.position)"> content_copy </i>
       </div>
       <div class="contact-number">
         <p class="contact-number-content">Телефон: {{ contact.phone }}</p>
+        <i class="material-icons copy-btn" @click="copyContentToBuffer(contact.phone)"> content_copy </i>
       </div>
     </div>
   </div>
@@ -62,12 +65,12 @@ export default {
     },
 
     async editContact() {
-      // const contact = this.contact;
-      // contact.email = "test@gmail.com";
-      // this.contact = await api.editContact(contact);
-
       this.$emit("edit", this.contact);
     },
+
+    copyContentToBuffer(content) {
+      navigator.clipboard.writeText(content === null ? "" : content);
+    }
   },
 };
 </script>
@@ -136,6 +139,13 @@ export default {
   justify-content: space-between;
 }
 
+.contact-position,
+.contact-email {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .contact-position-content {
   margin: 0;
 }
@@ -144,12 +154,19 @@ export default {
   margin-right: 2rem;
 }
 
+.copy-btn {
+  margin-right: 2rem;
+  color: #7a7474;
+  cursor: pointer;
+}
+
 /* Animations and hovers */
 
 .contact-item,
 .contact-email-content,
 .contact-position-content,
-.contact-number-content {
+.contact-number-content,
+.copy-btn {
   transition-duration: 0.5s;
 }
 
@@ -161,7 +178,8 @@ export default {
 .contact-name-content:hover,
 .contact-email-content:hover,
 .contact-position-content:hover,
-.contact-number-content:hover {
+.contact-number-content:hover,
+.copy-btn:hover {
   transition-duration: 0.5s;
   color: #00b268;
 }

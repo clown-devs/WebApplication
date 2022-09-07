@@ -41,13 +41,6 @@
       <template v-slot:header>
         <span class="popup-title"> {{ meetPopupTitle }}</span>
       </template>
-
-      
-      <template v-slot:footer>
-        <add-button class="popup-footer-btn" @click="clientPopupActionHandler">
-          Сохранить
-        </add-button>
-      </template>
     </create-meet>
 
     <div v-if="isLoadedMeetings" class="list-meet">
@@ -71,6 +64,7 @@
             <p class="data-item">{{ meeting.date }}</p>
             <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
             <p class="place-item">{{ meeting.place_name }}</p>
+            <edit-button class="edit-btn"></edit-button>
           </div>
           <p class="theme-item">{{ meeting.topic }}</p>
           <p class="client-item">{{ meeting.client_name }}</p>
@@ -92,6 +86,7 @@ import AddButton from "@/components/UI/AddButton.vue";
 import api from "@/api";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import SegmentedControl from "@/components/UI/SegmentedControl.vue";
+import EditButton from "@/components/UI/EditButton.vue";
 import CreateMeet from "@/components/CreateMeet.vue";
 
 export default {
@@ -99,12 +94,13 @@ export default {
     AddButton,
     LoadingIndicate,
     SegmentedControl,
+    EditButton,
     CreateMeet,
   },
 
   data() {
     return {
-      meetings: [{}],
+      meetings: [],
       nearMeeting: undefined,
       isLoadedMeetings: false,
       isCreateMeetMode: false,
@@ -118,6 +114,17 @@ export default {
       this.nearMeeting = this.meetings[0];
       this.prepareMeetingsForDisplay();
     }
+
+    // this.meetings.push(
+    //     {
+    //       id: 1,
+    //       date: '12.05.2022',
+    //       start: '12:30',
+    //       end: '13:00',
+    //       place_name: 'Peregovorka 1',
+    //       topic: 'Hahahahaha'
+    //     }
+    // );
 
     this.isLoadedMeetings = true;
   },
@@ -385,6 +392,11 @@ li p {
 
 .segmented-control {
   height: 40px;
+}
+
+.edit-btn {
+  background-color: #ffffff;
+  margin-right: 10px;
 }
 
 /* Responsive layout */
