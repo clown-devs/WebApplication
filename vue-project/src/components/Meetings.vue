@@ -41,13 +41,6 @@
       <template v-slot:header>
         <span class="popup-title"> {{ meetPopupTitle }}</span>
       </template>
-
-      
-      <template v-slot:footer>
-        <add-button class="popup-footer-btn" @click="clientPopupActionHandler">
-          Сохранить
-        </add-button>
-      </template>
     </create-meet>
 
     <div v-if="isLoadedMeetings" class="list-meet">
