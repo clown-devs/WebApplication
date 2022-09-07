@@ -80,6 +80,7 @@
 
       <button class="nav-bar-profile">
         <img src="/svg/profile.svg" alt="" class="nav-bar-profile-icon" />
+        
       </button>
 
       <button @click="logOutWrapper" class="log-out">Выйти</button>

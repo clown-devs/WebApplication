@@ -29,9 +29,26 @@
       </div>
 
       <div class="green-button-add">
-        <add-button>Добавить встречу</add-button>
+        <add-button @click="touchCreateMeet">Добавить встречу</add-button>
       </div>
     </div>
+
+    <create-meet
+      v-if="displayMeetPopup"
+      @closePopup="closePopupForMeet"
+      class="meet__modal-window"
+    >
+      <template v-slot:header>
+        <span class="popup-title"> {{ meetPopupTitle }}</span>
+      </template>
+
+      
+      <template v-slot:footer>
+        <add-button class="popup-footer-btn" @click="clientPopupActionHandler">
+          Сохранить
+        </add-button>
+      </template>
+    </create-meet>
 
     <div v-if="isLoadedMeetings" class="list-meet">
       <h2 class="list-meet-text">Список встреч:</h2>
@@ -76,14 +93,22 @@ import AddButton from "@/components/UI/AddButton.vue";
 import api from "@/api";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import SegmentedControl from "@/components/UI/SegmentedControl.vue";
+<<<<<<< HEAD
 import EditButton from "@/components/UI/EditButton.vue";
+=======
+import CreateMeet from "@/components/CreateMeet.vue";
+>>>>>>> master
 
 export default {
   components: {
     AddButton,
     LoadingIndicate,
     SegmentedControl,
+<<<<<<< HEAD
     EditButton,
+=======
+    CreateMeet,
+>>>>>>> master
   },
 
   data() {
@@ -91,6 +116,8 @@ export default {
       meetings: [],
       nearMeeting: undefined,
       isLoadedMeetings: false,
+      isCreateMeetMode: false,
+      displayMeetPopup: false,
     };
   },
 
@@ -115,6 +142,12 @@ export default {
     this.isLoadedMeetings = true;
   },
 
+  computed: {
+    meetPopupTitle() {
+      return this.isCreateMeetMode ? "Новая встреча" : "Редактирование встречи";
+    },
+  },
+
   methods: {
     async prepareMeetingsForDisplay() {
       this.meetings.forEach((meeting) => {
@@ -130,6 +163,20 @@ export default {
       }
 
       this.meetings = await api.getMeetings(true);
+    },
+
+    touchCreateMeet() {
+      this.isCreateMeetMode = true;
+      this.showPopupForMeet();
+    },
+
+    showPopupForMeet() {
+      this.displayMeetPopup = true;
+    },
+
+    closePopupForMeet() {
+      this.displayMeetPopup = false;
+      this.isCreateMeetMode = false;
     },
   },
 };
@@ -165,6 +212,13 @@ button {
   border: none;
   margin: 0;
   padding: 0;
+}
+
+.popup-title {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 p {

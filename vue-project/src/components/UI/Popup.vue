@@ -58,6 +58,7 @@ export default {
   top: 0;
   background: rgba(0, 0, 0, 0.5);
   bottom: 0;
+  z-index: 100;
 }
 
 .v-popup {
