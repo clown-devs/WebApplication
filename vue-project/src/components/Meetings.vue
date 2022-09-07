@@ -93,22 +93,16 @@ import AddButton from "@/components/UI/AddButton.vue";
 import api from "@/api";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import SegmentedControl from "@/components/UI/SegmentedControl.vue";
-<<<<<<< HEAD
 import EditButton from "@/components/UI/EditButton.vue";
-=======
 import CreateMeet from "@/components/CreateMeet.vue";
->>>>>>> master
 
 export default {
   components: {
     AddButton,
     LoadingIndicate,
     SegmentedControl,
-<<<<<<< HEAD
     EditButton,
-=======
     CreateMeet,
->>>>>>> master
   },
 
   data() {
