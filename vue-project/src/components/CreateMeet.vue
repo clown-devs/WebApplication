@@ -54,10 +54,13 @@
                   class="date-input"
                   placeholder="Дата"
                   v-model="date"
-                  :class="{ invalid: v$.date.$error }"
+                  :class="{ invalid: v$.date.$error || !this.isCorrectDate }"
                 />
                 <small v-if="v$.date.$error" class="validate-error-message">
                   Поле даты - обязательное поле!
+                </small>
+                <small class="validate-error-message" v-if="!isCorrectDate">
+                  Дата должна быть >= текущей даты!
                 </small>
               </div>
 
@@ -75,11 +78,17 @@
                   class="date-start-input"
                   placeholder="Время начала"
                   v-model="start"
-                  :class="{ invalid: v$.start.$error }"
+                  :class="{ invalid: v$.start.$error || !this.isCorrectSelectedTime}"
                   @change="changeTime"
                 />
                 <small v-if="v$.start.$error" class="validate-error-message">
                   Время начала встречи - обязательное поле!
+                </small>
+                <small
+                  class="validate-error-message"
+                  v-if="!isCorrectSelectedTime"
+                >
+                  Время начало должно быть меньше время конца встречи!
                 </small>
               </div>
 
@@ -226,7 +235,9 @@ export default {
         isCorrectStartMeeting &&
         isCorrectEndMeeting &&
         isCorrectDateMeeting &&
-        isCorrectPlace
+        isCorrectPlace &&
+        this.isCorrectSelectedTime &&
+        this.isCorrectDate
       ) {
         return true;
       }
@@ -262,9 +273,12 @@ export default {
     },
 
     async changeTime() {
-      if (this.start !== "" && this.end !== "" && this.date !== "") {
-        // this.freePlaces = await api.getFreePlaces(this.start, this.end, this.date);
-        // this.freePlaces = await api.getPlaces();
+      if (this.start !== "" || this.end !== "" || this.date !== "") {
+        this.freePlaces = await api.getFreePlaces(
+          this.start,
+          this.end,
+          this.date
+        );
       }
     },
   },
@@ -279,8 +293,43 @@ export default {
     });
 
     this.clients = await api.getClients(true);
-    this.freePlaces = await api.getPlaces();
     this.selectedUsersInMeeting = await api.getUsers();
+  },
+
+  computed: {
+    isCorrectSelectedTime() {
+      if (this.start === "" || this.end === "") {
+        return true;
+      }
+
+      const start = new Date();
+      const startHours = this.start.split(":")[0];
+      const startMinutes = this.start.split(":")[1];
+      start.setHours(startHours, startMinutes);
+
+      const end = new Date();
+      const endHours = this.end.split(":")[0];
+      const endMinutes = this.end.split(":")[1];
+      end.setHours(endHours, endMinutes);
+
+      return start < end;
+    },
+
+    isCorrectDate() {
+      if (this.date === "") {
+        return true;
+      }
+
+      if (!this.isCreatePopup) {
+        return true;
+      }
+
+      const selectedDate = new Date(this.date);
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+
+      return selectedDate >= currentDate;
+    },
   },
 };
 </script>
@@ -441,6 +490,7 @@ export default {
 .validate-error-message {
   color: red;
   font-weight: bolder;
+  margin-bottom: 5px;
 }
 
 .theme-input.invalid,
