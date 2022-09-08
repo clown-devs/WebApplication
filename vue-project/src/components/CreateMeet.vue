@@ -146,7 +146,7 @@
 
         <div class="info-note">
           <div class="note-container">
-            <input type="text" class="note-input" placeholder="Заметки" />
+            <textarea type="text" class="note-input" placeholder="Заметки"></textarea>
           </div>
         </div>
       </div>
@@ -199,7 +199,7 @@ export default {
     return {
       selectedClient: "",
       selectedContact: "",
-      selectedUsersInMeeting: [],
+      selectedUsersInMeeting: "",
       clients: [],
       contacts: [],
       freePlaces: [],
@@ -279,6 +279,10 @@ export default {
           this.end,
           this.date
         );
+
+        this.freePlaces.push({
+          name: "У клиента"
+        });
       }
     },
   },
