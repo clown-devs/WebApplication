@@ -308,8 +308,15 @@ export default {
         employee_list: this.getEmployeeList(),
       };
 
-      newMeeting = await api.createMeeting(newMeeting);
-      this.$emit("createMeeting", newMeeting);
+      if (this.isCreatePopup) {
+        newMeeting = await api.createMeeting(newMeeting);
+        this.$emit("createMeeting", newMeeting);
+      } else {
+        newMeeting['id'] = this.editingMeet.id;
+        const editMeeting = await api.editMeeting(newMeeting);
+        this.$emit("editMeeting", editMeeting);
+      }
+
       this.closePopup();
     },
 
@@ -372,7 +379,7 @@ export default {
 
     async changeTime() {
       if (this.start !== "" && this.end !== "" && this.date !== "") {
-        this.fillFreePlaces();
+        await this.fillFreePlaces();
       }
     },
 
@@ -461,8 +468,16 @@ export default {
         is_private: false,
       });
 
+      let isAccessOldSelectedPlace = false;
       for (let i in freePlaces) {
+        if (freePlaces[i].id === this.place.id) {
+          isAccessOldSelectedPlace = true;
+        }
         this.freePlaces.push(freePlaces[i]);
+      }
+
+      if (!isAccessOldSelectedPlace) {
+        this.place = {};
       }
     },
 

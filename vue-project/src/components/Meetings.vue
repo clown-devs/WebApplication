@@ -39,6 +39,7 @@
       :isCreatePopup="false"
       :editingMeet="this.editingMeet"
       @cancelMeeting="deleteMeeting"
+      @editMeeting="changeEditedMeeting"
       class="meet__modal-window"
     ></create-meet>
 
@@ -123,17 +124,6 @@ export default {
       this.prepareMeetingsForDisplay();
     }
 
-    // this.meetings.push(
-    //     {
-    //       id: 1,
-    //       date: '12.05.2022',
-    //       start: '12:30',
-    //       end: '13:00',
-    //       place_name: 'Peregovorka 1',
-    //       topic: 'Hahahahaha'
-    //     }
-    // );
-
     this.isLoadedMeetings = true;
   },
 
@@ -183,6 +173,18 @@ export default {
 
     deleteMeeting(meetingId) {
       this.meetings = this.meetings.filter(meet => meet.id !== meetingId);
+    },
+
+    changeEditedMeeting(editedMeeting) {
+      this.meetings = this.meetings.map(meet => {
+        if (meet.id === editedMeeting.id) {
+          return editedMeeting;
+        }
+
+        return meet;
+      });
+
+      this.prepareMeetingsForDisplay();
     }
   },
 };

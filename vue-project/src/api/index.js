@@ -257,6 +257,20 @@ const api = {
         }    
     },
 
+    async editMeeting(meeting) {
+        try {
+            let res = await axios.patch(
+                API_KEY + API_PATHS['meetings'] + meeting.id + "/",
+                meeting
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }    
+    },
+
     errorHandle(error) {
 
         if (error.response) {
