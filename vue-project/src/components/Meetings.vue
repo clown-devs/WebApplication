@@ -4,7 +4,7 @@
       <h2 class="near-meet-text">Ближайшая встреча:</h2>
 
       <div class="container-window" v-if="nearMeeting !== undefined">
-        <button class="pencil-meet">
+        <button class="pencil-meet" @click="editMeeting(this.nearMeeting)">
           <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
         </button>
         <p class="client-name">{{ nearMeeting.client_name }}</p>
@@ -29,7 +29,9 @@
       </div>
 
       <div class="green-button-add">
-        <add-button @click="this.displayCreateMeetPopup = true">Добавить встречу</add-button>
+        <add-button @click="this.displayCreateMeetPopup = true"
+          >Добавить встречу</add-button
+        >
       </div>
     </div>
 
@@ -71,7 +73,10 @@
             <p class="data-item">{{ meeting.date }}</p>
             <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
             <p class="place-item">{{ meeting.place_name }}</p>
-            <edit-button class="edit-btn" @click="editMeeting(meeting)"></edit-button>
+            <edit-button
+              class="edit-btn"
+              @click="editMeeting(meeting)"
+            ></edit-button>
           </div>
           <p class="theme-item">{{ meeting.topic }}</p>
           <p class="client-item">{{ meeting.client_name }}</p>
@@ -113,7 +118,7 @@ export default {
       isCreateMeetMode: false,
       displayCreateMeetPopup: false,
       displayEditMeetPopup: false,
-      editingMeet: {}
+      editingMeet: {},
     };
   },
 
@@ -166,19 +171,28 @@ export default {
       newMeeting.start = newMeeting.start.substr(0, 5);
       newMeeting.end = newMeeting.end.substr(0, 5);
       this.meetings.push(newMeeting);
+      
+      if (this.meetings.length) {
+        this.nearMeeting = this.meetings[0];
+      }
     },
 
     editMeeting(meeting) {
       this.displayEditMeetPopup = true;
-      this.editingMeet = meeting; 
+      this.editingMeet = meeting;
     },
 
     deleteMeeting(meetingId) {
-      this.meetings = this.meetings.filter(meet => meet.id !== meetingId);
+      this.meetings = this.meetings.filter((meet) => meet.id !== meetingId);
+      if (this.meetings.length) {
+        this.nearMeeting = this.meetings[0];
+      } else {
+        this.newMeeting = {};
+      }
     },
 
     changeEditedMeeting(editedMeeting) {
-      this.meetings = this.meetings.map(meet => {
+      this.meetings = this.meetings.map((meet) => {
         if (meet.id === editedMeeting.id) {
           return editedMeeting;
         }
@@ -186,8 +200,12 @@ export default {
         return meet;
       });
 
+      if (this.meetings.length) {
+        this.nearMeeting = this.meetings[0];
+      }
+      
       this.prepareMeetingsForDisplay();
-    }
+    },
   },
 };
 </script>
@@ -209,7 +227,6 @@ main {
   justify-content: space-around;
   width: 100vw;
   height: calc(100vh - 110px);
-  margin-top: 1rem;
 }
 .empty {
   display: flex;
@@ -294,6 +311,7 @@ li p {
   background: #ffffff;
   border: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .contact-window {
@@ -511,7 +529,6 @@ li p {
   }
 
   .near-meet-text,
-  .pencil-meet,
   .list-meet-text {
     display: none;
   }
@@ -520,6 +537,20 @@ li p {
     margin-bottom: 0;
     font-size: 1.25rem;
     font-weight: 700;
+  }
+
+  .pencil-meet {
+    margin: 0;
+    margin-top: 5px;
+    margin-right: 1rem;
+    align-self: flex-end;
+    height: 25px;
+    width: 25px;
+  }
+  
+  .pencil-icon {
+    height: 25px;
+    width: 25px;
   }
 }
 
@@ -557,10 +588,6 @@ li p {
 }
 
 @media (max-height: 851px) {
-  .container-window {
-    justify-content: center;
-    gap: 1rem;
-  }
 
   .client-name,
   .contact-window,
@@ -572,7 +599,17 @@ li p {
   }
 
   .pencil-meet {
-    display: none;
+    margin-left: 0;
+    margin-bottom: 0;
+    align-self: flex-end;
+    margin-right: 2rem;
+    height: 25px;
+    width: 25px;
+  }
+
+  .pencil-icon {
+    height: 25px;
+    width: 25px;
   }
 }
 
@@ -594,7 +631,6 @@ li p {
   }
 
   .near-meet-text,
-  .pencil-meet,
   .list-meet-text {
     display: none;
   }
