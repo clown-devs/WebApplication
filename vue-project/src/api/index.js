@@ -244,6 +244,19 @@ const api = {
         }
     },
 
+    async deleteMeeting(meetingId) {
+        try {
+            let res = await axios.delete(
+                API_KEY + API_PATHS['meetings'] + meetingId + "/"
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }    
+    },
+
     errorHandle(error) {
 
         if (error.response) {

@@ -173,7 +173,10 @@
         <add-button class="popup-footer-btn" @click="touchSaveButtonHandler"
           >Сохранить</add-button
         >
-        <add-button class="popup-footer-btn" v-if="!isCreatePopup"
+        <add-button
+          class="popup-footer-btn"
+          v-if="!isCreatePopup"
+          @click="touchCancelMeetingButtonHandler"
           >Отменить</add-button
         >
       </div>
@@ -376,6 +379,10 @@ export default {
     getEmployeeList() {
       const ls = [];
       for (let index in this.selectedUsersInMeeting) {
+        if (this.selectedUsersInMeeting[index].id === 0) {
+          continue;
+        }
+
         ls.push(this.selectedUsersInMeeting[index].id);
       }
 
@@ -414,31 +421,7 @@ export default {
       }
 
       await this.fillUsers();
-
-      const selectedEmployeers = new Map();
-      for (let i in this.editingMeet.employee_list) {
-        selectedEmployeers.set(this.editingMeet.employee_list[i], null);
-      }
-
-      const allUsers = await api.getUsers();
-      for (let i in allUsers) {
-        const fullName =
-          allUsers[i].second_name + " " 
-          + allUsers[i].first_name + " " 
-          + allUsers[i].third_name
-        ;
-        
-        if (selectedEmployeers.has(allUsers[i].id)) {
-          selectedEmployeers.set(allUsers[i].id, fullName);
-        }
-      }
-
-      this.selectedUsersInMeeting = [];
-      for (let i in this.users) {
-        if (selectedEmployeers.get(this.users[i].id) !== undefined) {
-          this.selectedUsersInMeeting.push(this.users[i]);
-        }
-      }
+      await this.fillSelectedUsers();
     },
 
     fillContactsForSelect(contacts) {
@@ -478,12 +461,6 @@ export default {
         is_private: false,
       });
 
-      this.freePlaces.push({
-        name: "У клиента",
-        id: null,
-        is_private: false,
-      });
-
       for (let i in freePlaces) {
         this.freePlaces.push(freePlaces[i]);
       }
@@ -509,6 +486,39 @@ export default {
         });
       }
     },
+
+    async fillSelectedUsers() {
+      const selectedEmployeers = new Map();
+      for (let i in this.editingMeet.employee_list) {
+        selectedEmployeers.set(this.editingMeet.employee_list[i], null);
+      }
+
+      const allUsers = this.users;
+      for (let i in allUsers) {
+        const fullName =
+          allUsers[i].second_name +
+          " " +
+          allUsers[i].first_name +
+          " " +
+          allUsers[i].third_name;
+        if (selectedEmployeers.has(allUsers[i].id)) {
+          selectedEmployeers.set(allUsers[i].id, fullName);
+        }
+      }
+
+      this.selectedUsersInMeeting = [];
+      for (let i in this.users) {
+        if (selectedEmployeers.get(this.users[i].id) !== undefined) {
+          this.selectedUsersInMeeting.push(this.users[i]);
+        }
+      }
+    },
+
+    async touchCancelMeetingButtonHandler() {
+      await api.deleteMeeting(this.editingMeet.id);
+      this.$emit("cancelMeeting", this.editingMeet.id);
+      this.closePopup();
+    },
   },
 
   async mounted() {
@@ -527,9 +537,9 @@ export default {
 
     if (!this.isCreatePopup) {
       this.fillDataInputs();
+    } else {
+      await this.fillUsers();
     }
-
-    await this.fillUsers();
   },
 
   computed: {

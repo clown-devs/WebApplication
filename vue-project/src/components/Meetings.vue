@@ -38,6 +38,7 @@
       @closePopup="closeEditPopup"
       :isCreatePopup="false"
       :editingMeet="this.editingMeet"
+      @cancelMeeting="deleteMeeting"
       class="meet__modal-window"
     ></create-meet>
 
@@ -178,6 +179,10 @@ export default {
     editMeeting(meeting) {
       this.displayEditMeetPopup = true;
       this.editingMeet = meeting; 
+    },
+
+    deleteMeeting(meetingId) {
+      this.meetings = this.meetings.filter(meet => meet.id !== meetingId);
     }
   },
 };
