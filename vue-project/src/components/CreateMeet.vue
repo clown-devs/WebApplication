@@ -145,10 +145,12 @@
                 v-model="selectedUsersInMeeting"
                 multiple
               >
-                <option value="" disabled selected>Сотрудники</option>
-                <option v-for="user in users" v-bind:value="user">
-                  {{ user.first_name }} {{ user.third_name }}
-                  {{ user.second_name }}
+                <option
+                  v-for="user in users"
+                  v-bind:value="user"
+                  :disabled="user.id === 0"
+                >
+                  {{ user.name }}
                 </option>
               </select>
             </div>
@@ -230,7 +232,12 @@ export default {
         id: 0,
       },
 
-      selectedUsersInMeeting: [],
+      selectedUsersInMeeting: [
+        {
+          name: "Сотрудники",
+          id: 0,
+        },
+      ],
 
       clients: [
         {
@@ -267,7 +274,13 @@ export default {
       },
 
       note: "",
-      users: [],
+
+      users: [
+        {
+          name: "Сотрудники",
+          id: 0,
+        },
+      ],
     };
   },
 
@@ -340,8 +353,10 @@ export default {
     },
 
     async selectClientHandler() {
-      const contacts = await api.getClientContacts(this.selectedClient.id);
-      this.fillContactsForSelect(contacts);
+      if (this.selectedClient.id !== null) {
+        const contacts = await api.getClientContacts(this.selectedClient.id);
+        this.fillContactsForSelect(contacts);
+      }
     },
 
     contactPosition(contact) {
@@ -387,7 +402,7 @@ export default {
       this.start = this.editingMeet.start;
       this.end = this.editingMeet.end;
 
-      this.fillFreePlaces();
+      await this.fillFreePlaces();
       this.place = {
         name: this.editingMeet.place_name,
         id: this.editingMeet.place_id,
@@ -396,6 +411,33 @@ export default {
 
       if (this.freePlaces.indexOf(this.place) === -1) {
         this.freePlaces.push(this.place);
+      }
+
+      await this.fillUsers();
+
+      const selectedEmployeers = new Map();
+      for (let i in this.editingMeet.employee_list) {
+        selectedEmployeers.set(this.editingMeet.employee_list[i], null);
+      }
+
+      const allUsers = await api.getUsers();
+      for (let i in allUsers) {
+        const fullName =
+          allUsers[i].second_name + " " 
+          + allUsers[i].first_name + " " 
+          + allUsers[i].third_name
+        ;
+        
+        if (selectedEmployeers.has(allUsers[i].id)) {
+          selectedEmployeers.set(allUsers[i].id, fullName);
+        }
+      }
+
+      this.selectedUsersInMeeting = [];
+      for (let i in this.users) {
+        if (selectedEmployeers.get(this.users[i].id) !== undefined) {
+          this.selectedUsersInMeeting.push(this.users[i]);
+        }
       }
     },
 
@@ -446,6 +488,27 @@ export default {
         this.freePlaces.push(freePlaces[i]);
       }
     },
+
+    async fillUsers() {
+      const users = await api.getUsers();
+      this.users = [];
+      for (let i in this.selectedUsersInMeeting) {
+        this.users.push(this.selectedUsersInMeeting[i]);
+      }
+
+      for (let i in users) {
+        const fullName =
+          users[i].second_name +
+          " " +
+          users[i].first_name +
+          " " +
+          users[i].third_name;
+        this.users.push({
+          name: fullName,
+          id: users[i].id,
+        });
+      }
+    },
   },
 
   async mounted() {
@@ -466,7 +529,7 @@ export default {
       this.fillDataInputs();
     }
 
-    this.users = await api.getUsers();
+    await this.fillUsers();
   },
 
   computed: {
