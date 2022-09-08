@@ -2,7 +2,7 @@
   <div class="popup_wrapper" ref="popup_wrapper">
     <form class="v-popup animation" @submit.prevent>
       <div class="v-popup__header">
-        <slot name="header"></slot>
+        <span class="popup-title"> {{ popupTitle }}</span>
         <span>
           <i class="material-icons" @click="closePopup"> close </i>
         </span>
@@ -17,8 +17,14 @@
                 v-model="selectedClient"
                 @change="selectClientHandler"
               >
-                <option value="" disabled selected>Клиент</option>
-                <option v-for="client in clients" v-bind:value="client">
+                <!-- <option value="" disabled selected>
+                  Клиент
+                </option> -->
+                <option
+                  v-for="client in clients"
+                  :value="client"
+                  :disabled="client.id === 0"
+                >
                   {{ client.name }}
                 </option>
               </select>
@@ -26,10 +32,12 @@
 
             <div class="contact-container">
               <select class="contact-input" v-model="selectedContact">
-                <option value="" disabled selected>Контактное лицо</option>
-                <option v-for="contact in contacts" v-bind:value="contact">
-                  {{ contact.first_name }} {{ contact.third_name }}
-                  {{ contact.second_name }} {{ contactPosition(contact) }}
+                <option
+                  v-for="contact in contacts"
+                  :value="contact"
+                  :disabled="contact.id === 0"
+                >
+                  {{ contact.name }}
                 </option>
               </select>
             </div>
@@ -54,10 +62,14 @@
                   class="date-input"
                   placeholder="Дата"
                   v-model="date"
-                  :class="{ invalid: v$.date.$error }"
+                  :class="{ invalid: v$.date.$error || !this.isCorrectDate }"
+                  @change="changeTime"
                 />
                 <small v-if="v$.date.$error" class="validate-error-message">
                   Поле даты - обязательное поле!
+                </small>
+                <small class="validate-error-message" v-if="!isCorrectDate">
+                  Дата должна быть >= текущей даты!
                 </small>
               </div>
 
@@ -75,11 +87,19 @@
                   class="date-start-input"
                   placeholder="Время начала"
                   v-model="start"
-                  :class="{ invalid: v$.start.$error }"
+                  :class="{
+                    invalid: v$.start.$error || !this.isCorrectSelectedTime,
+                  }"
                   @change="changeTime"
                 />
                 <small v-if="v$.start.$error" class="validate-error-message">
                   Время начала встречи - обязательное поле!
+                </small>
+                <small
+                  class="validate-error-message"
+                  v-if="!isCorrectSelectedTime"
+                >
+                  Время начало должно быть меньше время конца встречи!
                 </small>
               </div>
 
@@ -104,8 +124,11 @@
                 v-model="place"
                 :class="{ invalid: v$.end.$error }"
               >
-                <option value="" disabled selected>Место встречи</option>
-                <option v-for="place in freePlaces" v-bind:value="place">
+                <option
+                  v-for="place in freePlaces"
+                  :value="place"
+                  :disabled="place.id === 0"
+                >
                   {{ place.name }}
                 </option>
               </select>
@@ -122,13 +145,12 @@
                 v-model="selectedUsersInMeeting"
                 multiple
               >
-                <option value="" disabled selected>Сотрудники</option>
                 <option
-                  v-for="user in selectedUsersInMeeting"
+                  v-for="user in users"
                   v-bind:value="user"
+                  :disabled="user.id === 0"
                 >
-                  {{ user.first_name }} {{ user.third_name }}
-                  {{ user.second_name }}
+                  {{ user.name }}
                 </option>
               </select>
             </div>
@@ -137,7 +159,12 @@
 
         <div class="info-note">
           <div class="note-container">
-            <input type="text" class="note-input" placeholder="Заметки" />
+            <textarea
+              type="text"
+              class="note-input"
+              placeholder="Заметки"
+              v-model="note"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -146,7 +173,10 @@
         <add-button class="popup-footer-btn" @click="touchSaveButtonHandler"
           >Сохранить</add-button
         >
-        <add-button class="popup-footer-btn" v-if="!isCreatePopup"
+        <add-button
+          class="popup-footer-btn"
+          v-if="!isCreatePopup"
+          @click="touchCancelMeetingButtonHandler"
           >Отменить</add-button
         >
       </div>
@@ -159,6 +189,7 @@ import api from "@/api";
 import { required, minLength, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import AddButton from "@/components/UI/AddButton.vue";
+import auth from "@/store/modules/auth";
 
 export default {
   components: { AddButton },
@@ -167,6 +198,11 @@ export default {
     isCreatePopup: {
       type: Boolean,
       default: true,
+    },
+
+    editingMeet: {
+      type: Object,
+      default: null,
     },
   },
 
@@ -188,25 +224,100 @@ export default {
 
   data() {
     return {
-      selectedClient: "",
-      selectedContact: "",
-      selectedUsersInMeeting: [],
-      clients: [],
-      contacts: [],
-      freePlaces: [],
+      selectedClient: {
+        name: "Клиент",
+        id: 0,
+        inn: "",
+      },
+
+      selectedContact: {
+        name: "Контактное лицо",
+        id: 0,
+      },
+
+      selectedUsersInMeeting: [
+        {
+          name: "Сотрудники",
+          id: 0,
+        },
+      ],
+
+      clients: [
+        {
+          name: "Клиент",
+          id: 0,
+          inn: "",
+        },
+      ],
+
+      contacts: [
+        {
+          name: "Контактное лицо",
+          id: 0,
+        },
+      ],
+
+      freePlaces: [
+        {
+          name: "Свободные переговорки",
+          id: 0,
+          is_private: false,
+        },
+      ],
+
       start: "",
       end: "",
       date: "",
       theme: "",
-      place: "",
+
+      place: {
+        name: "Свободные переговорки",
+        id: 0,
+        is_private: false,
+      },
+
+      note: "",
+
+      users: [
+        {
+          name: "Сотрудники",
+          id: 0,
+        },
+      ],
     };
   },
 
   methods: {
     async touchSaveButtonHandler() {
-      if (await !this.isCorrectForm()) {
+      const isValidate = await this.isCorrectForm();
+      if (!isValidate) {
         return;
       }
+
+      let newMeeting = {
+        date: this.date,
+        start: this.start,
+        end: this.end,
+        place_name: this.place.name,
+        place_id: this.place.id !== null ? this.place.id : "",
+        topic: this.theme,
+        note: this.note,
+        creator_id: auth.state.user.id,
+        contact_id: this.selectedContact.id,
+        client_id: this.selectedClient.id !== 0 ? this.selectedClient.id : "",
+        employee_list: this.getEmployeeList(),
+      };
+
+      if (this.isCreatePopup) {
+        newMeeting = await api.createMeeting(newMeeting);
+        this.$emit("createMeeting", newMeeting);
+      } else {
+        newMeeting['id'] = this.editingMeet.id;
+        const editMeeting = await api.editMeeting(newMeeting);
+        this.$emit("editMeeting", editMeeting);
+      }
+
+      this.closePopup();
     },
 
     closePopup() {
@@ -226,7 +337,9 @@ export default {
         isCorrectStartMeeting &&
         isCorrectEndMeeting &&
         isCorrectDateMeeting &&
-        isCorrectPlace
+        isCorrectPlace &&
+        this.isCorrectSelectedTime &&
+        this.isCorrectDate
       ) {
         return true;
       }
@@ -235,7 +348,7 @@ export default {
     },
 
     clearePopup() {
-      this.selectedClient = "";
+      this.selectedClient = "0";
       this.selectedContact = "";
       this.selectedPlace = "";
       this.clients = [];
@@ -250,7 +363,10 @@ export default {
     },
 
     async selectClientHandler() {
-      this.contacts = await api.getClientContacts(this.selectedClient.id);
+      if (this.selectedClient.id !== null) {
+        const contacts = await api.getClientContacts(this.selectedClient.id);
+        this.fillContactsForSelect(contacts);
+      }
     },
 
     contactPosition(contact) {
@@ -263,9 +379,160 @@ export default {
 
     async changeTime() {
       if (this.start !== "" && this.end !== "" && this.date !== "") {
-        // this.freePlaces = await api.getFreePlaces(this.start, this.end, this.date);
-        // this.freePlaces = await api.getPlaces();
+        await this.fillFreePlaces();
       }
+    },
+
+    getEmployeeList() {
+      const ls = [];
+      for (let index in this.selectedUsersInMeeting) {
+        if (this.selectedUsersInMeeting[index].id === 0) {
+          continue;
+        }
+
+        ls.push(this.selectedUsersInMeeting[index].id);
+      }
+
+      return ls;
+    },
+
+    async fillDataInputs() {
+      this.selectedClient = {
+        name: this.editingMeet.client_name,
+        id: this.editingMeet.client_id,
+        inn: this.editingMeet.client_inn,
+      };
+
+      await this.selectClientHandler();
+
+      this.selectedContact = {
+        name: this.editingMeet.contact_name,
+        id: this.editingMeet.contact_id,
+      };
+
+      this.theme = this.editingMeet.topic;
+      this.note = this.editingMeet.note;
+      this.date = this.editingMeet.date;
+      this.start = this.editingMeet.start;
+      this.end = this.editingMeet.end;
+
+      await this.fillFreePlaces();
+      this.place = {
+        name: this.editingMeet.place_name,
+        id: this.editingMeet.place_id,
+        is_private: false,
+      };
+
+      if (this.freePlaces.indexOf(this.place) === -1) {
+        this.freePlaces.push(this.place);
+      }
+
+      await this.fillUsers();
+      await this.fillSelectedUsers();
+    },
+
+    fillContactsForSelect(contacts) {
+      this.contacts = [
+        {
+          name: "Контактное лицо",
+          id: 0,
+        },
+      ];
+
+      for (let i in contacts) {
+        const fullName =
+          contacts[i].second_name +
+          " " +
+          contacts[i].first_name +
+          " " +
+          contacts[i].third_name;
+        this.contacts.push({
+          name: fullName,
+          id: contacts[i].id,
+        });
+      }
+    },
+
+    async fillFreePlaces() {
+      const freePlaces = await api.getFreePlaces(
+        this.start,
+        this.end,
+        this.date
+      );
+
+      this.freePlaces = [];
+
+      this.freePlaces.push({
+        name: "Свободные переговорки",
+        id: 0,
+        is_private: false,
+      });
+
+      let isAccessOldSelectedPlace = false;
+      for (let i in freePlaces) {
+        if (freePlaces[i].id === this.place.id) {
+          isAccessOldSelectedPlace = true;
+        }
+        this.freePlaces.push(freePlaces[i]);
+      }
+
+      if (!isAccessOldSelectedPlace) {
+        this.place = {};
+      }
+    },
+
+    async fillUsers() {
+      const users = await api.getUsers();
+      this.users = [];
+      for (let i in this.selectedUsersInMeeting) {
+        this.users.push(this.selectedUsersInMeeting[i]);
+      }
+
+      for (let i in users) {
+        const fullName =
+          users[i].second_name +
+          " " +
+          users[i].first_name +
+          " " +
+          users[i].third_name;
+        this.users.push({
+          name: fullName,
+          id: users[i].id,
+        });
+      }
+    },
+
+    async fillSelectedUsers() {
+      const selectedEmployeers = new Map();
+      for (let i in this.editingMeet.employee_list) {
+        selectedEmployeers.set(this.editingMeet.employee_list[i], null);
+      }
+
+      const allUsers = this.users;
+      for (let i in allUsers) {
+        const fullName =
+          allUsers[i].second_name +
+          " " +
+          allUsers[i].first_name +
+          " " +
+          allUsers[i].third_name;
+        if (selectedEmployeers.has(allUsers[i].id)) {
+          selectedEmployeers.set(allUsers[i].id, fullName);
+        }
+      }
+
+      this.selectedUsersInMeeting = [];
+      for (let i in this.users) {
+        if (selectedEmployeers.get(this.users[i].id) !== undefined) {
+          this.selectedUsersInMeeting.push(this.users[i]);
+        }
+      }
+    },
+
+    async touchCancelMeetingButtonHandler() {
+      await api.deleteMeeting(this.editingMeet.id);
+      this.$emit("cancelMeeting", this.editingMeet.id);
+      this.closePopup();
     },
   },
 
@@ -278,9 +545,56 @@ export default {
       }
     });
 
-    this.clients = await api.getClients(true);
-    this.freePlaces = await api.getPlaces();
-    this.selectedUsersInMeeting = await api.getUsers();
+    const clients = await api.getClients(true);
+    for (let index in clients) {
+      this.clients.push(clients[index]);
+    }
+
+    if (!this.isCreatePopup) {
+      this.fillDataInputs();
+    } else {
+      await this.fillUsers();
+    }
+  },
+
+  computed: {
+    isCorrectSelectedTime() {
+      if (this.start === "" || this.end === "") {
+        return true;
+      }
+
+      const start = new Date();
+      const startHours = this.start.split(":")[0];
+      const startMinutes = this.start.split(":")[1];
+      start.setHours(startHours, startMinutes);
+
+      const end = new Date();
+      const endHours = this.end.split(":")[0];
+      const endMinutes = this.end.split(":")[1];
+      end.setHours(endHours, endMinutes);
+
+      return start < end;
+    },
+
+    isCorrectDate() {
+      if (this.date === "") {
+        return true;
+      }
+
+      if (!this.isCreatePopup) {
+        return true;
+      }
+
+      const selectedDate = new Date(this.date);
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+
+      return selectedDate >= currentDate;
+    },
+
+    popupTitle() {
+      return this.isCreatePopup ? "Новая встреча" : "Редактирование встречи";
+    },
   },
 };
 </script>
@@ -301,6 +615,13 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   bottom: 0;
   z-index: 100;
+}
+
+.popup-title {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .info-meeting,
@@ -441,6 +762,7 @@ export default {
 .validate-error-message {
   color: red;
   font-weight: bolder;
+  margin-bottom: 5px;
 }
 
 .theme-input.invalid,

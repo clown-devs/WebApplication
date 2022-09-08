@@ -162,16 +162,10 @@ const api = {
     async createMeeting(meeting) {
         try {
             const newMeeting = await axios.post(
-                OLD_API_KEY + API_PATHS['meetings'] + '/', meeting
+                API_KEY + API_PATHS['meetings'], meeting
             );
 
-            const newEmployee = await axios.post(
-                OLD_API_KEY + API_PATHS['employeelist'], {
-                "employee": newMeeting.data().creator,
-                "meeting": newMeeting.data().id
-            });
-
-            return newEmployee.data();
+            return newMeeting.data;
 
         } catch (error) {
             this.errorHandle(error);
@@ -248,6 +242,33 @@ const api = {
             this.errorHandle(error);
             return [];
         }
+    },
+
+    async deleteMeeting(meetingId) {
+        try {
+            let res = await axios.delete(
+                API_KEY + API_PATHS['meetings'] + meetingId + "/"
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }    
+    },
+
+    async editMeeting(meeting) {
+        try {
+            let res = await axios.patch(
+                API_KEY + API_PATHS['meetings'] + meeting.id + "/",
+                meeting
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }    
     },
 
     errorHandle(error) {
