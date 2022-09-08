@@ -17,9 +17,6 @@
                 v-model="selectedClient"
                 @change="selectClientHandler"
               >
-                <!-- <option value="" disabled selected>
-                  Клиент
-                </option> -->
                 <option
                   v-for="client in clients"
                   :value="client"

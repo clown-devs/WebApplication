@@ -138,10 +138,12 @@ export default {
     async selectedSegmentedControl(selectedFirstControl) {
       if (selectedFirstControl) {
         this.meetings = await api.getMeetings();
+        this.prepareMeetingsForDisplay();
         return;
       }
 
       this.meetings = await api.getMeetings(true);
+      this.prepareMeetingsForDisplay();
     },
 
     touchCreateMeet() {
