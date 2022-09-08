@@ -2,7 +2,7 @@
   <div class="popup_wrapper" ref="popup_wrapper">
     <form class="v-popup animation" @submit.prevent>
       <div class="v-popup__header">
-        <slot name="header"></slot>
+        <span class="popup-title"> {{ popupTitle }}</span>
         <span>
           <i class="material-icons" @click="closePopup"> close </i>
         </span>
@@ -17,8 +17,14 @@
                 v-model="selectedClient"
                 @change="selectClientHandler"
               >
-                <option value="" disabled selected>Клиент</option>
-                <option v-for="client in clients" v-bind:value="client">
+                <!-- <option value="" disabled selected>
+                  Клиент
+                </option> -->
+                <option
+                  v-for="client in clients"
+                  :value="client"
+                  :disabled="client.id === 0"
+                >
                   {{ client.name }}
                 </option>
               </select>
@@ -26,10 +32,12 @@
 
             <div class="contact-container">
               <select class="contact-input" v-model="selectedContact">
-                <option value="" disabled selected>Контактное лицо</option>
-                <option v-for="contact in contacts" v-bind:value="contact">
-                  {{ contact.first_name }} {{ contact.third_name }}
-                  {{ contact.second_name }} {{ contactPosition(contact) }}
+                <option
+                  v-for="contact in contacts"
+                  :value="contact"
+                  :disabled="contact.id === 0"
+                >
+                  {{ contact.name }}
                 </option>
               </select>
             </div>
@@ -55,6 +63,7 @@
                   placeholder="Дата"
                   v-model="date"
                   :class="{ invalid: v$.date.$error || !this.isCorrectDate }"
+                  @change="changeTime"
                 />
                 <small v-if="v$.date.$error" class="validate-error-message">
                   Поле даты - обязательное поле!
@@ -78,7 +87,9 @@
                   class="date-start-input"
                   placeholder="Время начала"
                   v-model="start"
-                  :class="{ invalid: v$.start.$error || !this.isCorrectSelectedTime}"
+                  :class="{
+                    invalid: v$.start.$error || !this.isCorrectSelectedTime,
+                  }"
                   @change="changeTime"
                 />
                 <small v-if="v$.start.$error" class="validate-error-message">
@@ -113,8 +124,11 @@
                 v-model="place"
                 :class="{ invalid: v$.end.$error }"
               >
-                <option value="" disabled selected>Место встречи</option>
-                <option v-for="place in freePlaces" v-bind:value="place">
+                <option
+                  v-for="place in freePlaces"
+                  :value="place"
+                  :disabled="place.id === 0"
+                >
                   {{ place.name }}
                 </option>
               </select>
@@ -132,10 +146,7 @@
                 multiple
               >
                 <option value="" disabled selected>Сотрудники</option>
-                <option
-                  v-for="user in selectedUsersInMeeting"
-                  v-bind:value="user"
-                >
+                <option v-for="user in users" v-bind:value="user">
                   {{ user.first_name }} {{ user.third_name }}
                   {{ user.second_name }}
                 </option>
@@ -146,7 +157,12 @@
 
         <div class="info-note">
           <div class="note-container">
-            <textarea type="text" class="note-input" placeholder="Заметки"></textarea>
+            <textarea
+              type="text"
+              class="note-input"
+              placeholder="Заметки"
+              v-model="note"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -168,6 +184,7 @@ import api from "@/api";
 import { required, minLength, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import AddButton from "@/components/UI/AddButton.vue";
+import auth from "@/store/modules/auth";
 
 export default {
   components: { AddButton },
@@ -176,6 +193,11 @@ export default {
     isCreatePopup: {
       type: Boolean,
       default: true,
+    },
+
+    editingMeet: {
+      type: Object,
+      default: null,
     },
   },
 
@@ -197,25 +219,82 @@ export default {
 
   data() {
     return {
-      selectedClient: "",
-      selectedContact: "",
-      selectedUsersInMeeting: "",
-      clients: [],
-      contacts: [],
-      freePlaces: [],
+      selectedClient: {
+        name: "Клиент",
+        id: 0,
+        inn: "",
+      },
+
+      selectedContact: {
+        name: "Контактное лицо",
+        id: 0,
+      },
+
+      selectedUsersInMeeting: [],
+
+      clients: [
+        {
+          name: "Клиент",
+          id: 0,
+          inn: "",
+        },
+      ],
+
+      contacts: [
+        {
+          name: "Контактное лицо",
+          id: 0,
+        },
+      ],
+
+      freePlaces: [
+        {
+          name: "Свободные переговорки",
+          id: 0,
+          is_private: false,
+        },
+      ],
+
       start: "",
       end: "",
       date: "",
       theme: "",
-      place: "",
+
+      place: {
+        name: "Свободные переговорки",
+        id: 0,
+        is_private: false,
+      },
+
+      note: "",
+      users: [],
     };
   },
 
   methods: {
     async touchSaveButtonHandler() {
-      if (await !this.isCorrectForm()) {
+      const isValidate = await this.isCorrectForm();
+      if (!isValidate) {
         return;
       }
+
+      let newMeeting = {
+        date: this.date,
+        start: this.start,
+        end: this.end,
+        place_name: this.place.name,
+        place_id: this.place.id !== null ? this.place.id : "",
+        topic: this.theme,
+        note: this.note,
+        creator_id: auth.state.user.id,
+        contact_id: this.selectedContact.id,
+        client_id: this.selectedClient.id !== 0 ? this.selectedClient.id : "",
+        employee_list: this.getEmployeeList(),
+      };
+
+      newMeeting = await api.createMeeting(newMeeting);
+      this.$emit("createMeeting", newMeeting);
+      this.closePopup();
     },
 
     closePopup() {
@@ -246,7 +325,7 @@ export default {
     },
 
     clearePopup() {
-      this.selectedClient = "";
+      this.selectedClient = "0";
       this.selectedContact = "";
       this.selectedPlace = "";
       this.clients = [];
@@ -261,7 +340,8 @@ export default {
     },
 
     async selectClientHandler() {
-      this.contacts = await api.getClientContacts(this.selectedClient.id);
+      const contacts = await api.getClientContacts(this.selectedClient.id);
+      this.fillContactsForSelect(contacts);
     },
 
     contactPosition(contact) {
@@ -273,16 +353,97 @@ export default {
     },
 
     async changeTime() {
-      if (this.start !== "" || this.end !== "" || this.date !== "") {
-        this.freePlaces = await api.getFreePlaces(
-          this.start,
-          this.end,
-          this.date
-        );
+      if (this.start !== "" && this.end !== "" && this.date !== "") {
+        this.fillFreePlaces();
+      }
+    },
 
-        this.freePlaces.push({
-          name: "У клиента"
+    getEmployeeList() {
+      const ls = [];
+      for (let index in this.selectedUsersInMeeting) {
+        ls.push(this.selectedUsersInMeeting[index].id);
+      }
+
+      return ls;
+    },
+
+    async fillDataInputs() {
+      this.selectedClient = {
+        name: this.editingMeet.client_name,
+        id: this.editingMeet.client_id,
+        inn: this.editingMeet.client_inn,
+      };
+
+      await this.selectClientHandler();
+
+      this.selectedContact = {
+        name: this.editingMeet.contact_name,
+        id: this.editingMeet.contact_id,
+      };
+
+      this.theme = this.editingMeet.topic;
+      this.note = this.editingMeet.note;
+      this.date = this.editingMeet.date;
+      this.start = this.editingMeet.start;
+      this.end = this.editingMeet.end;
+
+      this.fillFreePlaces();
+      this.place = {
+        name: this.editingMeet.place_name,
+        id: this.editingMeet.place_id,
+        is_private: false,
+      };
+
+      if (this.freePlaces.indexOf(this.place) === -1) {
+        this.freePlaces.push(this.place);
+      }
+    },
+
+    fillContactsForSelect(contacts) {
+      this.contacts = [
+        {
+          name: "Контактное лицо",
+          id: 0,
+        },
+      ];
+
+      for (let i in contacts) {
+        const fullName =
+          contacts[i].second_name +
+          " " +
+          contacts[i].first_name +
+          " " +
+          contacts[i].third_name;
+        this.contacts.push({
+          name: fullName,
+          id: contacts[i].id,
         });
+      }
+    },
+
+    async fillFreePlaces() {
+      const freePlaces = await api.getFreePlaces(
+        this.start,
+        this.end,
+        this.date
+      );
+
+      this.freePlaces = [];
+
+      this.freePlaces.push({
+        name: "Свободные переговорки",
+        id: 0,
+        is_private: false,
+      });
+
+      this.freePlaces.push({
+        name: "У клиента",
+        id: null,
+        is_private: false,
+      });
+
+      for (let i in freePlaces) {
+        this.freePlaces.push(freePlaces[i]);
       }
     },
   },
@@ -296,8 +457,16 @@ export default {
       }
     });
 
-    this.clients = await api.getClients(true);
-    this.selectedUsersInMeeting = await api.getUsers();
+    const clients = await api.getClients(true);
+    for (let index in clients) {
+      this.clients.push(clients[index]);
+    }
+
+    if (!this.isCreatePopup) {
+      this.fillDataInputs();
+    }
+
+    this.users = await api.getUsers();
   },
 
   computed: {
@@ -334,6 +503,10 @@ export default {
 
       return selectedDate >= currentDate;
     },
+
+    popupTitle() {
+      return this.isCreatePopup ? "Новая встреча" : "Редактирование встречи";
+    },
   },
 };
 </script>
@@ -354,6 +527,13 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   bottom: 0;
   z-index: 100;
+}
+
+.popup-title {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .info-meeting,

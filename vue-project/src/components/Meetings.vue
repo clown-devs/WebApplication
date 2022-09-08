@@ -29,19 +29,24 @@
       </div>
 
       <div class="green-button-add">
-        <add-button @click="touchCreateMeet">Добавить встречу</add-button>
+        <add-button @click="this.displayCreateMeetPopup = true">Добавить встречу</add-button>
       </div>
     </div>
 
     <create-meet
-      v-if="displayMeetPopup"
-      @closePopup="closePopupForMeet"
+      v-if="displayEditMeetPopup"
+      @closePopup="closeEditPopup"
+      :isCreatePopup="false"
+      :editingMeet="this.editingMeet"
       class="meet__modal-window"
-    >
-      <template v-slot:header>
-        <span class="popup-title"> {{ meetPopupTitle }}</span>
-      </template>
-    </create-meet>
+    ></create-meet>
+
+    <create-meet
+      v-if="displayCreateMeetPopup"
+      @closePopup="closeCreatePopup"
+      @createMeeting="displayNewMeeting"
+      class="meet__modal-window"
+    ></create-meet>
 
     <div v-if="isLoadedMeetings" class="list-meet">
       <h2 class="list-meet-text">Список встреч:</h2>
@@ -64,7 +69,7 @@
             <p class="data-item">{{ meeting.date }}</p>
             <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
             <p class="place-item">{{ meeting.place_name }}</p>
-            <edit-button class="edit-btn"></edit-button>
+            <edit-button class="edit-btn" @click="editMeeting(meeting)"></edit-button>
           </div>
           <p class="theme-item">{{ meeting.topic }}</p>
           <p class="client-item">{{ meeting.client_name }}</p>
@@ -104,7 +109,9 @@ export default {
       nearMeeting: undefined,
       isLoadedMeetings: false,
       isCreateMeetMode: false,
-      displayMeetPopup: false,
+      displayCreateMeetPopup: false,
+      displayEditMeetPopup: false,
+      editingMeet: {}
     };
   },
 
@@ -129,12 +136,6 @@ export default {
     this.isLoadedMeetings = true;
   },
 
-  computed: {
-    meetPopupTitle() {
-      return this.isCreateMeetMode ? "Новая встреча" : "Редактирование встречи";
-    },
-  },
-
   methods: {
     async prepareMeetingsForDisplay() {
       this.meetings.forEach((meeting) => {
@@ -153,18 +154,31 @@ export default {
     },
 
     touchCreateMeet() {
-      this.isCreateMeetMode = true;
       this.showPopupForMeet();
     },
 
     showPopupForMeet() {
-      this.displayMeetPopup = true;
+      this.displayCreateMeetPopup = true;
     },
 
-    closePopupForMeet() {
-      this.displayMeetPopup = false;
-      this.isCreateMeetMode = false;
+    closeCreatePopup() {
+      this.displayCreateMeetPopup = false;
     },
+
+    closeEditPopup() {
+      this.displayEditMeetPopup = false;
+    },
+
+    displayNewMeeting(newMeeting) {
+      newMeeting.start = newMeeting.start.substr(0, 5);
+      newMeeting.end = newMeeting.end.substr(0, 5);
+      this.meetings.push(newMeeting);
+    },
+
+    editMeeting(meeting) {
+      this.displayEditMeetPopup = true;
+      this.editingMeet = meeting; 
+    }
   },
 };
 </script>
@@ -199,13 +213,6 @@ button {
   border: none;
   margin: 0;
   padding: 0;
-}
-
-.popup-title {
-  flex: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 p {
