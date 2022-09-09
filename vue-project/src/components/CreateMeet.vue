@@ -58,9 +58,11 @@
                   type="date"
                   class="date-input"
                   placeholder="Дата"
+                  id="datepicker"
                   v-model="date"
                   :class="{ invalid: v$.date.$error || !this.isCorrectDate }"
                   @change="changeTime"
+                  style="padding: 5px, 0px, 0px, 5px"
                 />
                 <small v-if="v$.date.$error" class="validate-error-message">
                   Поле даты - обязательное поле!
@@ -83,6 +85,7 @@
                   type="time"
                   class="date-start-input"
                   placeholder="Время начала"
+                  id="startpicker"
                   v-model="start"
                   :class="{
                     invalid: v$.start.$error || !this.isCorrectSelectedTime,
@@ -105,6 +108,7 @@
                   type="time"
                   class="date-end-input"
                   placeholder="Время окончания"
+                  id="endpicker"
                   v-model="end"
                   :class="{ invalid: v$.end.$error }"
                   @change="changeTime"
@@ -141,6 +145,7 @@
                 class="worker-input"
                 v-model="selectedUsersInMeeting"
                 multiple
+                style="padding: 5px 0px 0px 5px"
               >
                 <option
                   v-for="user in users"
@@ -161,17 +166,20 @@
               class="note-input"
               placeholder="Заметки"
               v-model="note"
+              style="padding: 5px 0px 0px 5px"
             ></textarea>
           </div>
         </div>
       </div>
 
       <div class="footer_btns">
-        <add-button class="popup-footer-btn" @click="touchSaveButtonHandler"
+        <add-button
+          class="popup-footer-btn popup-save"
+          @click="touchSaveButtonHandler"
           >Сохранить</add-button
         >
         <add-button
-          class="popup-footer-btn"
+          class="popup-footer-btn popup-edit"
           v-if="!isCreatePopup"
           @click="touchCancelMeetingButtonHandler"
           >Отменить</add-button
@@ -309,7 +317,7 @@ export default {
         newMeeting = await api.createMeeting(newMeeting);
         this.$emit("createMeeting", newMeeting);
       } else {
-        newMeeting['id'] = this.editingMeet.id;
+        newMeeting["id"] = this.editingMeet.id;
         const editMeeting = await api.editMeeting(newMeeting);
         this.$emit("editMeeting", editMeeting);
       }
@@ -612,6 +620,7 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   bottom: 0;
   z-index: 100;
+  overflow: auto;
 }
 
 .popup-title {
@@ -626,28 +635,55 @@ export default {
   display: flex;
 }
 
+.info-meeting {
+  justify-content: space-between;
+}
+
 .worker-input {
-  width: 350px;
-  padding-bottom: 200px;
+  width: 100%;
   background: #f5f5f5;
+
+  border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 10px;
 }
 
 .info-worker {
-  margin-left: auto;
+  display: flex;
 }
 
-.client-input,
-.contact-input,
-.place-input {
+.worker-container {
+  display: flex;
+  width: 350px;
+}
+
+.client-input {
   background: #f5f5f5;
+  border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
-  padding-right: 56%;
-  height: 20px;
-  width: 400px;
+  height: 30px;
+  width: 100%;
   margin-bottom: 10px;
+}
+
+.contact-input {
+  background: #f5f5f5;
+  border: 0;
+  border-bottom: 1px solid #7a7474;
+  border-radius: 7px;
+  height: 30px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.place-input {
+  background: #f5f5f5;
+  border: 0;
+  border-bottom: 1px solid #7a7474;
+  border-radius: 7px;
+  height: 30px;
+  width: 100%;
 }
 
 .contact-container,
@@ -657,56 +693,104 @@ export default {
 .time-end,
 .date-container,
 .place-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+}
+
+.time-start {
+  margin-right: 20px;
+  width: 200px;
+}
+
+.time-end {
+  width: 200px;
+}
+
+.client-container {
+}
+
+.popup-save,
+.popup-edit {
+  width: 400px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .theme-input {
   background: #f5f5f5;
+  border: 0;
+  padding: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
-  height: 30px;
-  width: 400px;
+  height: 45px;
+  width: 99%;
   margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+.footer_btns {
+  display: flex;
+  justify-content: space-around;
 }
 
 .date-input {
   background: #f5f5f5;
+  border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
-  height: 20px;
-  width: 400px;
+  height: 30px;
+  width: 100%;
   margin-bottom: 10px;
+}
+
+#datepicker:before {
+  content: "Дата: ";
+  margin-right: 0.6em;
+  padding-left: 5px;
+  color: #9d9d9d;
+}
+
+#startpicker:before {
+  content: "Время начала: ";
+  margin-right: 0.6em;
+  padding-left: 5px;
+  color: #9d9d9d;
+}
+
+#endpicker:before {
+  content: "Время окончания: ";
+  margin-right: 0.6em;
+  padding-left: 5px;
+  color: #9d9d9d;
 }
 
 .date-start-input {
   background: #f5f5f5;
+  border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
-  height: 20px;
+  height: 30px;
   margin-bottom: 10px;
-  margin-right: 160px;
-  width: 100px;
+  margin-right: 30px;
+  width: 100%;
 }
 
 .note-input {
   background: #f5f5f5;
+  border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
-  padding-right: 56%;
-  height: 60px;
-  width: 448px;
-  margin-bottom: 10px;
+  height: 100px;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .date-end-input {
   background: #f5f5f5;
+  border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
-  height: 20px;
+  height: 30px;
+  width: 100%;
   margin-bottom: 10px;
-  margin-left: auto;
 }
 
 .v-popup {
@@ -716,6 +800,7 @@ export default {
   box-shadow: 0 0 17px 0 #e7e7e7;
   z-index: 10;
   width: 74%;
+  overflow: auto;
 
   &__header {
     display: flex;
@@ -732,14 +817,15 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 2rem;
+    margin: 4rem;
   }
 
   &__content {
-    display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin: 2rem;
+    margin: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 0;
   }
 
   .close_modal {
@@ -788,6 +874,64 @@ export default {
   .v-popup {
     top: 150px;
   }
+
+  .time-start-end {
+    display: block;
+  }
+
+  .time-start {
+    margin-right: 0;
+    width: 300px;
+  }
+
+  .time-end {
+    width: 300px;
+  }
+
+  .date-start-input {
+    margin-right: 0;
+  }
+
+  .popup-save,
+  .popup-edit {
+    width: 300px;
+  }
+
+  .worker-container {
+    width: 300px;
+  }
+}
+
+@media (max-width: 992px) {
+  .info-meeting {
+    display: block;
+  }
+
+  .time-start-end {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .time-start {
+    width: 200px;
+  }
+
+  .time-end {
+    width: 200px;
+  }
+
+  .place-input {
+    margin-bottom: 10px;
+  }
+
+  .worker-container {
+    width: 100%;
+  }
+
+  .popup-save,
+  .popup-edit {
+    width: 250px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -797,6 +941,63 @@ export default {
     height: 100vh;
     border-radius: 0;
   }
+
+  .time-start-end {
+    display: block;
+  }
+
+  .time-start {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .time-end {
+    width: 100%;
+  }
+
+  .popup-save,
+  .popup-edit {
+    width: 180px;
+  }
+  .client-input {
+    height: 40px;
+  }
+
+  .contact-input {
+    height: 40px;
+  }
+
+  .theme-input {
+    height: 65px;
+    width: 99%;
+  }
+
+  .date-input {
+    height: 40px;
+  }
+
+  .date-start-input {
+    height: 40px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+  }
+  .date-end-input {
+    height: 40px;
+    margin-bottom: 10px;
+  }
+
+  .place-input {
+    height: 40px;
+  }
+
+  .note-input {
+    height: 120px;
+    margin-top: 10px;
+  }
+
+  .worker-input {
+  height: 40px;
+}
 }
 
 /* Animations and hovers */
