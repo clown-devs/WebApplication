@@ -90,6 +90,12 @@
     </div>
 
     <loading-indicate v-else class="indicator"></loading-indicate>
+
+    <div class="add-meeting-phone">
+      <add-button @click="this.displayCreateMeetPopup = true"
+        >Добавить встречу</add-button
+      >
+    </div>
   </main>
 </template>
 
@@ -171,7 +177,7 @@ export default {
       newMeeting.start = newMeeting.start.substr(0, 5);
       newMeeting.end = newMeeting.end.substr(0, 5);
       this.meetings.push(newMeeting);
-      
+
       if (this.meetings.length) {
         this.nearMeeting = this.meetings[0];
       }
@@ -203,7 +209,7 @@ export default {
       if (this.meetings.length) {
         this.nearMeeting = this.meetings[0];
       }
-      
+
       this.prepareMeetingsForDisplay();
     },
   },
@@ -366,6 +372,10 @@ li p {
   margin-bottom: 60px;
 }
 
+.add-meeting-phone {
+  display: none;
+}
+
 .theme-window {
   margin-bottom: 123px;
   font-weight: 700;
@@ -504,6 +514,11 @@ li p {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
+  .add-meeting-phone {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
 }
 
 @media (max-width: 992px) {
@@ -547,7 +562,7 @@ li p {
     height: 25px;
     width: 25px;
   }
-  
+
   .pencil-icon {
     height: 25px;
     width: 25px;
@@ -588,7 +603,6 @@ li p {
 }
 
 @media (max-height: 851px) {
-
   .client-name,
   .contact-window,
   .theme-window,
