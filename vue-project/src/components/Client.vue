@@ -161,7 +161,7 @@ export default {
 
 .client {
   display: grid;
-  background-color: #f1fbf2;
+  background-color: #fff;
   border: 0.71px solid #f1fbf2;
   box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
@@ -252,8 +252,8 @@ export default {
 }
 
 .client:hover {
-  transform: translateY(-3px);
   transition-duration: 0.5s;
+  background: #e5e4e4;
 }
 
 .client-inn-content,
