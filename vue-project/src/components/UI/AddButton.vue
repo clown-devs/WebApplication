@@ -33,8 +33,9 @@ button {
   transition: 0.3s;
 }
 
-.add-meet-but:hover {
-  border: 1px solid #fff;
+.add-meet-but:hover,
+.add-meet-but:focus {
+  border: 2px solid darkgreen;
   transition: 0.3s;
 }
 

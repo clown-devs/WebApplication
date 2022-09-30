@@ -263,6 +263,7 @@ li p {
 .main-container {
   padding-top: 110px;
 }
+
 .theme-item {
   font-size: 0.88rem;
   overflow: auto;
@@ -275,6 +276,7 @@ li p {
   font-size: 2rem;
   font-family: "Exo 2";
   font-weight: 700;
+  cursor: default;
 }
 
 .list-meet-text {
@@ -283,6 +285,7 @@ li p {
   font-size: 2rem;
   font-family: "Exo 2";
   font-weight: 700;
+  cursor: default;
 }
 
 .near-meet {
@@ -314,10 +317,10 @@ li p {
   margin-right: 23px;
   margin-left: auto;
   display: flex;
-  background: #ffffff;
   border: 0;
   padding: 0;
   cursor: pointer;
+  background: inherit;
 }
 
 .contact-window {
@@ -434,6 +437,7 @@ li p {
 
 .pencil-icon {
   max-width: 100%;
+  color: rgba(0, 0, 0, 0)
 }
 
 .segmented-control {
@@ -509,6 +513,7 @@ li p {
   .pencil-meet {
     margin: 1rem 1rem 1rem 1rem;
     justify-content: flex-end;
+    background: rgba(0, 0, 0, 0);
   }
 
   .pencil-icon {
@@ -674,36 +679,6 @@ li p {
 .container-window:hover {
   transition: 0.5s;
   background: #e5e4e4;
-}
-
-.near-meet-text,
-.client-name,
-.contact-window,
-.tel-window,
-.theme-window,
-.data-window,
-.time-window,
-.place-window,
-.data-item,
-.time-item,
-.place-item,
-.theme-item,
-.client-item,
-.list-meet-text {
-  transition: 0.3s;
-}
-
-.near-meet-text:hover,
-.client-name:hover,
-.contact-window:hover,
-.tel-window:hover,
-.theme-window:hover,
-.data-window:hover,
-.time-window:hover,
-.place-window:hover,
-.list-meet-text:hover {
-  color: #00b268;
-  transition: 0.3s;
 }
 
 .all-meet-item {
