@@ -210,6 +210,7 @@ button {
   height: 60px;
   font-family: "Exo 2";
   font-weight: 700;
+  cursor: pointer;
 }
 
 .error-container {
@@ -217,6 +218,14 @@ button {
   color: red;
   font-weight: bolder;
   font-size: smaller;
+}
+
+.title {
+  cursor: default;
+}
+
+.save-label {
+  cursor: pointer;
 }
 
 /* Validation styles */
@@ -307,15 +316,9 @@ input[type="password"].invalid {
 
 /* Hovers and animations */
 
-.title:hover {
-  opacity: 0.7;
-  transition: 0.3s;
-}
-
 input[type="text"]:hover,
 input[type="password"]:hover {
   transition: 0.3s;
-  transform: translateY(-6px);
 }
 
 .save-label:hover {
@@ -325,7 +328,6 @@ input[type="password"]:hover {
 
 button:hover,
 button:focus {
-  transform: translateY(-6px);
   border: 2px solid darkgreen;
   transition: 0.3s;
 }

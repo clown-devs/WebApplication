@@ -34,7 +34,6 @@ button {
 }
 
 .add-meet-but:hover {
-  transform: translateY(-6px);
   border: 1px solid #fff;
   transition: 0.3s;
 }

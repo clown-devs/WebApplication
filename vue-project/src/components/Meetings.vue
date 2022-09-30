@@ -336,6 +336,7 @@ li p {
   border-radius: 10px;
   margin-bottom: 9px;
   margin-top: 14px;
+  cursor: pointer;
 }
 
 .data-and-time-window {
@@ -358,6 +359,7 @@ li p {
   margin-bottom: 2rem;
   justify-content: space-around;
   height: 63.5%;
+  cursor: pointer;
 }
 
 .client-name,
@@ -440,7 +442,16 @@ li p {
 
 .edit-btn {
   background-color: #ffffff;
-  margin-right: 10px;
+  margin-right: 10px;	
+  background: rgba(0, 0, 0, 0);
+}
+
+.data-item,
+.time-item,
+.place-item,
+.theme-item,
+.client-item {
+  cursor: default;
 }
 
 /* Responsive layout */
@@ -661,8 +672,8 @@ li p {
 }
 
 .container-window:hover {
-  transform: translateY(-3px);
   transition: 0.5s;
+  background: #e5e4e4;
 }
 
 .near-meet-text,
@@ -690,11 +701,6 @@ li p {
 .data-window:hover,
 .time-window:hover,
 .place-window:hover,
-.data-item:hover,
-.time-item:hover,
-.place-item:hover,
-.theme-item:hover,
-.client-item:hover,
 .list-meet-text:hover {
   color: #00b268;
   transition: 0.3s;
@@ -705,7 +711,7 @@ li p {
 }
 
 .all-meet-item:hover {
-  transform: translateY(-3px);
   transition: 0.5s;
+  background: #e5e4e4;
 }
 </style>
