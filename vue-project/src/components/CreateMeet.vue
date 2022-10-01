@@ -152,7 +152,7 @@
                   v-bind:value="user"
                   :disabled="user.id === 0"
                 >
-                  {{ user.name }}
+                  {{ prepareUserForDisplay(user) }}
                 </option>
               </select>
             </div>
@@ -539,6 +539,10 @@ export default {
       this.$emit("cancelMeeting", this.editingMeet.id);
       this.closePopup();
     },
+
+    prepareUserForDisplay(user) {
+      return user.name + "(" + user.direction + ")";
+    }
   },
 
   async mounted() {
