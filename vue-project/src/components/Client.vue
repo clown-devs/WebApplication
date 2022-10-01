@@ -244,6 +244,12 @@ export default {
   margin-left: 30px;
 }
 
+.client-inn-content,
+.client-name-content {
+  margin: 0;
+  cursor: default;
+}
+
 /* Animations and hovers */
 
 .client,
@@ -256,18 +262,10 @@ export default {
   background: #e5e4e4;
 }
 
-.client-inn-content,
-.client-name-content {
-  transition-duration: 0.5s;
-  margin: 0;
-}
-
 .create-contact-btn {
   transition-duration: 0.5s;
 }
 
-.client-inn-content:hover,
-.client-name-content:hover,
 .show-client-history:hover,
 .create-contact-btn:hover {
   transition-duration: 0.5s;

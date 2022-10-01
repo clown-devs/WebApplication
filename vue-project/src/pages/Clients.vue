@@ -558,6 +558,7 @@ h1 {
   font-family: "Exo 2";
   font-weight: 700;
   font-size: 2rem;
+  cursor: default;
 }
 
 form {
@@ -612,7 +613,7 @@ main {
 .search-input {
   width: 100%;
   height: 42px;
-  background: #f5f5f5;
+  background: #fff;
   border: 1px solid rgba(122, 116, 116, 0.64);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
@@ -727,6 +728,7 @@ main {
 
 .display {
   margin: 0;
+  cursor: default;
 }
 
 /* Popup styles */
@@ -787,15 +789,6 @@ input[type="text"].invalid {
 }
 
 /* Animations and hovers */
-
-h1 {
-  transition-duration: 0.5s;
-}
-
-h1:hover {
-  color: #00b268;
-  transition-duration: 0.5s;
-}
 
 .search-input:focus {
   border-color: #7a7474;

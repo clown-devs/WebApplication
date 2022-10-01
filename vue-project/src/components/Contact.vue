@@ -81,7 +81,7 @@ export default {
   border: 0.72px solid #f1fbf2;
   box-shadow: 0px 2.86px 2.86px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  background-color: #f1fbf2;
+  background-color: #fff;
   margin: 10px 0 10px 0;
   margin-left: 11.5%;
   display: flex;
@@ -108,7 +108,7 @@ export default {
   font-family: "Exo 2";
   font-weight: 700;
   font-size: 1.25rem;
-  transition-duration: 0.5s;
+  cursor: default;
 }
 
 .header-buttons {
@@ -160,25 +160,24 @@ export default {
   cursor: pointer;
 }
 
+.contact-email,
+.contact-position-content,
+.contact-number {
+  cursor: default;
+}
+
 /* Animations and hovers */
 
 .contact-item,
-.contact-email-content,
-.contact-position-content,
-.contact-number-content,
 .copy-btn {
   transition-duration: 0.5s;
 }
 
 .contact-item:hover {
-  transform: translateY(-3px);
   transition-duration: 0.5s;
+  background: #e5e4e4;
 }
 
-.contact-name-content:hover,
-.contact-email-content:hover,
-.contact-position-content:hover,
-.contact-number-content:hover,
 .copy-btn:hover {
   transition-duration: 0.5s;
   color: #00b268;

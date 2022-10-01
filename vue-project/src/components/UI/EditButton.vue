@@ -13,7 +13,7 @@ export default {};
   font-size: 1.25rem;
   color: #7a7474;
   cursor: pointer;
-  background-color: #f1fbf2;
+  background-color: inherit;
   border-width: 0;
 }
 

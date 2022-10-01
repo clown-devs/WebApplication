@@ -36,7 +36,7 @@ export default {
 
 .show-info-content {
   cursor: pointer;
-  background-color: #f1fbf2;
+  background-color: inherit;
   border-width: 0;
   font-weight: 700;
   font-size: 1.25rem;
