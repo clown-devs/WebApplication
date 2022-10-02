@@ -4,6 +4,7 @@
     <main>
       <h1>Calendar page</h1>
       <loading-indicate></loading-indicate>
+      <user-directions></user-directions>
     </main>
   </div>
 </template>
@@ -11,11 +12,13 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
+import UserDirections from "@/components/UserDirections.vue";
 
 export default {
   components: {
     NavBar,
-    LoadingIndicate
+    LoadingIndicate,
+    UserDirections
   },
 };
 </script>

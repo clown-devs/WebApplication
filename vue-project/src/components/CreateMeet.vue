@@ -244,6 +244,7 @@ export default {
         {
           name: "Сотрудники",
           id: 0,
+          direction: ""
         },
       ],
 
@@ -287,6 +288,7 @@ export default {
         {
           name: "Сотрудники",
           id: 0,
+          direction: ""
         },
       ],
     };
@@ -497,12 +499,13 @@ export default {
         const fullName =
           users[i].second_name +
           " " +
-          users[i].first_name +
-          " " +
-          users[i].third_name;
+          users[i].first_name[0] + 
+          users[i].third_name[0];
+        
         this.users.push({
           name: fullName,
           id: users[i].id,
+          direction: users[i].direction_name === null ?  "" : users[i].direction_name
         });
       }
     },
@@ -541,7 +544,7 @@ export default {
     },
 
     prepareUserForDisplay(user) {
-      return user.name + "(" + user.direction + ")";
+      return user.name + ( (user.id !== 0) ? "(" + user.direction + ")" : "" );
     }
   },
 
