@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div class="direction-user empty" v-else>
+  <div class="direction-user-item empty" v-else>
     <span>Нет сотрудников</span>
   </div>
 </template>
