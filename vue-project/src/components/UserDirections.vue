@@ -1,6 +1,22 @@
 <template>
   <ul class="segments-container">
     <li class="segment-item" v-for="direction in directions" :key="direction">
+      <!-- <select
+        class="direction-select-item"
+      > -->
+      <!-- <select
+        class="client-input"
+        v-model="selectedClient"
+        @change="selectClientHandler"
+      >
+        <option
+          v-for="client in clients"
+          :value="client"
+          :disabled="client.id === 0"
+        >
+          {{ client.name }}
+        </option>
+      </select> --> 
       {{ direction.name }}
     </li>
   </ul>
@@ -13,7 +29,7 @@ export default {
   data() {
     return {
       directions: [],
-      users: new Map()
+      users: new Map(),
     };
   },
 
@@ -25,14 +41,14 @@ export default {
 
   methods: {
     setUsers(users) {
-        users.forEach(item => {
-            this.users.set(item.direction, new Array());
-        });
+      users.forEach((item) => {
+        this.users.set(item.direction, new Array());
+      });
 
-        users.forEach(item => {
-            this.users.get(item.direction).push(item);
-        });
-    }
+      users.forEach((item) => {
+        this.users.get(item.direction).push(item);
+      });
+    },
   },
 };
 </script>

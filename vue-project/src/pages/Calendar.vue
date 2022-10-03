@@ -4,7 +4,7 @@
     <main>
       <h1>Calendar page</h1>
       <loading-indicate></loading-indicate>
-      <user-directions></user-directions>
+      <multi-checkbox></multi-checkbox>
     </main>
   </div>
 </template>
@@ -13,13 +13,19 @@
 import NavBar from "@/components/NavBar.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import UserDirections from "@/components/UserDirections.vue";
+import MultiCheckbox from "@/components/UI/MultiCheckbox.vue";
 
 export default {
   components: {
     NavBar,
     LoadingIndicate,
-    UserDirections
+    UserDirections,
+    MultiCheckbox
   },
+
+  data() {
+    return {}
+  }
 };
 </script>
 
