@@ -34,6 +34,32 @@
       @close="closeHistory"
     ></client-history>
 
+    <ul class="direction-list">
+      <li
+        v-for="direction in directions"
+        :key="direction"
+        class="direction-item "
+        @click="showUsersByDirection(direction)"
+      >
+        <button
+          class="direction-segment"
+        >
+          {{ direction.name }}
+        </button>
+      </li>
+    </ul>
+
+    <!--v-bind:class="{
+            'active-direction-button': isActiveDirectionButton,
+          }"
+          <button
+          class="direction-segment"
+        >
+          {{ direction.name }}
+        </button>
+        -->
+
+
     <div class="contact-list-container"  v-if="isShowContactList">
       <ul class="contact-list" v-if="allContacts.length">
         <li class="contact-item" v-for="contact in allContacts" :key="contact">
@@ -65,6 +91,88 @@ export default {
   data() {
     return {
       isShowContactList: false,
+      directions: [
+        {
+          id: 1,
+          name: "Платежи и переводы",
+        },
+        {
+          id: 1,
+          name: "Комната 2",
+        },
+        {
+          id: 1,
+          name: "Комната 3",
+        },
+        {
+          id: 1,
+          name: "Комната 4",
+        },
+        {
+          id: 1,
+          name: "Комната 5",
+        },
+        {
+          id: 1,
+          name: "Комната 6",
+        },
+        {
+          id: 1,
+          name: "Комната 7",
+        },
+        {
+          id: 1,
+          name: "Комната 8",
+        },
+        {
+          id: 1,
+          name: "Комната 9",
+        },
+        {
+          id: 1,
+          name: "Комната 10",
+        },
+        {
+          id: 1,
+          name: "Комната 11",
+        },
+        {
+          id: 1,
+          name: "Комната 12",
+        },
+        {
+          id: 1,
+          name: "К",
+        },
+        {
+          id: 1,
+          name: "Комната 14",
+        },
+        {
+          id: 1,
+          name: "Комната 15",
+        },
+        {
+          id: 1,
+          name: "Комната 6",
+        },
+        {
+          id: 1,
+          name: "Комната 7",
+        },
+        {
+          id: 1,
+          name: "Комната 8",
+        },
+        {
+          id: 1,
+          name: "Комната 9",
+        },
+        {
+          id: 1,
+          name: "Комната 10",
+        },
+      ],
       isShowClientHistory: false,
       contacts: [],
       client: this.clientData,
@@ -145,6 +253,10 @@ export default {
 <style scoped>
 /* Main styles */
 
+* {
+  font-family: "Exo 2";
+}
+
 .create-contact-btn {
   height: 20px;
   width: 20px;
@@ -157,6 +269,33 @@ export default {
 
 .client-container {
   margin: 1rem 0 1rem 0;
+}
+
+.direction-list {
+  display: flex;
+  list-style-type: none;
+  padding-left: 0;
+  overflow-x: scroll;
+}
+
+.direction-item {
+  margin-right: 10px;
+  margin-top: 22px;
+  margin-bottom: 16px;
+}
+
+.direction-segment {
+  background: #ffffff;
+  padding: 0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  border: none;
+  white-space: nowrap;
+  cursor: pointer;
+  height: 40px;
+  padding: 8px 22px 8px 22px;
+  color: #7a7474;
+  font-size: 20px;
 }
 
 .client {
@@ -262,6 +401,22 @@ export default {
   background: #e5e4e4;
 }
 
+.direction-segment:hover {
+  background: #00b268;
+  color: white;
+  transition-duration: 0.5s;
+}
+
+.active-direction-button {
+  background: #00b268;
+  color: white;
+  transition-duration: 0.5s;
+}
+
+.direction-segment {
+  transition-duration: 0.5s;
+}
+
 .create-contact-btn {
   transition-duration: 0.5s;
 }
@@ -270,6 +425,15 @@ export default {
 .create-contact-btn:hover {
   transition-duration: 0.5s;
   color: #00b268;
+}
+
+.direction-list::-webkit-scrollbar {
+  height: 6px; /* ширина scrollbar */
+}
+
+.direction-list::-webkit-scrollbar-thumb {
+  background-color: #d3d3d3; /* цвет плашки */
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
