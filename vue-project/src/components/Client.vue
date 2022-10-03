@@ -1,9 +1,6 @@
 <template>
   <div class="client-container">
-    <div class="client"
-    :id="String('client') + String(index)"
-          
-          >
+    <div class="client">
       <div class="client-icon-container">
         <img class="client-icon" src="/svg/client-icon.svg" />
       </div>

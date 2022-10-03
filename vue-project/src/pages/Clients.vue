@@ -44,6 +44,7 @@
                 @create="touchCreateContact"
                 @editContact="touchEditContact"
                 :newContact="prepareNewContactForChildComponent(client.id)"
+                :id="String('client') + String(index)"
               ></client>
             </li>
           </ul>
