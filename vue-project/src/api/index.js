@@ -12,7 +12,9 @@ const API_PATHS = {
     contact: 'clients/contacts/',
     place: 'meetings/place/',
     employeelist: 'employeelist/',
-    users: 'users/employee/'
+    users: 'users/employee/',
+    directions: 'users/directions/',
+    users_employee: 'users/employee/'
 }
 
 const api = {
@@ -269,6 +271,32 @@ const api = {
             this.errorHandle(error);
             return {};
         }    
+    },
+
+    async getDirections() {
+        try {
+            let res = await axios.get(
+                API_KEY + API_PATHS['directions'],
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
+    async getLinkedUsersByClientId(id) {
+        try {
+            let res = await axios.get(
+                API_KEY + API_PATHS['users_employee'] + '?client=' + String(id),
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
     },
 
     errorHandle(error) {

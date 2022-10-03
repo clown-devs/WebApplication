@@ -152,7 +152,7 @@
                   v-bind:value="user"
                   :disabled="user.id === 0"
                 >
-                  {{ user.name }}
+                  {{ prepareUserForDisplay(user) }}
                 </option>
               </select>
             </div>
@@ -194,10 +194,12 @@ import api from "@/api";
 import { required, minLength, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import AddButton from "@/components/UI/AddButton.vue";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/auth";;
 
 export default {
-  components: { AddButton },
+  components: { 
+    AddButton
+  },
 
   props: {
     isCreatePopup: {
@@ -244,6 +246,7 @@ export default {
         {
           name: "Сотрудники",
           id: 0,
+          direction: ""
         },
       ],
 
@@ -287,6 +290,7 @@ export default {
         {
           name: "Сотрудники",
           id: 0,
+          direction: ""
         },
       ],
     };
@@ -497,12 +501,13 @@ export default {
         const fullName =
           users[i].second_name +
           " " +
-          users[i].first_name +
-          " " +
-          users[i].third_name;
+          users[i].first_name[0] + 
+          users[i].third_name[0];
+        
         this.users.push({
           name: fullName,
           id: users[i].id,
+          direction: users[i].direction_name === null ?  "" : users[i].direction_name
         });
       }
     },
@@ -539,6 +544,10 @@ export default {
       this.$emit("cancelMeeting", this.editingMeet.id);
       this.closePopup();
     },
+
+    prepareUserForDisplay(user) {
+      return user.name + ( (user.id !== 0) ? "(" + user.direction + ")" : "" );
+    }
   },
 
   async mounted() {

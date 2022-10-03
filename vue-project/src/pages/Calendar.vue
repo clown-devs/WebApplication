@@ -4,6 +4,7 @@
     <main>
       <h1>Calendar page</h1>
       <loading-indicate></loading-indicate>
+      <multi-checkbox :dataOptions="test"></multi-checkbox>
     </main>
   </div>
 </template>
@@ -11,11 +12,17 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
+import MultiCheckbox from "@/components/UI/MultiCheckbox.vue";
 
 export default {
   components: {
     NavBar,
-    LoadingIndicate
+    LoadingIndicate,
+    MultiCheckbox,
+  },
+
+  data() {
+    return {};
   },
 };
 </script>
