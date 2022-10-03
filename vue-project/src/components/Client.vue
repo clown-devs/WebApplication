@@ -40,8 +40,19 @@
           <contact :contactData="contact" @edit="touchEditContact(contact)"></contact>
         </li>
       </ul>
-      <ul contact-list v-else>
+      <ul class="contact-list" v-else>
         <contact></contact>
+      </ul>
+    </div>
+
+    <div class="direction-users-list-container"  v-if="isShowDirectionUsers">
+      <ul class="direction-users-list" v-if="directionUsers.length">
+        <li class="direction-users-item" v-for="directionUser in directionUsers" :key="directionUser">
+          <direction-user :directionUserData="directionUser"></direction-user>
+        </li>
+      </ul>
+      <ul class="direction-users-list" v-else>
+        <direction-user></direction-user>
       </ul>
     </div>
   </div>
@@ -53,6 +64,7 @@ import Contact from "@/components/Contact.vue";
 import ShowInfoBtn from "@/components/UI/ShowInfoButton.vue";
 import EditButton from "@/components/UI/EditButton.vue";
 import ClientHistory from "@/components/ClientHistory.vue";
+import DirectionUser from "@/components/DirectionUser.vue";
 
 export default {
   components: {
@@ -60,6 +72,7 @@ export default {
     ShowInfoBtn,
     EditButton,
     ClientHistory,
+    DirectionUser,
   },
 
   data() {
@@ -69,6 +82,8 @@ export default {
       contacts: [],
       client: this.clientData,
       isCreateContactMode: true,
+      directionUsers: [],
+      isShowDirectionUsers: false
     };
   },
 
@@ -140,7 +155,7 @@ export default {
     },
   },
 
-  mounted() {},
+  async mounted() {},
 };
 </script>
 
@@ -220,7 +235,8 @@ export default {
   min-width: 40px;
 }
 
-.contact-list {
+.contact-list,
+.direction-users-list {
   list-style: none;
   padding: 0;
 }
