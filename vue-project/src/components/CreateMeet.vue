@@ -194,10 +194,12 @@ import api from "@/api";
 import { required, minLength, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import AddButton from "@/components/UI/AddButton.vue";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/auth";;
 
 export default {
-  components: { AddButton },
+  components: { 
+    AddButton
+  },
 
   props: {
     isCreatePopup: {

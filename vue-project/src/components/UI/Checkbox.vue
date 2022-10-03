@@ -34,24 +34,24 @@ body {
 }
 
 .checkbox-container {
-  margin-bottom: 25px;
+  margin-bottom: 1rem;
   display: block;
 }
 
 .checkbox {
-  position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
   clip: rect(0 0 0 0);
-  padding-left: 20px;
 }
 
 .check-style {
-  position: absolute;
+  display: inline-block;
   width: 16px;
   height: 16px;
   border: 2px solid green;
+  margin-left: -5px;
+  cursor: pointer;
 }
 
 .checkbox:checked + .check-style {
@@ -63,6 +63,8 @@ body {
 }
 
 .option-content {
-  margin-left: 20px;
+  margin-left: 1rem;
+  vertical-align: top;
+  cursor: pointer;
 }
 </style>

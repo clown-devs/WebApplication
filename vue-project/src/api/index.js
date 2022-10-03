@@ -13,7 +13,8 @@ const API_PATHS = {
     place: 'meetings/place/',
     employeelist: 'employeelist/',
     users: 'users/employee/',
-    directions: 'users/directions/'
+    directions: 'users/directions/',
+    users_employee: 'users/employee'
 }
 
 const api = {
@@ -276,6 +277,19 @@ const api = {
         try {
             let res = await axios.get(
                 API_KEY + API_PATHS['directions'],
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
+    async getUsersByClientId(id) {
+        try {
+            let res = await axios.get(
+                API_KEY + API_PATHS['users_employee'] + '?client=' + String(id),
             );
             return res.data;
 

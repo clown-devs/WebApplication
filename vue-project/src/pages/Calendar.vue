@@ -4,7 +4,7 @@
     <main>
       <h1>Calendar page</h1>
       <loading-indicate></loading-indicate>
-      <multi-checkbox></multi-checkbox>
+      <multi-checkbox :dataOptions="test"></multi-checkbox>
     </main>
   </div>
 </template>
@@ -20,12 +20,70 @@ export default {
     NavBar,
     LoadingIndicate,
     UserDirections,
-    MultiCheckbox
+    MultiCheckbox,
   },
 
   data() {
-    return {}
-  }
+    return {
+      test: [
+        {
+          name: "option 1",
+          id: 1,
+          isSelected: false,
+        },
+        {
+          name: "option 2",
+          id: 2,
+          isSelected: false,
+        },
+        {
+          name: "option 3",
+          id: 3,
+          isSelected: false,
+        },
+        {
+          name: "option 4",
+          id: 4,
+          isSelected: false,
+        },
+        {
+          name: "option 5",
+          id: 5,
+          isSelected: false,
+        },
+        {
+          name: "option 6",
+          id: 6,
+          isSelected: false,
+        },
+        {
+          name: "option 6",
+          id: 6,
+          isSelected: false,
+        },
+        {
+          name: "option 6",
+          id: 6,
+          isSelected: false,
+        },
+        {
+          name: "option 6",
+          id: 6,
+          isSelected: false,
+        },
+        {
+          name: "option 6",
+          id: 6,
+          isSelected: false,
+        },
+        {
+          name: "option 6",
+          id: 6,
+          isSelected: false,
+        },
+      ],
+    };
+  },
 };
 </script>
 

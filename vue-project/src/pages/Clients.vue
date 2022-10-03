@@ -107,6 +107,14 @@
               Длина ИНН должна быть длиной 12 символов!
             </small>
           </div>
+
+          <div class="directions-container">
+            <div class="multicheckbox-title-container">
+              <label class="multicheckbox-title">Выбрать менеджера</label>
+            </div>
+            <multicheckbox :dataOptions="users" class="directions-list">
+            </multicheckbox>
+          </div>
         </template>
         <template v-slot:footer>
           <add-button
@@ -226,6 +234,7 @@ import Popup from "@/components/UI/Popup.vue";
 import auth from "@/store/modules/auth";
 import { required, minLength, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import Multicheckbox from "@/components/UI/MultiCheckbox.vue";
 
 export default {
   components: {
@@ -234,6 +243,7 @@ export default {
     Client,
     AddButton,
     Popup,
+    Multicheckbox,
   },
 
   setup() {
@@ -279,6 +289,7 @@ export default {
       editContactObject: {},
       clientIdForNewContact: "",
       newContactForClient: new Map(),
+      users: [],
       editClientObject: {
         name: "",
         inn: "",
@@ -288,6 +299,8 @@ export default {
 
   async mounted() {
     this.clients = await api.getClients(true);
+    this.users = await api.getUsers();
+    this.prepareUserOptions();
     this.isLoadedClientsFromApi = true;
   },
 
@@ -307,6 +320,14 @@ export default {
     employee_list() {
       let res = new Array();
       res.push(auth.state.user.id);
+      
+      this.users.forEach(user => {
+        if (user.isSelected) {
+          res.push(user.id);
+        }
+      });
+
+      console.log(res);
       return res;
     },
 
@@ -326,11 +347,10 @@ export default {
       return this.isCreateContactMode
         ? "Создание контакта"
         : "Редактирование контакта";
-    }
+    },
   },
 
   methods: {
-
     prepareNewContactForChildComponent(clientId) {
       const newContact = this.newContactForClient.get(clientId);
       this.newContactForClient.delete(clientId);
@@ -350,10 +370,13 @@ export default {
       this.closePopupForClient();
     },
 
-    touchEditClient(client) {
+    async touchEditClient(client) {
       this.editClientObject = client;
       this.newClientName = client.name;
       this.newClientInn = client.inn;
+      
+      const test = await api.getUsersByClientId(client.id);
+      console.log(test);
 
       this.isCreateClientMode = false;
       this.showPopupForClient();
@@ -374,7 +397,7 @@ export default {
       this.isCreateContactMode = false;
       this.showPopupForContact();
       this.editContactObject = contact;
-    
+
       this.newContactFirstName = contact.first_name;
       this.newContactSecondName = contact.second_name;
       this.newContactThirdName = contact.third_name;
@@ -514,9 +537,9 @@ export default {
         position: this.newContactPosition,
         email: this.newContactEmail,
         client: this.editContactObject.client,
-        id: this.editContactObject.id
+        id: this.editContactObject.id,
       });
-      
+
       this.newContactForClient.set(
         this.editContactObject.client,
         changedContact
@@ -545,6 +568,28 @@ export default {
       }
 
       return false;
+    },
+
+    prepareUserOptions() {
+      this.users = this.users.map((user) => {
+        user.isSelected = false;
+        user.name = this.fullNameWithDirection(user);
+        return user;
+      });
+
+      return this.users;
+    },
+
+    fullNameWithDirection(user) {
+      return (
+        user.second_name +
+        " " +
+        user.first_name[0] +
+        user.third_name[0] +
+        "(" +
+        user.direction_name +
+        ")"
+      );
     },
   },
 };
@@ -775,6 +820,25 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.directions-container {
+  width: 80%;
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.multicheckbox-title-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.multicheckbox-title {
+  font-family: "Exo 2";
+  font-weight: 700;
+  font-size: 1rem;
+  color: #8C8C8C;
 }
 
 input[type="text"].invalid {
