@@ -139,6 +139,8 @@ export default {
       return this.contacts;
     },
   },
+
+  mounted() {},
 };
 </script>
 

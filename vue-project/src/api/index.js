@@ -299,6 +299,21 @@ const api = {
         }
     },
 
+    async getClientLinkedUsersByDirection(clientId, directionId) {
+        try {
+            let res = await axios.get(
+                API_KEY + API_PATHS['users_employee'] 
+                + '?client=' + String(clientId)
+                + '&direction=' + String(directionId),
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return {};
+        }
+    },
+
     errorHandle(error) {
 
         if (error.response) {
