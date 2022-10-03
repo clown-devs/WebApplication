@@ -34,51 +34,47 @@
       @close="closeHistory"
     ></client-history>
 
-    <ul class="direction-list">
+    <ul class="direction-list" v-show="isShowContactList">
       <li
         v-for="direction in directions"
         :key="direction"
-        class="direction-item "
-        @click="showUsersByDirection(direction)"
+        class="direction-item"
       >
         <button
           class="direction-segment"
+          @click="showUsersByDirection(direction)"
         >
           {{ direction.name }}
         </button>
       </li>
     </ul>
 
-    <!--v-bind:class="{
-            'active-direction-button': isActiveDirectionButton,
-          }"
-          <button
-          class="direction-segment"
-        >
-          {{ direction.name }}
-        </button>
-        -->
-
-
-    <div class="contact-list-container"  v-if="isShowContactList">
-      <ul class="contact-list" v-if="allContacts.length">
-        <li class="contact-item" v-for="contact in allContacts" :key="contact">
-          <contact :contactData="contact" @edit="touchEditContact(contact)"></contact>
-        </li>
-      </ul>
-      <ul class="contact-list" v-else>
-        <contact></contact>
-      </ul>
-    </div>
-
-    <div class="direction-users-list-container"  v-if="isShowDirectionUsers">
+    <div class="direction-users-list-container" v-if="selectedDirection !== -1">
       <ul class="direction-users-list" v-if="directionUsers.length">
-        <li class="direction-users-item" v-for="directionUser in directionUsers" :key="directionUser">
+        <li
+          class="direction-users-item"
+          v-for="directionUser in directionUsers"
+          :key="directionUser"
+        >
           <direction-user :directionUserData="directionUser"></direction-user>
         </li>
       </ul>
       <ul class="direction-users-list" v-else>
         <direction-user></direction-user>
+      </ul>
+    </div>
+
+    <div class="contact-list-container" v-if="isShowContactList">
+      <ul class="contact-list" v-if="allContacts.length">
+        <li class="contact-item" v-for="contact in allContacts" :key="contact">
+          <contact
+            :contactData="contact"
+            @edit="touchEditContact(contact)"
+          ></contact>
+        </li>
+      </ul>
+      <ul class="contact-list" v-else>
+        <contact></contact>
       </ul>
     </div>
   </div>
@@ -191,7 +187,7 @@ export default {
       client: this.clientData,
       isCreateContactMode: true,
       directionUsers: [],
-      isShowDirectionUsers: false
+      selectedDirection: -1,
     };
   },
 
@@ -214,6 +210,7 @@ export default {
       }
 
       this.isShowContactList = !this.isShowContactList;
+      this.selectedDirection = -1;
     },
 
     touchCreateContact() {
@@ -236,6 +233,24 @@ export default {
 
     closeHistory() {
       this.isShowClientHistory = false;
+    },
+
+    async showUsersByDirection(direction) {
+      if (!this.isShowContactList) {
+        return;
+      }
+
+      if (this.selectedDirection === direction.id) {
+        this.selectedDirection = -1;
+        return;
+      }
+
+      this.directionUsers = await api.getClientLinkedUsersByDirection(
+        this.clientData.id,
+        direction.id
+      );
+
+      this.selectedDirection = direction.id;
     },
   },
 
@@ -263,7 +278,9 @@ export default {
     },
   },
 
-  async mounted() {},
+  async mounted() {
+    this.directions = await api.getDirections();
+  },
 };
 </script>
 
