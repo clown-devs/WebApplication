@@ -24,6 +24,9 @@ export default {
   data() {
     return {};
   },
+
+  async mounted() {
+  },
 };
 </script>
 

@@ -319,7 +319,10 @@ export default {
 
     employee_list() {
       let res = new Array();
-      res.push(auth.state.user.id);
+      
+      if (this.isCreateClientMode) {
+        res.push(auth.state.user.id);
+      }
       
       this.users.forEach(user => {
         if (user.isSelected) {
@@ -327,7 +330,6 @@ export default {
         }
       });
 
-      console.log(res);
       return res;
     },
 
@@ -365,6 +367,7 @@ export default {
 
       this.editClientObject.name = this.newClientName;
       this.editClientObject.inn = this.newClientInn;
+      this.editClientObject.employee_list = this.employee_list;
 
       const editedClient = await api.editClient(this.editClientObject);
       this.closePopupForClient();
