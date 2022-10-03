@@ -375,8 +375,8 @@ export default {
       this.newClientName = client.name;
       this.newClientInn = client.inn;
       
-      const test = await api.getUsersByClientId(client.id);
-      console.log(test);
+      const linkedUsers = await api.getLinkedUsersByClientId(client.id);
+      this.fillSelectedUsersLinkedWithClient(linkedUsers);
 
       this.isCreateClientMode = false;
       this.showPopupForClient();
@@ -444,6 +444,7 @@ export default {
       this.cleareCreateClientPopup();
       this.isExistClient = false;
       this.isCreateClientMode = false;
+      this.users.forEach(user => user.isSelected = false);
     },
 
     closePopupForContact() {
@@ -590,6 +591,16 @@ export default {
         user.direction_name +
         ")"
       );
+    },
+
+    fillSelectedUsersLinkedWithClient(linkedUsers) {
+      this.users.forEach(user => {
+        linkedUsers.forEach(linkedUser => {
+          if (user.id === linkedUser.id) {
+            user.isSelected = true;
+          }
+        })  
+      }); 
     },
   },
 };

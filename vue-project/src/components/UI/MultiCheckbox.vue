@@ -41,5 +41,6 @@ export default {
 
 .option-item {
   margin-top: 2px;
+  margin-left: 5px;
 }
 </style>

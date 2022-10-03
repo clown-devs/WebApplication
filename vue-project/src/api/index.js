@@ -14,7 +14,7 @@ const API_PATHS = {
     employeelist: 'employeelist/',
     users: 'users/employee/',
     directions: 'users/directions/',
-    users_employee: 'users/employee'
+    users_employee: 'users/employee/'
 }
 
 const api = {
@@ -286,7 +286,7 @@ const api = {
         }
     },
 
-    async getUsersByClientId(id) {
+    async getLinkedUsersByClientId(id) {
         try {
             let res = await axios.get(
                 API_KEY + API_PATHS['users_employee'] + '?client=' + String(id),
