@@ -1,6 +1,9 @@
 <template>
   <div class="client-container">
-    <div class="client">
+    <div class="client"
+    :id="String('client') + String(index)"
+          
+          >
       <div class="client-icon-container">
         <img class="client-icon" src="/svg/client-icon.svg" />
       </div>
@@ -21,29 +24,17 @@
           Встречи
         </button>
 
-        <show-info-btn
-          class="show-info-btn"
-          @click="touchClientInfoButton"
-          :showInfo="isShowContactList"
-        ></show-info-btn>
+        <show-info-btn class="show-info-btn" @click="touchClientInfoButton" :showInfo="isShowContactList">
+        </show-info-btn>
       </div>
     </div>
 
-    <client-history
-      v-if="isShowClientHistory"
-      @close="closeHistory"
-    ></client-history>
+    <client-history v-if="isShowClientHistory" @close="closeHistory"></client-history>
 
     <ul class="direction-list">
-      <li
-        v-for="direction in directions"
-        :key="direction"
-        class="direction-item "
-        @click="showUsersByDirection(direction)"
-      >
-        <button
-          class="direction-segment"
-        >
+      <li class="direction-item" v-for="(direction, index) in directions" :key="direction">
+        <button class="direction-segment" :id="String('direction') + String(index)"
+          @click="showUsersByDirection(direction, index)">
           {{ direction.name }}
         </button>
       </li>
@@ -60,7 +51,7 @@
         -->
 
 
-    <div class="contact-list-container"  v-if="isShowContactList">
+    <div class="contact-list-container" v-if="isShowContactList">
       <ul class="contact-list" v-if="allContacts.length">
         <li class="contact-item" v-for="contact in allContacts" :key="contact">
           <contact :contactData="contact" @edit="touchEditContact(contact)"></contact>
@@ -91,6 +82,7 @@ export default {
   data() {
     return {
       isShowContactList: false,
+      touchedDirectionButtonIndex: -1,
       directions: [
         {
           id: 1,
@@ -214,13 +206,51 @@ export default {
       this.$emit("editContact", contact);
       this.isCreateContactMode = false;
     },
+    allContacts() {
+      if (this.newContact === undefined) {
+        return this.contacts;
+      }
 
+      const isNewContact = true;
+      this.contacts = this.contacts.map((item, isNewContact) => {
+        if (item.id === this.newContact.id) {
+          isNewContact = false;
+          return this.newContact;
+        }
+
+        return item;
+      });
+
+      if (this.isCreateContactMode) {
+        this.contacts.push(this.newContact);
+      }
+
+      return this.contacts;
+    },
     touchShowCLientHistory() {
       this.isShowClientHistory = true;
     },
 
     closeHistory() {
       this.isShowClientHistory = false;
+    },
+
+    showUsersByDirection(direction, index) {
+      let indexPress = 'direction' + String(this.touchedDirectionButtonIndex)
+      let elem = document.getElementById(indexPress)
+
+      if (this.touchedDirectionButtonIndex !== -1) {
+        elem.style.background = 'white';
+        elem.style.color = '#7a7474';
+
+      }
+
+      this.touchedDirectionButtonIndex = index
+
+      indexPress = 'direction' + String(index)
+      elem = document.getElementById(indexPress)
+      elem.style.background = '#00b268';
+      elem.style.color = 'white';
     },
   },
 
@@ -428,11 +458,13 @@ export default {
 }
 
 .direction-list::-webkit-scrollbar {
-  height: 6px; /* ширина scrollbar */
+  height: 6px;
+  /* ширина scrollbar */
 }
 
 .direction-list::-webkit-scrollbar-thumb {
-  background-color: #d3d3d3; /* цвет плашки */
+  background-color: #d3d3d3;
+  /* цвет плашки */
   box-shadow: none;
 }
 

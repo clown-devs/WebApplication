@@ -36,7 +36,8 @@
       <div class="client-list-container" v-if="isLoadedClientsFromApi">
         <div class="clients-container">
           <ul class="clients-list" v-if="clients.length">
-            <li v-for="client in searchedClients" :key="client">
+            <li v-for="(client, index) in searchedClients" 
+            :key="client">
               <client
                 :clientData="client"
                 @edit="touchEditClient"
