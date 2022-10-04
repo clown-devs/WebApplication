@@ -1,6 +1,6 @@
 <template>
   <div class="client-container">
-    <div class="client">
+    <div class="client" @click="touchClientInfoButton">
       <div class="client-icon-container">
         <img class="client-icon" src="/svg/client-icon.svg" />
       </div>
@@ -23,7 +23,6 @@
 
         <show-info-btn
           class="show-info-btn"
-          @click="touchClientInfoButton"
           :showInfo="isShowContactList"
         ></show-info-btn>
       </div>
@@ -62,8 +61,8 @@
       </ul>
       <ul class="direction-users-list" v-else>
         <direction-user></direction-user>
+        <div class="divider"></div>
       </ul>
-      <div class="divider"></div>
     </div>
 
     <div class="contact-list-container" v-if="isShowContactList">
@@ -307,6 +306,10 @@ export default {
   margin: 1rem 0 1rem 0;
 }
 
+.client {
+  cursor: pointer;
+}
+
 .direction-list {
   display: flex;
   list-style-type: none;
@@ -427,7 +430,7 @@ export default {
 }
 
 .divider {
-  background-color: #D3D3D3;
+  background-color: #d3d3d3;
   height: 6px;
   border-radius: 64.2656px;
 }

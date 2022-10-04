@@ -20,9 +20,7 @@ export default {
   },
 
   data() {
-    return {
-      isShowContactList: false
-    };
+    return {};
   },
 };
 </script>
