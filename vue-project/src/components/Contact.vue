@@ -1,5 +1,9 @@
 <template>
-  <div class="contact-item" v-if="this.contact !== undefined">
+  <div 
+    class="contact-item" 
+    v-if="this.contact !== undefined"
+    @click="touchContactInfoButton"
+  >
     <div class="contact-item__header">
       <div class="contact-name">
         <span class="contact-name-content">
@@ -11,7 +15,6 @@
         <edit-button @click="editContact"></edit-button>
         <show-info-btn
           class="show-info-btn"
-          @click="touchContactInfoButton"
           :showInfo="showContactInfo"
         ></show-info-btn>
       </div>
@@ -87,6 +90,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 }
 
 .empty {
