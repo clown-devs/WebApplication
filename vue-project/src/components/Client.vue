@@ -58,10 +58,12 @@
         >
           <direction-user :directionUserData="directionUser"></direction-user>
         </li>
+        <div class="divider"></div>
       </ul>
       <ul class="direction-users-list" v-else>
         <direction-user></direction-user>
       </ul>
+      <div class="divider"></div>
     </div>
 
     <div class="contact-list-container" v-if="isShowContactList">
@@ -422,6 +424,12 @@ export default {
 .client-name-content {
   margin: 0;
   cursor: default;
+}
+
+.divider {
+  background-color: #D3D3D3;
+  height: 6px;
+  border-radius: 64.2656px;
 }
 
 /* Animations and hovers */
