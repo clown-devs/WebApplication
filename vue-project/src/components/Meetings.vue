@@ -3,8 +3,12 @@
     <div v-if="isLoadedMeetings" class="near-meet">
       <h2 class="near-meet-text">Ближайшая встреча:</h2>
 
-      <div class="container-window" v-if="nearMeeting !== undefined">
-        <button class="pencil-meet" @click="editMeeting(this.nearMeeting)">
+      <div 
+        class="container-window" 
+        v-if="nearMeeting !== undefined"
+        @click="editMeeting(this.nearMeeting)"
+      >
+        <button class="pencil-meet">
           <img src="/svg/pencil.svg" alt="" class="pencil-icon" />
         </button>
         <p class="client-name">{{ nearMeeting.client_name }}</p>
@@ -68,18 +72,22 @@
       </segmented-control>
 
       <ul class="list-all-meet" v-if="meetings.length">
-        <li v-for="meeting in meetings" :key="meeting" class="all-meet-item">
+        <li 
+          v-for="meeting in meetings" 
+          :key="meeting" 
+          class="all-meet-item"
+          @click="editMeeting(meeting)"
+        >
           <div class="data-time-place-item">
             <p class="data-item">{{ meeting.date }}</p>
             <p class="time-item">{{ meeting.start }} - {{ meeting.end }}</p>
             <p class="place-item">{{ meeting.place_name }}</p>
             <edit-button
               class="edit-btn"
-              @click="editMeeting(meeting)"
             ></edit-button>
           </div>
-          <p class="theme-item">{{ meeting.topic }}</p>
-          <p class="client-item">{{ meeting.client_name }}</p>
+          <p class="theme-item"><span class="theme-item-container">{{ meeting.topic }}</span></p>
+          <p class="client-item"><span class="client-item-container">{{ meeting.client_name }}</span></p>
         </li>
       </ul>
       <ul class="list-all-meet" v-else>
@@ -302,6 +310,7 @@ li p {
 .theme-item {
   white-space: normal;
 }
+
 .data-time-place-item {
   display: flex;
   justify-content: space-between;
@@ -452,10 +461,17 @@ li p {
 
 .data-item,
 .time-item,
-.place-item,
-.theme-item,
-.client-item {
-  cursor: default;
+.place-item {
+  cursor: pointer;
+}
+
+.all-meet-item {
+  cursor: pointer;
+}
+
+.theme-item-container,
+.client-item-container {
+  cursor: pointer;
 }
 
 /* Responsive layout */
