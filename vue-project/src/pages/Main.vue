@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <nav-bar></nav-bar>
-    <meetings></meetings>
+<!--    <nav-bar></nav-bar>-->
+<!--    <meetings></meetings>-->
   </div>
 </template>
 
