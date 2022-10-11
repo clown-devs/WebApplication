@@ -1,20 +1,21 @@
 #!/bin/bash
 CURRENT_PATH=$(pwd)
+BUILD_DIRECTORY='dist/'
 
 cd ..
 git checkout master
 npm run build
-mv dist/ $TMPDIR
+mv $BUILD_DIRECTORY $TMPDIR
 
 echo pass build to release branch...
 git checkout release
 cd ..
-git rm -r dist/
+git rm -r $BUILD_DIRECTORY
 release_path=$(pwd)
 cd $TMPDIR
-mv dist/ $release_path
+mv $BUILD_DIRECTORY $release_path
 cd $release_path
-git add dist/
+git add $BUILD_DIRECTORY
 git commit -m "autodeploy release"
 git push
 
