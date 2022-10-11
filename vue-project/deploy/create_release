@@ -1,7 +1,6 @@
 #!/bin/bash
 CURRENT_PATH=$(pwd)
 
-echo create build version...
 cd ..
 git checkout master
 npm run build
