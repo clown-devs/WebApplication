@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <nav-bar></nav-bar>
+<!--    <nav-bar></nav-bar>-->
     <main>
       <div class="list-checkbox">
         <h1>Список клиентов</h1>
