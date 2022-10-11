@@ -18,6 +18,7 @@ cd $release_path
 git add $BUILD_DIRECTORY
 git commit -m "autodeploy release"
 git push
+git checkout autodeploy
 
 cd $CURRENT_PATH
 node deploy.js
