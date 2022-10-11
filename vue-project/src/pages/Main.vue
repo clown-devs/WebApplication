@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <nav-bar></nav-bar>
+<!--    <nav-bar></nav-bar>-->
     <meetings></meetings>
   </div>
 </template>
