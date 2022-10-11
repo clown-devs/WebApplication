@@ -12,6 +12,7 @@ git checkout release
 cd ..
 git rm -r $BUILD_DIRECTORY
 release_path=$(pwd)
+git commit -m "delete old build version"
 cd $TMPDIR
 mv $BUILD_DIRECTORY $release_path
 cd $release_path
