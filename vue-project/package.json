@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "release": "cd ../deploy && ./create_release"
+    "release": "cd deploy/ && ./create_release"
   },
   "dependencies": {
     "@vuelidate/core": "^2.0.0-alpha.43",
