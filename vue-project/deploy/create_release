@@ -15,8 +15,8 @@ release_path=$(pwd)
 cd $TMPDIR
 mv $BUILD_DIRECTORY $release_path
 cd $release_path
-ls -l
-pwd
+
+git status
 git add $BUILD_DIRECTORY
 git commit -m "autodeploy1 release"
 git push
