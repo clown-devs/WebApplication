@@ -16,7 +16,7 @@ cd $TMPDIR
 mv $BUILD_DIRECTORY $release_path
 cd $release_path
 git add $BUILD_DIRECTORY
-git commit -m "autodeploy release"
+git commit -m "autodeploy1 release"
 git push
 git checkout autodeploy
 
