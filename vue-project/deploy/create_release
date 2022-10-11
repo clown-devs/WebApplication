@@ -18,6 +18,7 @@ cd $release_path
 
 git status
 git add $BUILD_DIRECTORY
+git status
 git commit -m "autodeploy1 release"
 git push
 git checkout autodeploy
