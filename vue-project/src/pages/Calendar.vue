@@ -4,7 +4,6 @@
     <main>
       <h1>Calendar page</h1>
       <loading-indicate></loading-indicate>
-      <multi-checkbox :dataOptions="test"></multi-checkbox>
     </main>
   </div>
 </template>
