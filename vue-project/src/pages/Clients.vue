@@ -285,7 +285,6 @@ export default {
       isExistContact: false,
       isCreateClientMode: false,
       isCreateContactMode: false,
-      editClientObject: {},
       editContactObject: {},
       clientIdForNewContact: "",
       newContactForClient: new Map(),
