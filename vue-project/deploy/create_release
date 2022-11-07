@@ -22,7 +22,7 @@ git add $BUILD_DIRECTORY
 git status
 git commit -m "autodeploy test release"
 git push
-git checkout autodeploy
+git checkout master
 
 cd $CURRENT_PATH
 node deploy.js
