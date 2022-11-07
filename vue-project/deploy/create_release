@@ -1,0 +1,28 @@
+#!/bin/bash
+CURRENT_PATH=$(pwd)
+BUILD_DIRECTORY='dist/'
+
+cd ..
+git checkout master
+npm run build
+mv $BUILD_DIRECTORY $TMPDIR
+
+echo pass build to release branch...
+git checkout release
+cd ..
+git rm -r $BUILD_DIRECTORY
+release_path=$(pwd)
+git commit -m "delete old build version"
+cd $TMPDIR
+mv $BUILD_DIRECTORY $release_path
+cd $release_path
+
+git status
+git add $BUILD_DIRECTORY
+git status
+git commit -m "autodeploy test release"
+git push
+git checkout master
+
+cd $CURRENT_PATH
+node deploy.js
