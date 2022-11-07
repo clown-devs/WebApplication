@@ -30,7 +30,7 @@
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/results')">
-            <router-link to="/results" class="unactive" active-class="active"
+            <router-link to="/results" class="  unactive" active-class="active"
               >Отчёты по встречам</router-link
             >
           </li>
@@ -588,3 +588,4 @@ ul {
   transition: 0.5s;
 }
 </style>
+
