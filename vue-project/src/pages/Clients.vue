@@ -317,7 +317,7 @@ export default {
     },
 
     employee_list() {
-      let res = new Array();
+      let res = [];
       
       if (this.isCreateClientMode) {
         res.push(auth.state.user.id);
@@ -358,7 +358,8 @@ export default {
       return newContact;
     },
 
-    async editClient() {
+    async editClient()
+    {
       const isCorrectForm = await this.isCorrectClientForm();
       if (!isCorrectForm) {
         return;
@@ -368,9 +369,10 @@ export default {
       this.editClientObject.inn = this.newClientInn;
       this.editClientObject.employee_list = this.employee_list;
 
-      const editedClient = await api.editClient(this.editClientObject);
+      await api.editClient(this.editClientObject);
       this.closePopupForClient();
-    },
+    }
+,
 
     async touchEditClient(client) {
       this.editClientObject = client;
@@ -613,7 +615,7 @@ export default {
 
 h1 {
   margin: 53px 10.14% 21px 10.14%;
-  font-family: "Exo 2";
+  font-family: "Exo 2", serif;
   font-weight: 700;
   font-size: 2rem;
   cursor: default;
@@ -658,12 +660,12 @@ main {
   height: 94px;
   background-color: #f1fbf2;
   border: 0.71px solid #f1fbf2;
-  box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
 }
 
 .empty-message {
-  font-family: "Exo 2";
+  font-family: "Exo 2",serif;
   font-weight: 700;
   font-size: 1rem;
 }
@@ -673,7 +675,7 @@ main {
   height: 42px;
   background: #fff;
   border: 1px solid rgba(122, 116, 116, 0.64);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   padding: 0;
   margin-bottom: 18px;
@@ -818,7 +820,7 @@ main {
   border-bottom: 1px solid #7a7474;
   border-radius: 10px;
   padding-left: 13px;
-  font-family: "Exo 2";
+  font-family: "Exo 2",serif;
   font-weight: 700;
   font-size: 1rem;
 }
@@ -848,7 +850,7 @@ main {
 }
 
 .multicheckbox-title {
-  font-family: "Exo 2";
+  font-family: "Exo 2",serif;
   font-weight: 700;
   font-size: 1rem;
   color: #8C8C8C;
