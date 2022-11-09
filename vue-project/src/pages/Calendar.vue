@@ -3,7 +3,8 @@
     <nav-bar></nav-bar>
     <main>
       <h1>Calendar page</h1>
-      <loading-indicate></loading-indicate>
+      <calendar-container></calendar-container>
+<!--      <loading-indicate></loading-indicate>-->
     </main>
   </div>
 </template>
@@ -12,12 +13,14 @@
 import NavBar from "@/components/NavBar.vue";
 import LoadingIndicate from "@/components/UI/LoadingIndicate.vue";
 import MultiCheckbox from "@/components/UI/MultiCheckbox.vue";
+import CalendarContainer from "@/components/Calendar/CalendarContainer";
 
 export default {
   components: {
     NavBar,
     LoadingIndicate,
     MultiCheckbox,
+    CalendarContainer,
   },
 
   data() {
