@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style scoped>
-.date-container {
+.day-container {
   border: 1px solid black;
 }
 </style>
