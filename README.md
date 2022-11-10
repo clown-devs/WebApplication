@@ -5,5 +5,5 @@ Web application in Vue3 for SberMeetings
 ~~~~~
 в директории vue-project
 npm install
-npm run server
+npm run serve
 ~~~~~
