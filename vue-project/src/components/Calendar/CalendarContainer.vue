@@ -22,7 +22,8 @@ export default {
     return {
       isPressedDayBtn: true,
       isPressedWeekBtn: false,
-      isPressedMonthBtn: false
+      isPressedMonthBtn: false,
+      selectedDate: new Date(),
     }
   },
 

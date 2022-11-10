@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style scoped>
-
+.month-container {
+  border: 1px solid black;
+}
 </style>
