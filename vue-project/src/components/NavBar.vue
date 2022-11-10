@@ -2,7 +2,7 @@
   <header class="header">
     <nav>
       <div class="title-name title-names">
-        <h3 class="logo-name">Sber clients</h3>
+        <h3 class="logo-name" @click="$router.push('/')">Sber clients</h3>
       </div>
       <ul class="nav-bar-list">
         <input type="checkbox" name="" id="checkbox_toggle" />
@@ -11,11 +11,7 @@
         </label>
 
         <div class="menu-items">
-          <li class="nav-bar-list-item" @click="$router.push('/')">
-            <router-link to="/" class="unactive" active-class="active"
-              >Главная страница</router-link
-            >
-          </li>
+
 
           <li class="nav-bar-list-item" @click="$router.push('/clients')">
             <router-link to="/clients" class="unactive" active-class="active"
@@ -283,7 +279,7 @@ nav {
 }
 
 .title-name {
-  margin-right: 60px;
+  margin-right: 10px;
 }
 
 ul {
