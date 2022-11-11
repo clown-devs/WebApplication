@@ -20,10 +20,11 @@
           :class="{activate: this.isPressedMonthBtn}"
       >Месяц</button>
 
-      <button class="prev-date-btn"></button>
-      <button class="next-date-btn"></button>
+      <button class="prev-date-btn" @click="pressPrevDate">prev</button>
+      <button class="next-date-btn" @click="pressNextDate">next</button>
       <button class="free-place-btn"></button>
     </div>
+    {{ this.selectedDate.toDateString() }}
     <div class="design-line-element"></div>
   </div>
 </template>
@@ -75,7 +76,23 @@ export default {
       this.activateSliceBtn({day: true, month: false, week: false});
       this.selectedDate = new Date();
       this.$emit("switchSlice", this.sliceState);
-    }
+    },
+
+    pressPrevDate() {
+      let selectedDate = this.selectedDate;
+
+      selectedDate.setDate(selectedDate.getDate() - 1);
+
+      this.selectedDate = new Date(selectedDate);
+    },
+
+    pressNextDate() {
+      let selectedDate = this.selectedDate;
+
+      selectedDate.setDate(selectedDate.getDate() + 1);
+
+      this.selectedDate = new Date(selectedDate);
+    },
   },
 
   computed: {

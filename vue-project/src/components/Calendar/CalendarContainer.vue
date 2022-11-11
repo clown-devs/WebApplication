@@ -31,7 +31,6 @@ export default {
 
   methods: {
     showSelectedSlice(slicesState) {
-      console.log(slicesState);
       this.isPressedDayBtn = slicesState.isPressedDayBtn;
       this.isPressedMonthBtn = slicesState.isPressedMonthBtn;
       this.isPressedWeekBtn = slicesState.isPressedWeekBtn;
