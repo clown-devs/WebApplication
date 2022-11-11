@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style scoped>
-
+.week-container {
+  border: 1px solid black;
+}
 </style>
