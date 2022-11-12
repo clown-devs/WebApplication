@@ -14,19 +14,19 @@
 
 
           <li class="nav-bar-list-item" @click="$router.push('/clients')">
-            <router-link to="/clients" class="unactive" active-class="active"
+            <router-link to="/clients" class="inactive" active-class="active"
               >Мои клиенты</router-link
             >
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/calendar')">
-            <router-link to="/calendar" class="unactive" active-class="active"
+            <router-link to="/calendar" class="inactive" active-class="active"
               >Календарь</router-link
             >
           </li>
 
           <li class="nav-bar-list-item" @click="$router.push('/results')">
-            <router-link to="/results" class="  unactive" active-class="active"
+            <router-link to="/results" class="  inactive" active-class="active"
               >Отчёты по встречам</router-link
             >
           </li>
@@ -121,8 +121,7 @@ export default {
   },
   
   async mounted() {
-    const places = await api.getPlaces();
-    this.places = places;
+    this.places = await api.getPlaces();
     this.isLoadedPlaces = true;
   },
 };
@@ -150,7 +149,7 @@ button {
 * {
   padding: 0;
   margin: 0;
-  font-family: "Exo 2";
+  font-family: "Exo 2", serif;
   box-sizing: border-box;
   font-weight: 700;
 }
@@ -168,23 +167,9 @@ button {
   margin: 1rem;
 }
 
-.free-room {
-  border: 1px solid green;
-  margin-bottom: 20px;
-  width: 150px;
-}
-
-.unactive {
+.inactive {
   text-decoration: none;
   color: black;
-}
-
-.active {
-  color: #00b268;
-}
-
-.qwe {
-  margin-bottom: 30px;
 }
 
 .log-out {
@@ -212,40 +197,11 @@ body {
   overflow-x: hidden;
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-.roo {
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
 .button-exit {
   display: none;
 }
+
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -265,17 +221,6 @@ nav {
 
 .nav-bar-list li {
   list-style: none;
-}
-
-.nav-bar-icon-button {
-  display: flex;
-  margin-left: auto;
-  justify-content: center;
-  align-items: center;
-}
-
-.nav-bar-icon-button-two {
-  margin-left: auto;
 }
 
 .title-name {
@@ -330,33 +275,21 @@ ul {
 
 .nav-bar-add-meet {
   height: 55px;
-  margin-right: 34px;
   background-color: white;
   border: none;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 0;
   padding: 0;
   display: flex;
   cursor: pointer;
+  margin: 0 34px 0 0;
 }
 
 .nav-bar-profile {
   height: 70px;
   background-color: white;
   border: none;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 0;
   padding: 0;
-  margin-right: 20px;
+  margin: 0 20px 0 0;
   cursor: pointer;
-}
-
-.nav-bar-icon-button {
-  display: flex;
-  justify-content: space-between;
-  width: 20%;
 }
 
 #checkbox_toggle {
@@ -398,13 +331,10 @@ ul {
 
 @media (max-width: 1200px) {
   nav {
-    margin: 0;
-    display: flex;
-    margin-left: 40px;
-    margin-right: 40px;
     display: flex;
     min-height: 90px;
     justify-content: center;
+    margin: 0 40px 0 40px;
   }
   nav .nav-bar-notify-button {
     margin-right: 20px;
@@ -434,13 +364,10 @@ ul {
 
 @media (max-width: 992px) {
   nav {
-    margin: 0;
     display: flex;
-    margin-left: 10px;
-    margin-right: 10px;
     min-height: 90px;
-    display: flex;
     justify-content: center;
+    margin: 0 10px 0 10px;
   }
   nav .nav-bar-notify-button {
     margin-left: auto;
@@ -468,14 +395,11 @@ ul {
 
 @media (max-width: 768px) {
   nav {
-    margin: 0;
     display: flex;
-    margin-left: 10px;
-    margin-right: 10px;
     min-height: 70px;
-    display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 10px 0 10px;
   }
   nav .nav-bar-notify-button {
     margin-left: auto;
@@ -566,7 +490,7 @@ ul {
   transition: 0.5s;
   color: #00b268;
 }
-.unactive:hover {
+.inactive:hover {
   opacity: 0.9;
   transition: 0.5s;
   color: #00b268;
@@ -578,8 +502,7 @@ ul {
 }
 
 .nav-bar-notify-button:hover,
-.nav-bar-icon-add:hover,
-.nav-bar-profile-icon:hover {
+.nav-bar-icon-add:hover {
   opacity: 0.7;
   transition: 0.5s;
 }

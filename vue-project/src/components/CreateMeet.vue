@@ -13,14 +13,14 @@
           <div class="info-meet-main">
             <div class="client-container">
               <select
-                class="client-input"
-                v-model="selectedClient"
-                @change="selectClientHandler"
+                  class="client-input"
+                  v-model="selectedClient"
+                  @change="selectClientHandler"
               >
                 <option
-                  v-for="client in clients"
-                  :value="client"
-                  :disabled="client.id === 0"
+                    v-for="client in clients"
+                    :value="client"
+                    :disabled="client.id === 0"
                 >
                   {{ client.name }}
                 </option>
@@ -30,9 +30,9 @@
             <div class="contact-container">
               <select class="contact-input" v-model="selectedContact">
                 <option
-                  v-for="contact in contacts"
-                  :value="contact"
-                  :disabled="contact.id === 0"
+                    v-for="contact in contacts"
+                    :value="contact"
+                    :disabled="contact.id === 0"
                 >
                   {{ contact.name }}
                 </option>
@@ -41,20 +41,20 @@
 
             <div class="theme-container">
               <input
-                type="text"
-                class="theme-input"
-                placeholder="Тема"
-                v-model="theme"
-                :class="{ invalid: v$.theme.$error }"
+                  type="text"
+                  class="theme-input"
+                  placeholder="Тема"
+                  v-model="theme"
+                  :class="{ invalid: v$.theme.$error }"
               />
               <small v-if="v$.theme.$error" class="validate-error-message">
                 Тема встречи является обязательным полем!
               </small>
             </div>
 
-            <div class="date-icon-all">
-              <div class="date-container">
-                <input
+
+            <div class="date-container">
+              <input
                   type="date"
                   class="date-input"
                   placeholder="Дата"
@@ -62,42 +62,35 @@
                   v-model="date"
                   :class="{ invalid: v$.date.$error || !this.isCorrectDate }"
                   @change="changeTime"
-                  style="padding: 5px, 0px, 0px, 5px"
-                />
-                <small v-if="v$.date.$error" class="validate-error-message">
-                  Поле даты - обязательное поле!
-                </small>
-                <small class="validate-error-message" v-if="!isCorrectDate">
-                  Дата должна быть >= текущей даты!
-                </small>
-              </div>
-
-              <!-- <div class="icon-date">
-                <button class="date-button">
-                  <img src="/svg/date.svg" alt="" class="date-icon" />
-                </button>
-              </div> -->
+              />
+              <small v-if="v$.date.$error" class="validate-error-message">
+                Поле даты - обязательное поле!
+              </small>
+              <small class="validate-error-message" v-if="!isCorrectDate">
+                Дата должна быть >= текущей даты!
+              </small>
             </div>
+
 
             <div class="time-start-end">
               <div class="time-start">
                 <input
-                  type="time"
-                  class="date-start-input"
-                  placeholder="Время начала"
-                  id="startpicker"
-                  v-model="start"
-                  :class="{
+                    type="time"
+                    class="date-start-input"
+                    placeholder="Время начала"
+                    id="start-picker"
+                    v-model="start"
+                    :class="{
                     invalid: v$.start.$error || !this.isCorrectSelectedTime,
                   }"
-                  @change="changeTime"
+                    @change="changeTime"
                 />
                 <small v-if="v$.start.$error" class="validate-error-message">
                   Время начала встречи - обязательное поле!
                 </small>
                 <small
-                  class="validate-error-message"
-                  v-if="!isCorrectSelectedTime"
+                    class="validate-error-message"
+                    v-if="!isCorrectSelectedTime"
                 >
                   Время начало должно быть меньше время конца встречи!
                 </small>
@@ -105,13 +98,13 @@
 
               <div class="time-end">
                 <input
-                  type="time"
-                  class="date-end-input"
-                  placeholder="Время окончания"
-                  id="endpicker"
-                  v-model="end"
-                  :class="{ invalid: v$.end.$error }"
-                  @change="changeTime"
+                    type="time"
+                    class="date-end-input"
+                    placeholder="Время окончания"
+                    id="end-picker"
+                    v-model="end"
+                    :class="{ invalid: v$.end.$error }"
+                    @change="changeTime"
                 />
                 <small v-if="v$.end.$error" class="validate-error-message">
                   Время окончания встречи - обязательное поле!
@@ -121,14 +114,14 @@
 
             <div class="place-container">
               <select
-                class="place-input"
-                v-model="place"
-                :class="{ invalid: v$.end.$error }"
+                  class="place-input"
+                  v-model="place"
+                  :class="{ invalid: v$.end.$error }"
               >
                 <option
-                  v-for="place in freePlaces"
-                  :value="place"
-                  :disabled="place.id === 0"
+                    v-for="place in freePlaces"
+                    :value="place"
+                    :disabled="place.id === 0"
                 >
                   {{ place.name }}
                 </option>
@@ -139,50 +132,49 @@
             </div>
           </div>
 
-          <div class="info-worker">
-            <div class="worker-container">
-              <select
+          <div class="worker-container">
+            <select
                 class="worker-input"
                 v-model="selectedUsersInMeeting"
                 multiple
-                style="padding: 5px 0px 0px 5px"
-              >
-                <option
+                style="padding: 5px 0 0 5px"
+            >
+              <option
                   v-for="user in users"
                   v-bind:value="user"
                   :disabled="user.id === 0"
-                >
-                  {{ prepareUserForDisplay(user) }}
-                </option>
-              </select>
-            </div>
+              >
+                {{ prepareUserForDisplay(user) }}
+              </option>
+            </select>
           </div>
         </div>
 
         <div class="info-note">
           <div class="note-container">
             <textarea
-              type="text"
-              class="note-input"
-              placeholder="Заметки"
-              v-model="note"
-              style="padding: 5px 0px 0px 5px"
+                type="text"
+                class="note-input"
+                placeholder="Заметки"
+                v-model="note"
+                style="padding: 5px 0 0 5px"
+                maxlength="4096"
             ></textarea>
           </div>
         </div>
       </div>
 
-      <div class="footer_btns">
+      <div class="footer-btns">
         <add-button
-          class="popup-footer-btn popup-save"
-          @click="touchSaveButtonHandler"
-          >Сохранить</add-button
-        >
+            class="popup-footer-btn popup-edit"
+            v-if="!isCreatePopup"
+            @click="touchCancelMeetingButtonHandler"
+        >Удалить
+        </add-button>
         <add-button
-          class="popup-footer-btn popup-edit"
-          v-if="!isCreatePopup"
-          @click="touchCancelMeetingButtonHandler"
-          >Отменить</add-button
+            class="popup-footer-btn popup-save" @click="touchSaveButtonHandler"
+        >Сохранить
+        </add-button
         >
       </div>
     </form>
@@ -191,13 +183,15 @@
 
 <script>
 import api from "@/api";
-import { required, minLength, maxLength } from "@vuelidate/validators";
+import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import AddButton from "@/components/UI/AddButton.vue";
-import auth from "@/store/modules/auth";;
+import auth from "@/store/modules/auth";
+import Popup from "@/components/UI/Popup";
 
 export default {
-  components: { 
+  components: {
+    Popup,
     AddButton
   },
 
@@ -221,11 +215,11 @@ export default {
 
   validations() {
     return {
-      theme: { required },
-      start: { required },
-      end: { required },
-      date: { required },
-      place: { required },
+      theme: {required},
+      start: {required},
+      end: {required},
+      date: {required},
+      place: {required},
     };
   },
 
@@ -331,7 +325,7 @@ export default {
 
     closePopup() {
       this.$emit("closePopup");
-      this.clearePopup();
+      this.clearPopup();
     },
 
     async isCorrectForm() {
@@ -342,13 +336,13 @@ export default {
       const isCorrectPlace = await this.v$.place.$validate();
 
       if (
-        isCorrectMeetingTheme &&
-        isCorrectStartMeeting &&
-        isCorrectEndMeeting &&
-        isCorrectDateMeeting &&
-        isCorrectPlace &&
-        this.isCorrectSelectedTime &&
-        this.isCorrectDate
+          isCorrectMeetingTheme &&
+          isCorrectStartMeeting &&
+          isCorrectEndMeeting &&
+          isCorrectDateMeeting &&
+          isCorrectPlace &&
+          this.isCorrectSelectedTime &&
+          this.isCorrectDate
       ) {
         return true;
       }
@@ -356,10 +350,9 @@ export default {
       return false;
     },
 
-    clearePopup() {
+    clearPopup() {
       this.selectedClient = "0";
       this.selectedContact = "";
-      this.selectedPlace = "";
       this.clients = [];
       this.contacts = [];
       this.freePlaces = [];
@@ -376,14 +369,6 @@ export default {
         const contacts = await api.getClientContacts(this.selectedClient.id);
         this.fillContactsForSelect(contacts);
       }
-    },
-
-    contactPosition(contact) {
-      if (contact.position === null || contact.position === "") {
-        return "";
-      }
-
-      return "(" + contact.position + ")";
     },
 
     async changeTime() {
@@ -450,11 +435,11 @@ export default {
 
       for (let i in contacts) {
         const fullName =
-          contacts[i].second_name +
-          " " +
-          contacts[i].first_name +
-          " " +
-          contacts[i].third_name;
+            contacts[i].second_name +
+            " " +
+            contacts[i].first_name +
+            " " +
+            contacts[i].third_name;
         this.contacts.push({
           name: fullName,
           id: contacts[i].id,
@@ -464,9 +449,9 @@ export default {
 
     async fillFreePlaces() {
       const freePlaces = await api.getFreePlaces(
-        this.start,
-        this.end,
-        this.date
+          this.start,
+          this.end,
+          this.date
       );
 
       this.freePlaces = [];
@@ -499,41 +484,41 @@ export default {
 
       for (let i in users) {
         const fullName =
-          users[i].second_name +
-          " " +
-          users[i].first_name[0] + 
-          users[i].third_name[0];
-        
+            users[i].second_name +
+            " " +
+            users[i].first_name[0] + '.' +
+            users[i].third_name[0];
+
         this.users.push({
           name: fullName,
           id: users[i].id,
-          direction: users[i].direction_name === null ?  "" : users[i].direction_name
+          direction: users[i].direction_name === null ? "" : users[i].direction_name
         });
       }
     },
 
     async fillSelectedUsers() {
-      const selectedEmployeers = new Map();
+      const selectedEmployers = new Map();
       for (let i in this.editingMeet.employee_list) {
-        selectedEmployeers.set(this.editingMeet.employee_list[i], null);
+        selectedEmployers.set(this.editingMeet.employee_list[i], null);
       }
 
       const allUsers = this.users;
       for (let i in allUsers) {
         const fullName =
-          allUsers[i].second_name +
-          " " +
-          allUsers[i].first_name +
-          " " +
-          allUsers[i].third_name;
-        if (selectedEmployeers.has(allUsers[i].id)) {
-          selectedEmployeers.set(allUsers[i].id, fullName);
+            allUsers[i].second_name +
+            " " +
+            allUsers[i].first_name +
+            " " +
+            allUsers[i].third_name;
+        if (selectedEmployers.has(allUsers[i].id)) {
+          selectedEmployers.set(allUsers[i].id, fullName);
         }
       }
 
       this.selectedUsersInMeeting = [];
       for (let i in this.users) {
-        if (selectedEmployeers.get(this.users[i].id) !== undefined) {
+        if (selectedEmployers.get(this.users[i].id) !== undefined) {
           this.selectedUsersInMeeting.push(this.users[i]);
         }
       }
@@ -546,7 +531,7 @@ export default {
     },
 
     prepareUserForDisplay(user) {
-      return user.name + ( (user.id !== 0) ? "(" + user.direction + ")" : "" );
+      return user.name + ((user.id !== 0) ? "(" + user.direction + ")" : "");
     }
   },
 
@@ -565,7 +550,7 @@ export default {
     }
 
     if (!this.isCreatePopup) {
-      this.fillDataInputs();
+      await this.fillDataInputs();
     } else {
       await this.fillUsers();
     }
@@ -580,12 +565,12 @@ export default {
       const start = new Date();
       const startHours = this.start.split(":")[0];
       const startMinutes = this.start.split(":")[1];
-      start.setHours(startHours, startMinutes);
+      start.setHours(Number(startHours), Number(startMinutes));
 
       const end = new Date();
       const endHours = this.end.split(":")[0];
       const endMinutes = this.end.split(":")[1];
-      end.setHours(endHours, endMinutes);
+      end.setHours(Number(endHours), Number(endMinutes));
 
       return start < end;
     },
@@ -645,25 +630,30 @@ export default {
 }
 
 .info-meeting {
-  justify-content: space-between;
+  width: 100%;
+}
+
+.time-start-end {
+
+}
+
+.info-meet-main {
+  margin-right: 10px;
+  flex: 1.5;
 }
 
 .worker-input {
-  width: 100%;
   background: #f5f5f5;
-
+  width: 100%;
   border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 10px;
 }
 
-.info-worker {
-  display: flex;
-}
-
 .worker-container {
   display: flex;
   width: 350px;
+  justify-content: flex-end;
 }
 
 .client-input {
@@ -691,7 +681,7 @@ export default {
   border: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
-  height: 30px;
+  height: 50px;
   width: 100%;
 }
 
@@ -706,14 +696,15 @@ export default {
 
 .time-start {
   margin-right: 20px;
-  width: 200px;
+  flex: 1 0 auto;
 }
 
 .time-end {
-  width: 200px;
+  flex: 1 0 auto;
 }
 
 .client-container {
+  width: 100%;
 }
 
 .popup-save,
@@ -723,19 +714,22 @@ export default {
   margin-bottom: 30px;
 }
 
+.popup-edit {
+  background-color: #CD5C5C;
+}
+
 .theme-input {
   background: #f5f5f5;
   border: 0;
-  padding: 0;
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
   height: 45px;
-  width: 99%;
+  width: 99.5%;
   margin-bottom: 10px;
-  padding-left: 5px;
+  padding: 0 0 0 5px;
 }
 
-.footer_btns {
+.footer-btns {
   display: flex;
   justify-content: space-around;
 }
@@ -746,8 +740,9 @@ export default {
   border-bottom: 1px solid #7a7474;
   border-radius: 7px;
   height: 30px;
-  width: 100%;
+  width: 99.3%;
   margin-bottom: 10px;
+  padding: 0 0 0 5px
 }
 
 #datepicker:before {
@@ -757,14 +752,15 @@ export default {
   color: #9d9d9d;
 }
 
-#startpicker:before {
+
+#start-picker:before {
   content: "Время начала: ";
   margin-right: 0.6em;
   padding-left: 5px;
   color: #9d9d9d;
 }
 
-#endpicker:before {
+#end-picker:before {
   content: "Время окончания: ";
   margin-right: 0.6em;
   padding-left: 5px;
@@ -790,6 +786,7 @@ export default {
   height: 100px;
   width: 100%;
   margin-top: 20px;
+  resize: none;
 }
 
 .date-end-input {
@@ -816,7 +813,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin: 2rem;
-    font-family: "Exo 2";
+    font-family: "Exo 2", serif;
     font-weight: 700;
     font-size: 1.5rem;
   }
@@ -832,9 +829,7 @@ export default {
   &__content {
     flex-direction: column;
     gap: 2rem;
-    margin: 3rem;
-    margin-top: 2rem;
-    margin-bottom: 0;
+    margin: 2rem 3rem 0 3rem;
   }
 
   .close_modal {
@@ -880,6 +875,14 @@ export default {
 }
 
 @media (max-width: 1200px) {
+  .theme-input {
+    width: 99%;
+  }
+
+  .date-input {
+    width: 99%;
+  }
+
   .v-popup {
     top: 150px;
   }
@@ -890,11 +893,6 @@ export default {
 
   .time-start {
     margin-right: 0;
-    width: 300px;
-  }
-
-  .time-end {
-    width: 300px;
   }
 
   .date-start-input {
@@ -907,13 +905,16 @@ export default {
   }
 
   .worker-container {
-    width: 300px;
   }
 }
 
 @media (max-width: 992px) {
   .info-meeting {
     display: block;
+  }
+
+  .info-meet-main {
+    margin-right: 0;
   }
 
   .time-start-end {
@@ -923,6 +924,7 @@ export default {
 
   .time-start {
     width: 200px;
+    margin-right: 20px;
   }
 
   .time-end {
@@ -941,6 +943,7 @@ export default {
   .popup-edit {
     width: 250px;
   }
+
 }
 
 @media (max-width: 768px) {
@@ -988,7 +991,7 @@ export default {
   .date-start-input {
     height: 40px;
     margin-bottom: 10px;
-    margin-right: 0px;
+    margin-right: 0;
   }
   .date-end-input {
     height: 40px;
@@ -1005,8 +1008,8 @@ export default {
   }
 
   .worker-input {
-  height: 40px;
-}
+    height: 40px;
+  }
 }
 
 /* Animations and hovers */

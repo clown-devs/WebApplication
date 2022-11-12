@@ -101,88 +101,7 @@ export default {
   data() {
     return {
       isShowContactList: false,
-      directions: [
-        {
-          id: 1,
-          name: "Платежи и переводы",
-        },
-        {
-          id: 1,
-          name: "Комната 2",
-        },
-        {
-          id: 1,
-          name: "Комната 3",
-        },
-        {
-          id: 1,
-          name: "Комната 4",
-        },
-        {
-          id: 1,
-          name: "Комната 5",
-        },
-        {
-          id: 1,
-          name: "Комната 6",
-        },
-        {
-          id: 1,
-          name: "Комната 7",
-        },
-        {
-          id: 1,
-          name: "Комната 8",
-        },
-        {
-          id: 1,
-          name: "Комната 9",
-        },
-        {
-          id: 1,
-          name: "Комната 10",
-        },
-        {
-          id: 1,
-          name: "Комната 11",
-        },
-        {
-          id: 1,
-          name: "Комната 12",
-        },
-        {
-          id: 1,
-          name: "К",
-        },
-        {
-          id: 1,
-          name: "Комната 14",
-        },
-        {
-          id: 1,
-          name: "Комната 15",
-        },
-        {
-          id: 1,
-          name: "Комната 6",
-        },
-        {
-          id: 1,
-          name: "Комната 7",
-        },
-        {
-          id: 1,
-          name: "Комната 8",
-        },
-        {
-          id: 1,
-          name: "Комната 9",
-        },
-        {
-          id: 1,
-          name: "Комната 10",
-        },
-      ],
+      directions: [],
       isShowClientHistory: false,
       contacts: [],
       client: this.clientData,
@@ -403,7 +322,7 @@ export default {
 }
 
 .header-buttons {
-  margin-right: 2 rem;
+  margin-right: 2rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -489,7 +408,7 @@ export default {
 
   .client {
     display: grid;
-    background-color: #f1fbf2;
+    background-color: white;
     border: 0.71px solid #f1fbf2;
     box-shadow: 0px 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
