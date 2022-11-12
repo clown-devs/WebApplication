@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import CalendarDaySlice from "@/components/Calendar/CalendarDaySlice";
-import CalendarWeekSlice from "@/components/Calendar/CalendarWeekSlice";
-import CalendarMonthSlice from "@/components/Calendar/CalendarMonthSlice";
+import CalendarDaySlice from "@/components/Calendar/DaySlice/CalendarDaySlice";
+import CalendarWeekSlice from "@/components/Calendar/WeekSlice/CalendarWeekSlice";
+import CalendarMonthSlice from "@/components/Calendar/MonthSlice/CalendarMonthSlice";
 import CalendarHeader from "@/components/Calendar/CalendarHeader";
 
 export default {

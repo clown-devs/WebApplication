@@ -20,11 +20,16 @@
           :class="{activate: this.isPressedMonthBtn}"
       >Месяц</button>
 
-      <button class="prev-date-btn" @click="pressPrevDate">prev</button>
-      <button class="next-date-btn" @click="pressNextDate">next</button>
-      <button class="free-place-btn"></button>
+      <i class="material-icons prev-date-btn"
+         @click="selectedNewDate(-1)"
+      > arrow_back_ios </i>
+
+      <i class="material-icons next-date-btn"
+         @click="selectedNewDate()"
+      > arrow_forward_ios </i>
+
+      <label class="selected-date"> {{ this.formatDate(selectedDate) }} </label>
     </div>
-    {{ this.selectedDate.toDateString() }}
     <div class="design-line-element"></div>
   </div>
 </template>
@@ -78,20 +83,24 @@ export default {
       this.$emit("switchSlice", this.sliceState);
     },
 
-    pressPrevDate() {
+    selectedNewDate(direction = 1) {
       let selectedDate = this.selectedDate;
 
-      selectedDate.setDate(selectedDate.getDate() - 1);
+      selectedDate.setDate(selectedDate.getDate() + direction);
+      const createdDate = new Date(selectedDate);
+      console.log(createdDate);
 
-      this.selectedDate = new Date(selectedDate);
+      this.selectedDate = createdDate;
     },
 
-    pressNextDate() {
-      let selectedDate = this.selectedDate;
+    formatDate(date) {
+      let options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
 
-      selectedDate.setDate(selectedDate.getDate() + 1);
-
-      this.selectedDate = new Date(selectedDate);
+      return date.toLocaleString('ru', options);
     },
   },
 
@@ -137,4 +146,37 @@ export default {
   color: #00B268;
   transition-duration: 0.5s;
 }
+
+.material-icons {
+  outline: none;
+}
+
+.prev-date-btn,
+.next-date-btn {
+  transition: 0.5s;
+}
+
+.next-date-btn {
+  margin-right: 30px;
+}
+
+.selected-date {
+  font-family: "Exo 2", serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* Animations and hovers */
+.prev-date-btn:hover {
+  color: #00B268;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.next-date-btn:hover {
+  color: #00B268;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
 </style>
