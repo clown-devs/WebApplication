@@ -1,7 +1,7 @@
 <template>
   <div class="calendar-header-container">
     <div class="calendar-header-btns">
-      <button class="today-btn slice" @click="pressTodayBtn">Сегодня</button>
+      <button class="today-btn" @click="pressTodayBtn">Сегодня</button>
 
       <button
           class="day-btn slice" @click="pressDayBtn"
@@ -130,7 +130,7 @@ export default {
   font-family: "Exo 2", serif;
   font-weight: 700;
   font-size: 1.25rem;
-  margin-right: 30px;
+  margin-right: 21px;
   color: #424242;
   background: none;
   border: none;
@@ -167,6 +167,21 @@ export default {
   font-size: 1.25rem;
 }
 
+.today-btn {
+  background: #FFFFFF;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border: 0;
+  border-radius: 15px;
+  height: 40px;
+  width: 157px;
+  font-family: "Exo 2", serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-right: 21px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
 /* Animations and hovers */
 .prev-date-btn:hover {
   color: #00B268;
@@ -180,4 +195,8 @@ export default {
   cursor: pointer;
 }
 
+.today-btn:hover {
+  background-color: lightgrey;
+  transition: 0.2s;
+}
 </style>

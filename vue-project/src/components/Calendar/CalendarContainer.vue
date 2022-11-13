@@ -80,7 +80,7 @@ h1 {
 }
 
 .calendar-header {
-  flex: 1;
+  flex: 2;
   margin-right: 10.14%;
   padding-right: 5px;
 }
@@ -93,7 +93,7 @@ h1 {
 }
 
 .slice-container {
-  flex: 1;
+  flex: 2;
   margin-right: 10.14%;
 }
 
