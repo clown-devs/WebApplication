@@ -405,6 +405,7 @@ li p {
   border-radius: 0px 0px 20px 20px;
   overflow: auto;
   min-width: 406px;
+  height: 72%;
 }
 
 .list-all-meet li {
