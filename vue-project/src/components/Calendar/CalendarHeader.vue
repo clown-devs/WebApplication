@@ -20,15 +20,15 @@
           :class="{activate: this.isPressedMonthBtn}"
       >Месяц</button>
 
-      <i class="material-icons prev-date-btn"
-         @click="selectedNewDate(-1)"
-      > arrow_back_ios </i>
-
-      <i class="material-icons next-date-btn"
-         @click="selectedNewDate()"
-      > arrow_forward_ios </i>
-
-      <label class="selected-date"> {{ this.formatDate(selectedDate) }} </label>
+      <div class="select-time-container">
+        <label class="selected-date"> {{ this.formatDate(selectedDate) }} </label>
+        <i class="material-icons prev-date-btn"
+           @click="selectedNewDate(-1)"
+        > arrow_back_ios </i>
+        <i class="material-icons next-date-btn"
+           @click="selectedNewDate()"
+        > arrow_forward_ios </i>
+      </div>
     </div>
     <div class="design-line-element"></div>
   </div>
@@ -124,6 +124,7 @@ export default {
   flex-direction: row;
   flex: 1;
   margin-bottom: 13px;
+  justify-content: space-between;
 }
 
 .slice {
@@ -157,14 +158,11 @@ export default {
   transition: 0.5s;
 }
 
-.next-date-btn {
-  margin-right: 30px;
-}
-
 .selected-date {
   font-family: "Exo 2", serif;
   font-weight: 700;
   font-size: 1.25rem;
+  margin-right: 27px;
 }
 
 .today-btn {
@@ -180,6 +178,11 @@ export default {
   margin-right: 21px;
   cursor: pointer;
   transition: 0.5s;
+}
+
+.select-time-container  {
+  justify-self: flex-end;
+  align-self: center;
 }
 
 /* Animations and hovers */

@@ -86,7 +86,7 @@ h1 {
 }
 
 .calendar-body-level {
-  height: 72%;
+  height: 65%;
   overflow-y: scroll;
   display: flex;
   flex-direction: row;
