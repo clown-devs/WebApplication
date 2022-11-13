@@ -23,13 +23,10 @@
 </template>
 
 <script>
-import Popup from "@/components/UI/Popup";
 import api from "@/api";
 
 export default {
   name: "CalendarDaySlice",
-
-  components: {Popup},
 
   data() {
     return {
@@ -131,12 +128,15 @@ export default {
 
 <style scoped>
 .day-container {
-  border: 1px solid black;
+  border-right: 1px solid #BDBDBD;
+  max-width: 1199px;
+  overflow: auto;
 }
 
 .grid-container {
   list-style: none;
   margin: 0;
+  padding: 0;
 }
 
 .row-cell-container {

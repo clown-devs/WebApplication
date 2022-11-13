@@ -136,6 +136,7 @@ export default {
   border: none;
   cursor: pointer;
   transition-duration: 0.5s;
+  padding: 0;
 }
 
 .design-line-element {

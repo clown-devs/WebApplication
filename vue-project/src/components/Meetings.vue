@@ -401,7 +401,6 @@ li p {
 .list-all-meet {
   margin-top: 0;
   margin-bottom: 0;
-  height: 72%;
   background: #00b268;
   border-radius: 0px 0px 20px 20px;
   overflow: auto;
