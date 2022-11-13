@@ -10,7 +10,10 @@
         <div
             class="meeting-event-element"
             v-if="meetingEvents.get(item) !== undefined"
-            :style="{top: meetingEvents.get(item)['start-coordinate']}"
+            :style="{
+              top: meetingEvents.get(item)['start-coordinate'],
+              height: meetingEvents.get(item)['end-coordinate'],
+            }"
         >
           {{ meetingEvents.get(item).topic }}
         </div>
@@ -20,14 +23,17 @@
 </template>
 
 <script>
-
 import Popup from "@/components/UI/Popup";
+import api from "@/api";
+
 export default {
   name: "CalendarDaySlice",
+
   components: {Popup},
+
   data() {
     return {
-      lineHeight: '',
+      lineHeight: 0,
 
       cells: [],
 
@@ -41,7 +47,7 @@ export default {
     let meetings = [
       {
         start: '00:00',
-        end: '3:25',
+        end: '03:30',
         topic: 'Govno iz jopi'
       },
 
@@ -58,15 +64,13 @@ export default {
       }
     ];
 
-    this.handleMeetingEvents(meetings);
 
     this.$nextTick(function () {
       this.lineHeight = this.matchHeight();
+      this.handleMeetingEvents(meetings);
     })
 
   },
-
-
 
   methods: {
     createTimeGrid() {
@@ -77,13 +81,17 @@ export default {
 
     handleMeetingEvents(meetingEvents) {
       meetingEvents.forEach(event => {
-        let key;
         let hours = event.start.slice(0, 2);
+        let key = hours[0] === '0' ? +hours[1] : +hours;
 
-        key = hours[0] === '0' ? +hours[1] : +hours;
+        event['start-coordinate'] = this.calculateStartCoordinateForEvent(
+            event.start
+        );
 
-        let minutes = +event.start.slice(3, event.start.length);
-        event['start-coordinate'] = String(-100 + Math.round(minutes / 60 * 100)) + '%';
+        event['end-coordinate'] = this.calculateEndCoordinateForEvent(
+            event.start,
+            event.end
+        );
 
         this.meetingEvents.set(key, event);
       });
@@ -91,6 +99,31 @@ export default {
 
     matchHeight () {
       return this.$refs.infoBox[0].clientHeight;
+    },
+
+    calculateStartCoordinateForEvent(startTime) {
+      let minutes = +startTime.slice(3, startTime.length);
+      return String(-100 + Math.round(minutes / 60 * 100)) + '%';
+    },
+
+    calculateEndCoordinateForEvent(startTime, endTime) {
+      const startHours = +startTime.slice(0, 2);
+      const startMinutes = +startTime.slice(3, startTime.length);
+
+      const endHours = +endTime.slice(0, 2);
+      const endMinutes = +endTime.slice(3, endTime.length);
+
+      const startDate = new Date();
+      startDate.setHours(startHours);
+      startDate.setMinutes(startMinutes);
+
+      const endDate = new Date();
+      endDate.setHours(endHours);
+      endDate.setMinutes(endMinutes);
+
+      const delta = ( (endDate - startDate) / 1000 / 60 / 60 );
+      const result = delta * this.lineHeight;
+      return String(result) + 'px';
     },
   }
 }
