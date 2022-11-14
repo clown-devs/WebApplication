@@ -2,21 +2,24 @@
   <calendar-day-slice v-show="isPressedDayBtn"></calendar-day-slice>
   <calendar-week-slice v-show="isPressedWeekBtn"></calendar-week-slice>
   <calendar-month-slice v-show="isPressedMonthBtn"></calendar-month-slice>
-
 </template>
 
 <script>
 import CalendarDaySlice from "@/components/Calendar/CalendarDaySlice";
 import CalendarWeekSlice from "@/components/Calendar/CalendarWeekSlice";
 import CalendarMonthSlice from "@/components/Calendar/CalendarMonthSlice";
+import SmallCalendar from "@/components/Calendar/SmallCalendar/SmallCalendar";
+import MeetPlaces from "@/components/Calendar/SmallCalendar/MeetPlaces";
 
 export default {
   name: "CalendarContainer",
 
   components: {
+    SmallCalendar,
     CalendarDaySlice,
     CalendarWeekSlice,
-    CalendarMonthSlice
+    CalendarMonthSlice,
+    MeetPlaces
   },
 
   data() {
@@ -33,6 +36,9 @@ export default {
       this.isPressedMonthBtn = isPressedButtonsState.month;
       this.isPressedWeekBtn = isPressedButtonsState.week;
       this.isPressedDayBtn = isPressedButtonsState.day;
+    },
+    onTest(data) {
+      console.log(data)
     }
   },
 
