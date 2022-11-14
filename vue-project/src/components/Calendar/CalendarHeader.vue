@@ -81,6 +81,7 @@ export default {
       this.activateSliceBtn({day: true, month: false, week: false});
       this.selectedDate = new Date();
       this.$emit("switchSlice", this.sliceState);
+      this.$emit("selectedDate", this.selectedDate);
     },
 
     selectedNewDate(direction = 1) {
