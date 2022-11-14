@@ -1,5 +1,5 @@
 <template>
-  <div class="day-container">
+  <div class="day-container" ref="gridLine">
     <ul class="grid-container">
       <li class="grid-row" ref="infoBox" v-for="item in this.cells" :key="item" >
         <div class="row-cell-container">
@@ -58,6 +58,7 @@ export default {
      await this.$nextTick(function () {
       this.lineHeight = this.matchHeight();
       this.handleMeetingEvents(meetings);
+      this.scrollToStartWorkTime();
     })
 
   },
@@ -125,6 +126,10 @@ export default {
     deleteSecondsInTime(timeString) {
       //format: hh:mm:ss
       return timeString.slice(0, timeString.length - 3);
+    },
+
+    scrollToStartWorkTime() {
+      this.$refs.gridLine.scrollTop = this.$refs.gridLine.scrollHeight / 3;
     }
 
   },
@@ -150,6 +155,7 @@ export default {
 .day-container {
   border-right: 1px solid #BDBDBD;
   max-width: 1199px;
+  height: 100%;
   overflow: auto;
 }
 

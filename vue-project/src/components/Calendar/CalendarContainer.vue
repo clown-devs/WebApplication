@@ -116,7 +116,7 @@ h1 {
 .slice-container {
   flex: 2;
   margin-right: 10.14%;
-  overflow-y: auto;
+  /*overflow-y: auto;*/
 }
 
 .blank-mini-calendar {
