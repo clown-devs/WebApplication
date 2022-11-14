@@ -36,7 +36,7 @@
       <div class="client-list-container" v-if="isLoadedClientsFromApi">
         <div class="clients-container">
           <ul class="clients-list" v-if="clients.length">
-            <li v-for="client in searchedClients" :key="client">
+            <li v-for="client in searchedClients" :key="client" class="client-item">
               <client
                 :clientData="client"
                 @edit="touchEditClient"
@@ -638,6 +638,8 @@ main {
   max-height: 70%;
 }
 
+
+
 .wrapper {
   padding-top: 100px;
   height: calc(100% - 100px);
@@ -658,9 +660,8 @@ main {
   align-items: center;
   justify-content: center;
   height: 94px;
-  background-color: #f1fbf2;
+  background-color: white;
   border: 0.71px solid #f1fbf2;
-  box-shadow: 0 2.85625px 2.85625px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
 }
 
