@@ -22,13 +22,11 @@ import CalendarDaySlice from "@/components/Calendar/DaySlice/CalendarDaySlice";
 import CalendarWeekSlice from "@/components/Calendar/WeekSlice/CalendarWeekSlice";
 import CalendarMonthSlice from "@/components/Calendar/MonthSlice/CalendarMonthSlice";
 import CalendarHeader from "@/components/Calendar/CalendarHeader";
-import Popup from "@/components/UI/Popup";
 
 export default {
   name: "CalendarContainer",
 
   components: {
-    Popup,
     CalendarDaySlice,
     CalendarWeekSlice,
     CalendarMonthSlice,
