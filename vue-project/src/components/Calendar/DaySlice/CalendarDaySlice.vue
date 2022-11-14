@@ -18,12 +18,19 @@
           {{ meetingEvents.get(item).topic }}
         </div>
       </li>
+      <li
+          class="red-line"
+          :style="{top: getRedLinePosition()}"
+          v-if="isToday"
+          :key="updateRedLineComponent"
+      ></li>
     </ul>
   </div>
 </template>
 
 <script>
 import api from "@/api";
+import {HALF_MINUTES} from "@/helpers/constant";
 
 export default {
   name: "CalendarDaySlice",
@@ -47,7 +54,15 @@ export default {
       cells: [],
 
       meetingEvents: new Map(),
+
+      updateRedLineComponent: 0,
     }
+  },
+
+  created() {
+    window.setInterval(() => {
+      this.updateRedLineComponent += 1;
+    }, HALF_MINUTES);
   },
 
   async mounted() {
@@ -130,6 +145,16 @@ export default {
 
     scrollToStartWorkTime() {
       this.$refs.gridLine.scrollTop = this.$refs.gridLine.scrollHeight / 3;
+    },
+
+    getRedLinePosition() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const now = new Date();
+
+      const delta = (now - today) / 1000 / 60 / 60 / 24 * 100;
+      return String(delta) + '%';
     }
 
   },
@@ -146,6 +171,18 @@ export default {
       this.meetingEvents.clear();
       this.handleMeetingEvents(meetings);
     },
+  },
+
+  computed: {
+    isToday() {
+      let selectedDate = this.selectedDate;
+      selectedDate.setHours(0, 0, 0, 0);
+
+      let today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      return (selectedDate - today) === 0;
+    }
   }
 
 }
@@ -163,6 +200,7 @@ export default {
   list-style: none;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 .row-cell-container {
@@ -196,5 +234,12 @@ export default {
   border: 1px dashed #BDBDBD;
   width: 100%;
   margin-left: 25px;
+}
+
+.red-line {
+  background-color: #f00;
+  height: 1px;
+  position: absolute;
+  width: 100%;
 }
 </style>
