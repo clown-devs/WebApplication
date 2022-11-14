@@ -697,7 +697,8 @@ li p {
   background: #e5e4e4;
 }
 
-.all-meet-item {
+.all-meet-item,
+.container-window {
   transition: 0.5s;
 }
 

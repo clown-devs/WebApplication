@@ -22,7 +22,10 @@
     <div class="contact-details__content" v-if="showContactInfo">
       <div class="contact-email">
         <p class="contact-email-content">Почта: {{ contact.email }}</p>
-        <i class="material-icons copy-btn" @click="copyContentToBuffer(contact.email)"> content_copy </i>
+        <div class="drop">
+          <i class="material-icons copy-btn qwe" @click="copyContentToBuffer(contact.email)"> content_copy </i>
+          <p class="copy-true">Скопированно</p>
+        </div>
       </div>
       <div class="contact-position">
         <p class="contact-position-content">
@@ -73,6 +76,7 @@ export default {
 
     copyContentToBuffer(content) {
       navigator.clipboard.writeText(content === null ? "" : content);
+
     }
   },
 };
@@ -98,6 +102,19 @@ export default {
   font-family: "Exo 2";
   font-weight: 700;
 }
+
+.copy-true {
+  display: none;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/*.drop:focus .copy-true {*/
+/*  display: block;*/
+/*}*/
+
 
 .contact-item__header {
   display: flex;
