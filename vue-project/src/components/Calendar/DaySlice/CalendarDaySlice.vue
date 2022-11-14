@@ -12,7 +12,7 @@
             v-if="meetingEvents.get(item) !== undefined"
             :style="{
               top: meetingEvents.get(item)['start-coordinate'],
-              height: meetingEvents.get(item)['end-coordinate'],
+              height: meetingEvents.get(item)['end-coordinate']
             }"
         >
           {{ meetingEvents.get(item).topic }}
@@ -28,6 +28,18 @@ import api from "@/api";
 export default {
   name: "CalendarDaySlice",
 
+  props: {
+    selectedPlace: {
+      type: Object,
+      default: {id: 1}
+    },
+
+    selectedDate: {
+      type: Date,
+      default: new Date()
+    }
+  },
+
   data() {
     return {
       lineHeight: 0,
@@ -38,31 +50,12 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     this.createTimeGrid();
 
-    let meetings = [
-      {
-        start: '00:00',
-        end: '03:30',
-        topic: 'Govno iz jopi'
-      },
+    let meetings = await api.getMeetingsByDate(this.selectedDate);
 
-      {
-        start: '05:13',
-        end: '06:13',
-        topic: 'Clown devs'
-      },
-
-      {
-        start: '11:16',
-        end: '14:00',
-        topic: 'Bozhedom'
-      }
-    ];
-
-
-    this.$nextTick(function () {
+     await this.$nextTick(function () {
       this.lineHeight = this.matchHeight();
       this.handleMeetingEvents(meetings);
     })
@@ -70,6 +63,7 @@ export default {
   },
 
   methods: {
+
     createTimeGrid() {
       for (let i = 0; i < 24; i++) {
         this.cells.push(i);
@@ -99,11 +93,16 @@ export default {
     },
 
     calculateStartCoordinateForEvent(startTime) {
+      startTime = this.deleteSecondsInTime(startTime);
+
       let minutes = +startTime.slice(3, startTime.length);
       return String(-100 + Math.round(minutes / 60 * 100)) + '%';
     },
 
     calculateEndCoordinateForEvent(startTime, endTime) {
+      startTime = this.deleteSecondsInTime(startTime);
+      endTime = this.deleteSecondsInTime(endTime);
+
       const startHours = +startTime.slice(0, 2);
       const startMinutes = +startTime.slice(3, startTime.length);
 
@@ -122,7 +121,28 @@ export default {
       const result = delta * this.lineHeight;
       return String(result) + 'px';
     },
+
+    deleteSecondsInTime(timeString) {
+      //format: hh:mm:ss
+      return timeString.slice(0, timeString.length - 3);
+    }
+
+  },
+
+  watch: {
+    async selectedDate(newDate) {
+      let meetings = await api.getMeetingsByDate(newDate);
+      this.meetingEvents.clear();
+      this.handleMeetingEvents(meetings);
+    },
+
+    async selectedPlace(newPlace) {
+      let meetings = await api.getMeetingsInPlaceByDate(this.selectedDate, newPlace);
+      this.meetingEvents.clear();
+      this.handleMeetingEvents(meetings);
+    },
   }
+
 }
 </script>
 

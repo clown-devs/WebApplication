@@ -20,7 +20,6 @@ export default {
 
   async mounted() {
     this.places = await api.getPlaces();
-    console.log(this.places)
   },
 
   methods: {
@@ -46,7 +45,7 @@ export default {
   min-height: 20%;
   min-width: 30%;
   margin: 0;
-  padding: 15px 0 15px 40px;
+  padding: 15px 40px 15px 40px;
 }
 
 .meet-place-item {

@@ -85,12 +85,10 @@ export default {
 
     selectedNewDate(direction = 1) {
       let selectedDate = this.selectedDate;
-
       selectedDate.setDate(selectedDate.getDate() + direction);
-      const createdDate = new Date(selectedDate);
-      console.log(createdDate);
 
-      this.selectedDate = createdDate;
+      this.selectedDate = new Date(selectedDate);
+      this.$emit('selectedDate', this.selectedDate);
     },
 
     formatDate(date) {
