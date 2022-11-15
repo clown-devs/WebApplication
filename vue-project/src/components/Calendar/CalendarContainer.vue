@@ -2,8 +2,6 @@
   <calendar-day-slice v-show="isPressedDayBtn"></calendar-day-slice>
   <calendar-week-slice v-show="isPressedWeekBtn"></calendar-week-slice>
   <calendar-month-slice v-show="isPressedMonthBtn"></calendar-month-slice>
-  <small-calendar></small-calendar>
-  <meet-places @takePlace='onTest' ></meet-places>
 </template>
 
 <script>
