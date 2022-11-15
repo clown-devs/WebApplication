@@ -15,7 +15,8 @@
               height: meetingEvents.get(item)['end-coordinate']
             }"
         >
-          {{ meetingEvents.get(item).topic }}
+          <label class="topic-meeting-event">{{ meetingEvents.get(item).topic }}</label>
+          <label class="place-meeting-event"> {{ meetingEvents.get(item).place_name }} </label>
         </div>
       </li>
       <li
@@ -31,10 +32,11 @@
 <script>
 import api from "@/api";
 import {HALF_MINUTES} from "@/helpers/constant";
+import Popup from "@/components/UI/Popup";
 
 export default {
   name: "CalendarDaySlice",
-
+  components: {Popup},
   props: {
     selectedPlace: {
       type: Object,
@@ -228,6 +230,9 @@ export default {
   border-radius: 5px;
   position: relative;
   top: -100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 .half-time-line {
@@ -241,5 +246,19 @@ export default {
   height: 1px;
   position: absolute;
   width: 100%;
+}
+
+.topic-meeting-event {
+  margin: 2px 0 0 2rem;
+  font-family: "Exo 2", serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.place-meeting-event {
+  margin: 2px 0 0 2rem;
+  font-family: "Exo 2", serif;
+  font-weight: 700;
+  font-size: 16px;
 }
 </style>
