@@ -230,9 +230,9 @@ export default {
   border-radius: 5px;
   position: relative;
   top: -100%;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .half-time-line {
@@ -253,6 +253,7 @@ export default {
   font-family: "Exo 2", serif;
   font-weight: 700;
   font-size: 18px;
+  cursor: pointer;
 }
 
 .place-meeting-event {
@@ -260,5 +261,8 @@ export default {
   font-family: "Exo 2", serif;
   font-weight: 700;
   font-size: 16px;
+  cursor: pointer;
 }
+
+/* Animations and hovers */
 </style>
