@@ -4,7 +4,11 @@
       <li class="grid-row" ref="infoBox" v-for="item in this.cells" :key="item" >
         <div class="row-cell-container">
           <div class="divider-cell-line-container" ref="forStartCalculate">
-            <span class="time-item"> {{ prepareHoursForDisplay(item) }} </span>
+            <span
+                class="time-item"
+                ref="lineTime"
+                v-show="!hideTimeInLine.get(item)"
+            > {{ prepareHoursForDisplay(item) }} </span>
             <div class="divider-cell-line" ref="dividerLine"></div>
           </div>
         </div>
@@ -68,26 +72,28 @@ export default {
       meetingEvents: new Map(),
 
       updateRedLineComponent: 0,
+
+      hideTimeInLine: new Map(),
+
+      now: new Date()
     }
   },
 
   created() {
     window.setInterval(() => {
       this.updateRedLineComponent += 1;
+      this.now = new Date();
     }, MINUTE);
   },
 
   async mounted() {
     this.createTimeGrid();
 
-    // let meetings = await api.getMeetingsByDate(this.selectedDate);
-    let meetings = [
-      {start: '00:00:00', end: '03:00:00', topic: 'hyeta', place_name: '304kv'},
-      {start: '11:00:00', end: '12:30:00', topic: 'kl', place_name: 'street'},
-      {start: '13:37:00', end: '15:00:00', topic: 'denb', place_name: '1floor'},
-      {start: '22:48:00', end: '22:30:00', topic: 'night', place_name: '2floor'},
-    ];
+    let meetings = await api.getMeetingsByDate(this.selectedDate);
 
+    for (let i = 0; i < 24; i++) {
+      this.hideTimeInLine.set(i, false);
+    }
 
      await this.$nextTick(function () {
       this.gridLineHeight = this.getClientHeight(this.$refs.infoBox[0]);
@@ -207,7 +213,7 @@ export default {
       const minutesString = minutes < 10 ? '0' + String(minutes) : String(minutes);
 
       return hoursString + ':' + minutesString;
-    }
+    },
   },
 
   watch: {
@@ -222,6 +228,22 @@ export default {
       this.meetingEvents.clear();
       this.handleMeetingEvents(meetings);
     },
+
+    now(newMoment) {
+      if (newMoment.getHours() + 1 === 24) return;
+
+      if (newMoment.getMinutes() >= 50) {
+        this.hideTimeInLine.set(newMoment.getHours() + 1, true);
+        return;
+      }
+
+      if (newMoment.getMinutes() <= 10) {
+        this.hideTimeInLine.set(newMoment.getHours(), true);
+        return;
+      }
+
+      this.hideTimeInLine.set(newMoment.getHours(), false);
+    }
   },
 
   computed: {
