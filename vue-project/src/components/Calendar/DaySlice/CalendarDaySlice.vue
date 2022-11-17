@@ -3,8 +3,10 @@
     <ul class="grid-container">
       <li class="grid-row" ref="infoBox" v-for="item in this.cells" :key="item" >
         <div class="row-cell-container">
-          <span class="time-item"> {{ item }} </span>
-          <div class="half-time-line"></div>
+          <div class="divider-cell-line-container" ref="forStartCalculate">
+            <span class="time-item"> {{ prepareHoursForDisplay(item) }} </span>
+            <div class="divider-cell-line" ref="dividerLine"></div>
+          </div>
         </div>
 
         <div
@@ -20,23 +22,25 @@
         </div>
       </li>
       <li
-          class="red-line"
+          class="red-line-container"
           :style="{top: getRedLinePosition()}"
           v-if="isToday"
           :key="updateRedLineComponent"
-      ></li>
+      >
+        <label class="current-time"> {{ displayCurrentTime() }} </label>
+        <div class="red-point" ref="redPoint"></div>
+        <div class="red-line"></div>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
 import api from "@/api";
-import {HALF_MINUTES} from "@/helpers/constant";
-import Popup from "@/components/UI/Popup";
+import {MINUTE} from "@/helpers/constant";
 
 export default {
   name: "CalendarDaySlice",
-  components: {Popup},
   props: {
     selectedPlace: {
       type: Object,
@@ -51,7 +55,13 @@ export default {
 
   data() {
     return {
-      lineHeight: 0,
+      gridLineHeight: 0,
+
+      dividerLineDivHeight: 0,
+
+      redPointHeight: 0,
+
+      dividerLineHeight: 0,
 
       cells: [],
 
@@ -64,16 +74,26 @@ export default {
   created() {
     window.setInterval(() => {
       this.updateRedLineComponent += 1;
-    }, HALF_MINUTES);
+    }, MINUTE);
   },
 
   async mounted() {
     this.createTimeGrid();
 
-    let meetings = await api.getMeetingsByDate(this.selectedDate);
+    // let meetings = await api.getMeetingsByDate(this.selectedDate);
+    let meetings = [
+      {start: '00:00:00', end: '03:00:00', topic: 'hyeta', place_name: '304kv'},
+      {start: '11:00:00', end: '12:30:00', topic: 'kl', place_name: 'street'},
+      {start: '13:37:00', end: '15:00:00', topic: 'denb', place_name: '1floor'},
+      {start: '22:48:00', end: '22:30:00', topic: 'night', place_name: '2floor'},
+    ];
+
 
      await this.$nextTick(function () {
-      this.lineHeight = this.matchHeight();
+      this.gridLineHeight = this.getClientHeight(this.$refs.infoBox[0]);
+      this.dividerLineDivHeight = this.getClientHeight(this.$refs.forStartCalculate[0]);
+      this.redPointHeight = this.getClientHeight(this.$refs.redPoint);
+      this.dividerLineHeight = this.getClientHeight(this.$refs.dividerLine[0]);
       this.handleMeetingEvents(meetings);
       this.scrollToStartWorkTime();
     })
@@ -106,15 +126,18 @@ export default {
       });
     },
 
-    matchHeight () {
-      return this.$refs.infoBox[0].clientHeight;
+    getClientHeight(ref) {
+      return ref.clientHeight;
     },
 
     calculateStartCoordinateForEvent(startTime) {
       startTime = this.deleteSecondsInTime(startTime);
 
       let minutes = +startTime.slice(3, startTime.length);
-      return String(-100 + Math.round(minutes / 60 * 100)) + '%';
+
+      return String(
+          -100 + (minutes / 60 * 100) + this.getStartOffsetByDividerLineInPercent() * 100
+      ) + '%';
     },
 
     calculateEndCoordinateForEvent(startTime, endTime) {
@@ -136,7 +159,7 @@ export default {
       endDate.setMinutes(endMinutes);
 
       const delta = ( (endDate - startDate) / 1000 / 60 / 60 );
-      const result = delta * this.lineHeight;
+      const result = delta * this.gridLineHeight;
       return String(result) + 'px';
     },
 
@@ -146,7 +169,8 @@ export default {
     },
 
     scrollToStartWorkTime() {
-      this.$refs.gridLine.scrollTop = this.$refs.gridLine.scrollHeight / 3;
+      this.$refs.gridLine.scrollTop = this.$refs.gridLine.scrollHeight / 3
+          - this.dividerLineDivHeight / 2;
     },
 
     getRedLinePosition() {
@@ -155,10 +179,35 @@ export default {
 
       const now = new Date();
 
-      const delta = (now - today) / 1000 / 60 / 60 / 24 * 100;
-      return String(delta) + '%';
-    }
+      let delta = (now - today)  * 100 / 1000 / 60 / 60 / 24;
+      delta += this.getStartOffsetByDividerLineInPercent() * 100 / 24;
+      delta -= this.getOffsetForRedLineByRedCircle() * 100 / 24;
 
+      return String(delta) + '%';
+    },
+
+    prepareHoursForDisplay(hours) {
+      return hours < 10 ? '0' + hours + ':00' : hours + ':00';
+    },
+
+    getStartOffsetByDividerLineInPercent() {
+      return (this.dividerLineDivHeight  - this.dividerLineHeight) / this.gridLineHeight / 2 ;
+    },
+
+    getOffsetForRedLineByRedCircle() {
+      return this.redPointHeight / this.gridLineHeight / 2;
+    },
+
+    displayCurrentTime() {
+      const currentDate = new Date();
+      const hours = currentDate.getHours();
+      const minutes = currentDate.getMinutes();
+
+      const hoursString = hours < 10 ? '0' + String(hours) : String(hours);
+      const minutesString = minutes < 10 ? '0' + String(minutes) : String(minutes);
+
+      return hoursString + ':' + minutesString;
+    }
   },
 
   watch: {
@@ -207,24 +256,34 @@ export default {
 
 .row-cell-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 100%;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .grid-row {
   height: 60px;
-  border-bottom: 1px solid #BDBDBD;
 }
 
 .time-item {
   font-family: "Exo 2", serif;
   font-weight: 500;
-  font-size: 1.25rem;
+  font-size: 12px;
+  margin-right: 10px;
+  width: 33px;
+}
+
+.current-time {
+  font-family: "Exo 2", serif;
+  font-weight: 500;
+  font-size: 12px;
+  margin-right: 4px;
+  width: 33px;
+  color: red;
 }
 
 .meeting-event-element {
-  margin-left: 2rem;
+  margin-left: 41px;
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
@@ -235,17 +294,25 @@ export default {
   cursor: pointer;
 }
 
-.half-time-line {
-  border: 1px dashed #BDBDBD;
+.red-line-container {
+  position: absolute;
   width: 100%;
-  margin-left: 25px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 }
 
 .red-line {
   background-color: #f00;
   height: 1px;
-  position: absolute;
   width: 100%;
+}
+
+.red-point {
+  border-radius: 50px;
+  background-color: red;
+  height: 12px;
+  width: 12px;
 }
 
 .topic-meeting-event {
@@ -264,5 +331,18 @@ export default {
   cursor: pointer;
 }
 
+.divider-cell-line {
+  height: 1px;
+  width: 100%;
+  background-color: #bdbdbd;
+}
+
+.divider-cell-line-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 12px;
+  width: 100%;
+}
 /* Animations and hovers */
 </style>
