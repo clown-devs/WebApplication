@@ -45,6 +45,7 @@ import {MINUTE} from "@/helpers/constant";
 
 export default {
   name: "CalendarDaySlice",
+
   props: {
     selectedPlace: {
       type: Object,
@@ -91,9 +92,7 @@ export default {
 
     let meetings = await api.getMeetingsByDate(this.selectedDate);
 
-    for (let i = 0; i < 24; i++) {
-      this.hideTimeInLine.set(i, false);
-    }
+    this.setHideTimeInLineMap();
 
      await this.$nextTick(function () {
       this.gridLineHeight = this.getClientHeight(this.$refs.infoBox[0]);
@@ -215,25 +214,18 @@ export default {
 
       return hoursString + ':' + minutesString;
     },
-  },
 
-  watch: {
-    async selectedDate(newDate) {
-      let meetings = await api.getMeetingsByDate(newDate);
-      this.meetingEvents.clear();
-      this.handleMeetingEvents(meetings);
+    setHideTimeInLineMap() {
+      this.hideTimeInLine.clear();
+
+      for (let i = 0; i < 24; i++) {
+        this.hideTimeInLine.set(i, false);
+      }
     },
 
-    async selectedPlace(newPlace) {
-      let meetings = await api.getMeetingsInPlaceByDate(this.selectedDate, newPlace);
-      this.meetingEvents.clear();
-      this.handleMeetingEvents(meetings);
-    },
-
-    now(newMoment) {
-      console.log(newMoment);
-
+    hideTimeWhenIntersectWithTimeInRedLine(newMoment) {
       if (newMoment.getHours() + 1 === 24) return;
+      if (!this.isToday) return;
 
       if (newMoment.getMinutes() >= 50) {
         this.hideTimeInLine.set(newMoment.getHours() + 1, true);
@@ -246,6 +238,27 @@ export default {
       }
 
       this.hideTimeInLine.set(newMoment.getHours(), false);
+    }
+  },
+
+  watch: {
+    async selectedDate(newDate) {
+      let meetings = await api.getMeetingsByDate(newDate);
+      this.meetingEvents.clear();
+      this.handleMeetingEvents(meetings);
+
+      this.now = new Date();
+      if (!this.isToday) this.setHideTimeInLineMap();
+    },
+
+    async selectedPlace(newPlace) {
+      let meetings = await api.getMeetingsInPlaceByDate(this.selectedDate, newPlace);
+      this.meetingEvents.clear();
+      this.handleMeetingEvents(meetings);
+    },
+
+    now(newMoment) {
+      this.hideTimeWhenIntersectWithTimeInRedLine(newMoment);
     }
   },
 
