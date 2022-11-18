@@ -100,6 +100,7 @@ export default {
       this.dividerLineDivHeight = this.getClientHeight(this.$refs.forStartCalculate[0]);
       this.redPointHeight = this.getClientHeight(this.$refs.redPoint);
       this.dividerLineHeight = this.getClientHeight(this.$refs.dividerLine[0]);
+      this.now = new Date();
       this.handleMeetingEvents(meetings);
       this.scrollToStartWorkTime();
     })
@@ -230,6 +231,8 @@ export default {
     },
 
     now(newMoment) {
+      console.log(newMoment);
+
       if (newMoment.getHours() + 1 === 24) return;
 
       if (newMoment.getMinutes() >= 50) {
