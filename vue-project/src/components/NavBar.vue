@@ -172,6 +172,10 @@ button {
   color: black;
 }
 
+.active {
+  color: #00b268;
+}
+
 .log-out {
   font-size: 1rem;
 }
