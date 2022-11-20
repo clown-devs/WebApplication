@@ -124,6 +124,11 @@ export default {
   flex: 1;
   margin-bottom: 13px;
   justify-content: space-between;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 .slice {

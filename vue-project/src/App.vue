@@ -6,6 +6,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import api from "@/api";
 
 export default {
   computed: {
@@ -31,6 +32,8 @@ export default {
       this.loadDataFromLocalStorage();
       return;
     }
+
+    api.auth();
 
     this.$router.push("/login");
   },
@@ -65,7 +68,7 @@ body {
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background: #D3D3D3;
-  box-shadow: 0px 3px 2.85625px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 2.85625px rgba(0, 0, 0, 0.25);
 }
 
 ::-webkit-scrollbar-thumb:hover {
