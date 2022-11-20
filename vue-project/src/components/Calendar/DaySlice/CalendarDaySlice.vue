@@ -1,28 +1,36 @@
 <template>
   <div class="day-container" ref="gridLine">
     <ul class="grid-container">
-      <li class="grid-row" ref="infoBox" v-for="item in this.cells" :key="item" >
+      <li
+          class="grid-row"
+          ref="infoBox"
+          v-for="item in this.cells"
+          :key="item"
+      >
         <div class="row-cell-container">
           <div class="divider-cell-line-container" ref="forStartCalculate">
-            <span
-                class="time-item"
-                ref="lineTime"
-                v-show="!hideTimeInLine.get(item)"
-            > {{ prepareHoursForDisplay(item) }} </span>
+          <span
+              class="time-item"
+              ref="lineTime"
+              v-show="!hideTimeInLine.get(item)"
+          > {{ prepareHoursForDisplay(item) }} </span>
             <div class="divider-cell-line" ref="dividerLine"></div>
           </div>
         </div>
 
         <div
+            @click="pressedOnMeetingEvent(meetingEvents.get(item))"
             class="meeting-event-element"
             v-if="meetingEvents.get(item) !== undefined"
             :style="{
-              top: meetingEvents.get(item)['start-coordinate'],
-              height: meetingEvents.get(item)['end-coordinate']
-            }"
+          top: meetingEvents.get(item)['start-coordinate'],
+          height: meetingEvents.get(item)['end-coordinate']
+        }"
         >
-          <label class="topic-meeting-event">{{ meetingEvents.get(item).topic }}</label>
-          <label class="place-meeting-event"> {{ meetingEvents.get(item).place_name }} </label>
+          <event-tooltip :is-show="showTooltipForMeetingEvent(item)" :event="meetingEvents.get(item)">
+            <label class="topic-meeting-event">{{ meetingEvents.get(item).topic }}</label>
+            <label class="place-meeting-event"> {{ meetingEvents.get(item).place_name }} </label>
+          </event-tooltip>
         </div>
       </li>
       <li
@@ -42,9 +50,14 @@
 <script>
 import api from "@/api";
 import {MINUTE} from "@/helpers/constant";
+import EventTooltip from "@/components/Calendar/DaySlice/EventTooltip";
 
 export default {
   name: "CalendarDaySlice",
+
+  components: {
+    EventTooltip
+  },
 
   props: {
     selectedPlace: {
@@ -76,7 +89,9 @@ export default {
 
       hideTimeInLine: new Map(),
 
-      now: new Date()
+      now: new Date(),
+
+      showTooltipForSelectedEvent: new Map(),
     }
   },
 
@@ -94,7 +109,7 @@ export default {
 
     this.setHideTimeInLineMap();
 
-     await this.$nextTick(function () {
+    await this.$nextTick(function () {
       this.gridLineHeight = this.getClientHeight(this.$refs.infoBox[0]);
       this.dividerLineDivHeight = this.getClientHeight(this.$refs.forStartCalculate[0]);
       this.redPointHeight = this.getClientHeight(this.$refs.redPoint);
@@ -103,6 +118,10 @@ export default {
       this.handleMeetingEvents(meetings);
       this.scrollToStartWorkTime();
     })
+
+    this.meetingEvents.forEach(
+        value => this.showTooltipForSelectedEvent.set(value.id, false)
+    );
 
   },
 
@@ -238,6 +257,16 @@ export default {
       }
 
       this.hideTimeInLine.set(newMoment.getHours(), false);
+    },
+
+    pressedOnMeetingEvent(event) {
+      const showInThisMoment = !this.showTooltipForSelectedEvent.get(event.id);
+      this.showTooltipForSelectedEvent.set(event.id, showInThisMoment);
+    },
+
+    showTooltipForMeetingEvent(keyForSearchingEventObject) {
+      const event = this.meetingEvents.get(keyForSearchingEventObject);
+      return this.showTooltipForSelectedEvent.get(event.id);
     }
   },
 
