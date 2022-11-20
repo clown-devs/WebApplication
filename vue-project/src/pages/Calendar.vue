@@ -2,7 +2,6 @@
   <div class="calendar-container">
     <nav-bar></nav-bar>
     <main>
-      <h1>Calendar page</h1>
       <calendar-container></calendar-container>
 <!--      <loading-indicate></loading-indicate>-->
     </main>

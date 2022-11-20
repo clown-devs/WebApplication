@@ -1,6 +1,7 @@
 <template>
   <div class="meet-places">
     <ul class="meet-places-list">
+      <loading-indicate v-if="!places.length"></loading-indicate>
       <li v-for="place in places" :key="place" class="meet-place-item">
         <button @click='takePlace(place)' class="meet-place-item-button"> {{ place.name }}</button>
       </li>
@@ -10,17 +11,21 @@
 
 <script>
 import api from "@/api";
+import LoadingIndicate from "@/components/UI/LoadingIndicate";
 
 export default {
+  components: {
+    LoadingIndicate
+  },
+
   data() {
     return {
       places: [],
     };
   },
 
-  async mounted() {
+  async created() {
     this.places = await api.getPlaces();
-    console.log(this.places)
   },
 
   methods: {
@@ -46,7 +51,7 @@ export default {
   min-height: 20%;
   min-width: 30%;
   margin: 0;
-  padding: 15px 0 15px 40px;
+  padding: 15px 40px 15px 40px;
 }
 
 .meet-place-item {
