@@ -41,7 +41,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.event);
     this.event.date = new Date(this.event.date);
   },
 
