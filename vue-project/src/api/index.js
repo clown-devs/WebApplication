@@ -2,7 +2,6 @@ import axios from "./instance";
 import auth from '@/store/modules/auth'
 
 const API_KEY = 'api/v2/';
-const OLD_API_KEY = 'api/v1/';
 
 const API_PATHS = {
     auth: 'users/auth/token/login/',
@@ -55,7 +54,6 @@ const api = {
     },
 
     async getMeetings(past = false) {
-
         try {
             const res = await axios.get(
                 API_KEY + API_PATHS['meetings'] 
@@ -69,6 +67,42 @@ const api = {
             return [];
         }
 
+    },
+
+    async getMeetingsInPlaceByDate(date, place) {
+        try {
+            const res = await axios.get(
+                API_KEY + API_PATHS['meetings']
+                + '?place=' + place.id
+                + '&date='
+                + String(date.getFullYear()) + '-'
+                + String(date.getMonth() + 1) + '-'
+                + String(date.getDate())
+            );
+            return res.data;
+
+        } catch (error) {
+            console.log(error);
+            this.errorHandle(error);
+            return [];
+        }
+    },
+
+    async getMeetingsByDate(date) {
+        try {
+            const res = await axios.get(
+                API_KEY + API_PATHS['meetings']
+                + '?date='
+                + String(date.getFullYear()) + '-'
+                + String(date.getMonth() + 1) + '-'
+                + String(date.getDate())
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return [];
+        }
     },
 
     async getClients(isMy) {
@@ -209,7 +243,7 @@ const api = {
                 API_KEY + API_PATHS['client'] 
                 + "?inn=" + client.inn
             );
-            return res.data.length ? true : false;
+            return res.data.length;
 
         } catch (error) {
             this.errorHandle(error);
@@ -225,7 +259,7 @@ const api = {
                 + "&first_name=" + contact.first_name 
                 + "&second_name=" + contact.second_name
             );
-            return res.data.length ? true : false;
+            return res.data.length;
 
         } catch (error) {
             this.errorHandle(error);
