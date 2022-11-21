@@ -29,7 +29,7 @@
 <script>
 export default {
   props: {
-    propsSelectedDay: {
+    selectedDay: {
       type: Date,
       default: new Date()
     }
@@ -119,7 +119,7 @@ export default {
     },
 
     getIsDay(day) {
-      if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.propsDate.getMonth() && this.currentYear === this.propsDate.getFullYear()) {
+      if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.selectedDay.getMonth() && this.currentYear === this.selectedDay.getFullYear()) {
         return true
       }
     },
@@ -142,11 +142,11 @@ export default {
   },
 
   watch: {
-    propsSelectedDay(day) {
+    selectedDay(day) {
       for (let i = 1; i <= this.lastDateOfMonth; ++i) {
         this.daysForSelectedDay[i - 1] = false;
       }
-      this.propsDate = day;
+      //ФОР ИЧ
       this.daysForSelectedDay[day.getDate() - 1] = true;
     }
   }

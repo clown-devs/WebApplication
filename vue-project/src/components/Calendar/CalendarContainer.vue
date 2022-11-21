@@ -13,7 +13,7 @@
 
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
-        <small-calendar :selected-day="propsSelectedDay" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
+        <small-calendar :selected-day="selectedDate" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
         <meet-places @takePlace="handleTakePlace"></meet-places>
       </div>
       <div class="slice-container">
