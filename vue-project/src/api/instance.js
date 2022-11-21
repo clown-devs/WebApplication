@@ -12,4 +12,8 @@ export function setAuthHeaders() {
     instance.defaults.headers.common['Authorization'] = 'Token ' + auth.state.token;
 };
 
+export function deleteAuthHeaders() {
+    instance.defaults.headers.common['Authorization'] = null;
+}
+
 export default instance;

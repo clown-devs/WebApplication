@@ -13,7 +13,8 @@ const API_PATHS = {
     employeelist: 'employeelist/',
     users: 'users/employee/',
     directions: 'users/directions/',
-    users_employee: 'users/employee/'
+    users_employee: 'users/employee/',
+    check_token: 'users/check_token/',
 }
 
 const api = {
@@ -35,6 +36,20 @@ const api = {
             return null;
         }
 
+    },
+
+    async isValidToken() {
+        try {
+            const res = await axios.post(API_KEY + API_PATHS['check_token'], {
+                token: auth.state.token
+            });
+
+            return res.data.is_valid;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return null;
+        }
     },
 
     async currentUser() {

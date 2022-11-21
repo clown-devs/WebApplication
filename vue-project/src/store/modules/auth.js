@@ -1,9 +1,14 @@
 import api from '@/api'
-import {setAuthHeaders} from '@/api/instance'
+import {setAuthHeaders, deleteAuthHeaders} from '@/api/instance'
 
 export default {
     actions: {
         async logIn(context, { username, password, isSavedSession }) {
+            const isValidToken = await api.isValidToken();
+            if (!isValidToken) {
+                context.commit("logOut")
+                deleteAuthHeaders();
+            }
             
             const token = await api.auth(username, password);
             if (token === null) {
