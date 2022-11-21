@@ -7,11 +7,13 @@
           class="calendar-header"
           @switchSlice="showSelectedSlice"
           @selectedDate="handleSelectDate"
+          :inputSelectedDate="emitSelectedDay"
       ></calendar-header>
     </div>
 
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
+        <small-calendar :selected-day="propsSelectedDay" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
         <meet-places @takePlace="handleTakePlace"></meet-places>
       </div>
       <div class="slice-container">
@@ -35,11 +37,13 @@ import CalendarWeekSlice from "@/components/Calendar/WeekSlice/CalendarWeekSlice
 import CalendarMonthSlice from "@/components/Calendar/MonthSlice/CalendarMonthSlice";
 import CalendarHeader from "@/components/Calendar/CalendarHeader";
 import MeetPlaces from "@/components/Calendar/SmallCalendar/MeetPlaces";
+import SmallCalendar from "@/components/Calendar/SmallCalendar/SmallCalendar";
 
 export default {
   name: "CalendarContainer",
 
   components: {
+    SmallCalendar,
     CalendarDaySlice,
     CalendarWeekSlice,
     CalendarMonthSlice,
@@ -49,13 +53,15 @@ export default {
 
   data() {
     return {
-        isPressedDayBtn: false,
-        isPressedWeekBtn: false,
-        isPressedMonthBtn: false,
-        selectedPlace: {},
-        selectedDate: new Date(),
-      }
-    },
+      isPressedDayBtn: false,
+      isPressedWeekBtn: false,
+      isPressedMonthBtn: false,
+      selectedPlace: {},
+      selectedDate: new Date(),
+      propsSelectedDay: new Date(),
+      emitSelectedDay: new Date(),
+    }
+  },
 
   methods: {
     showSelectedSlice(slicesState) {
@@ -70,6 +76,9 @@ export default {
 
     handleSelectDate(date) {
       this.selectedDate = date;
+    },
+    takeDayOnCalendar(day) {
+      this.emitSelectedDay = day;
     }
   },
 

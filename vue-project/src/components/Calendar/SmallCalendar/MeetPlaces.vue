@@ -41,6 +41,9 @@ export default {
 .meet-places {
   justify-content: center;
   display: flex;
+  margin-top: 5px;
+  margin-left: 120px;
+/*  ВОТ ТУТ ЗАТЕРЕТЬ МАРГИН*/
 }
 
 /* Style of list */

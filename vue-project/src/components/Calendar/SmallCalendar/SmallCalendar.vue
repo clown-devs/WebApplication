@@ -14,7 +14,10 @@
         <li v-for="prevDay in prevDays" :key="prevDay" class="day inactive"> {{ prevDay }}</li>
 
         <li v-for="day in days" :key="day" class="day current-day" v-bind:class="{choseDay: getIsDay(day) }">
-          <button class="day-button" @click="getIsDayButton" v-bind:class="{active: getIsToday(day)}"> {{ day }} </button>
+          <button class="day-button" @click="getIsDayButton" v-bind:class="{active: getIsToday(day)}"> {{
+              day
+            }}
+          </button>
         </li>
 
         <li v-for="nextDay in nextDays" :key="nextDay" class="day inactive"> {{ nextDay }}</li>
@@ -26,7 +29,10 @@
 <script>
 export default {
   props: {
-    selectedDate: String
+    propsSelectedDay: {
+      type: Date,
+      default: new Date()
+    }
   },
 
   data() {
@@ -47,6 +53,8 @@ export default {
       lastDateOfLastMonth: "",
       numberOfDay: "",
       isDay: false,
+      propsDate: new Date(),
+      emitDate: new Date(),
     };
   },
 
@@ -111,6 +119,12 @@ export default {
     },
 
     getIsDay(day) {
+      if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.propsDate.getMonth() && this.currentYear === this.propsDate.getFullYear()) {
+        return true
+      }
+    },
+
+    getIsDayProps(day) {
       if (this.daysForSelectedDay[day - 1] === true) {
         return true
       }
@@ -121,8 +135,20 @@ export default {
         this.daysForSelectedDay[i - 1] = false;
       }
       this.daysForSelectedDay[day.target.innerText - 1] = true;
-    }
+      this.emitDate = new Date(this.currentYear, this.currentMonth, day.target.innerText);
+      this.$emit('takeDayOnCalendar', this.emitDate)
+    },
 
+  },
+
+  watch: {
+    propsSelectedDay(day) {
+      for (let i = 1; i <= this.lastDateOfMonth; ++i) {
+        this.daysForSelectedDay[i - 1] = false;
+      }
+      this.propsDate = day;
+      this.daysForSelectedDay[day.getDate() - 1] = true;
+    }
   }
 }
 </script>
@@ -130,11 +156,12 @@ export default {
 <style scoped>
 /* General style */
 .small-calendar-container {
-  margin-left: 500px;
   border: 1px solid #BDBDBD;
   background: #FFFFFF;
   border-radius: 30px;
-  width: 300px;
+  width: 60%;
+  margin-left: 160px;
+  /*  ВОТ ТУТ ЗАТЕРЕТЬ ШИРИНУ И МАРГИН*/
 }
 
 /* Header style */
