@@ -11,7 +11,10 @@
       <ul class="calendar">
         <li v-for="nameDay in daysName" :key="nameDay" class="day-name"> {{ nameDay }}</li>
 
-        <li v-for="prevDay in prevDays" :key="prevDay" class="day inactive"> {{ prevDay }}</li>
+        <li v-for="prevDay in prevDays" :key="prevDay" class="day">
+          <button class="day-button inactive" @click="changePrevMonth"> {{ prevDay }}
+          </button>
+        </li>
 
         <li v-for="day in days" :key="day" class="day current-day" v-bind:class="{choseDay: getIsDay(day) }">
           <button class="day-button" @click="getIsDayButton" v-bind:class="{active: getIsToday(day)}"> {{
@@ -27,6 +30,9 @@
 </template>
 
 <script>
+
+import login from "@/pages/Login";
+
 export default {
   props: {
     selectedDay: {
@@ -55,6 +61,9 @@ export default {
       isDay: false,
       propsDate: new Date(),
       emitDate: new Date(),
+      choseDay: new Date().getDate(),
+      tempForPrevMonth: 0,
+      tempForPrevYear: 0,
     };
   },
 
@@ -64,11 +73,11 @@ export default {
     this.currentYear = this.date.getFullYear();
     this.currentMonth = this.date.getMonth();
 
-    this.renderCalendar();
+    this.renderCalendar(this.choseDay);
   },
 
   methods: {
-    renderCalendar() {
+    renderCalendar(choseDay) {
       //получаем число день в недели в котором начинается месяц если 2 то со вторника и тд
       this.firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1).getDay();
       //Получаем количество дней в месяце
@@ -95,6 +104,7 @@ export default {
         this.days.push(i);
         this.daysForSelectedDay.push(false);
       }
+      this.daysForSelectedDay[choseDay - 1] = true;
     },
 
     changeMonth(icon) {
@@ -108,7 +118,26 @@ export default {
       this.prevDays = [];
       this.days = [];
       this.nextDays = [];
+      this.daysForSelectedDay = [];
       this.renderCalendar();
+    },
+
+    changePrevMonth(prevDay) {
+      this.currentMonth = this.currentMonth - 1;
+      if (this.currentMonth < 0 || this.currentMonth > 11) {
+        this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
+        this.currentYear = this.date.getFullYear();
+        this.currentMonth = this.date.getMonth();
+        }
+
+        this.prevDays = [];
+        this.days = [];
+        this.nextDays = [];
+        this.daysForSelectedDay = [];
+        if (prevDay === this.selectedDay.getDate()) {
+          this.renderCalendar(prevDay);
+        }
+        else this.renderCalendar(prevDay.target.innerText)
     },
 
     getIsToday(day) {
@@ -119,13 +148,12 @@ export default {
     },
 
     getIsDay(day) {
-      if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.selectedDay.getMonth() && this.currentYear === this.selectedDay.getFullYear()) {
-        return true
+      if (this.selectedDay.getMonth() === this.currentMonth - 1) {
+        this.changePrevMonth(this.selectedDay.getDate())
       }
-    },
-
-    getIsDayProps(day) {
-      if (this.daysForSelectedDay[day - 1] === true) {
+      this.tempForPrevMonth = this.selectedDay.getMonth() - this.currentMonth;
+      this.tempForPrevYear = this.currentYear - this.selectedDay.getFullYear();
+      if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.selectedDay.getMonth() - this.tempForPrevMonth && this.currentYear - this.tempForPrevYear === this.selectedDay.getFullYear()) {
         return true
       }
     },
@@ -142,11 +170,12 @@ export default {
   },
 
   watch: {
+
     selectedDay(day) {
       for (let i = 1; i <= this.lastDateOfMonth; ++i) {
         this.daysForSelectedDay[i - 1] = false;
       }
-      //ФОР ИЧ
+
       this.daysForSelectedDay[day.getDate() - 1] = true;
     }
   }
@@ -237,10 +266,6 @@ hr {
   z-index: 1;
 }
 
-.day.inactive {
-  color: #aaa;
-}
-
 .day.active {
   color: #fff;
 }
@@ -264,6 +289,10 @@ hr {
   font-size: 14px;
   list-style: none;
   text-align: center;
+}
+
+.inactive {
+  color: #aaa;
 }
 
 

@@ -44,6 +44,7 @@ export default {
   margin-top: 5px;
   margin-left: 120px;
 /*  ВОТ ТУТ ЗАТЕРЕТЬ МАРГИН*/
+  overflow-y: scroll;
 }
 
 /* Style of list */
