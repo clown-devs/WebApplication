@@ -12,7 +12,7 @@
         <li v-for="nameDay in daysName" :key="nameDay" class="day-name"> {{ nameDay }}</li>
 
         <li v-for="prevDay in prevDays" :key="prevDay" class="day">
-          <button class="day-button inactive" @click="changePrevMonth"> {{ prevDay }}
+          <button class="day-button inactive" @click="changeMonthOnDayClick"> {{ prevDay }}
           </button>
         </li>
 
@@ -23,7 +23,9 @@
           </button>
         </li>
 
-        <li v-for="nextDay in nextDays" :key="nextDay" class="day inactive"> {{ nextDay }}</li>
+        <li v-for="nextDay in nextDays" :key="nextDay" class="day">
+          <button class="day-button inactive" @click="changeMonthOnDayClick"> {{ nextDay }}
+          </button></li>
       </ul>
     </main>
   </div>
@@ -90,6 +92,9 @@ export default {
       if (this.firstDayOfMonth === 0) {
         this.firstDayOfMonth = 7;
       }
+      else if (this.lastDayOfMonth === 0) {
+        this.lastDayOfMonth = 7;
+      }
 
       //Get in array end days prev Month
       for (let i = this.firstDayOfMonth - 1; i > 0; i--) {
@@ -104,6 +109,7 @@ export default {
         this.days.push(i);
         this.daysForSelectedDay.push(false);
       }
+
       this.daysForSelectedDay[choseDay - 1] = true;
     },
 
@@ -121,23 +127,39 @@ export default {
       this.daysForSelectedDay = [];
       this.renderCalendar();
     },
-
-    changePrevMonth(prevDay) {
-      this.currentMonth = this.currentMonth - 1;
+    changeMonthOnDayClick(day) {
+      this.currentMonth = day.target.innerText > 15 ? this.currentMonth - 1: this.currentMonth + 1;
       if (this.currentMonth < 0 || this.currentMonth > 11) {
         this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
         this.currentYear = this.date.getFullYear();
         this.currentMonth = this.date.getMonth();
-        }
+      }
 
-        this.prevDays = [];
-        this.days = [];
-        this.nextDays = [];
-        this.daysForSelectedDay = [];
-        if (prevDay === this.selectedDay.getDate()) {
-          this.renderCalendar(prevDay);
-        }
-        else this.renderCalendar(prevDay.target.innerText)
+      this.prevDays = [];
+      this.days = [];
+      this.nextDays = [];
+      this.daysForSelectedDay = [];
+
+      this.renderCalendar(day.target.innerText)
+
+      this.emitDate = new Date(this.currentYear, this.currentMonth, day.target.innerText);
+      this.$emit('takeDayOnCalendar', this.emitDate)
+    },
+
+    changeMonthFromSelectedDay(day) {
+      this.currentMonth = day.getDate() > 15 ? this.currentMonth - 1: this.currentMonth + 1;
+      if (this.currentMonth < 0 || this.currentMonth > 11) {
+        this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
+        this.currentYear = this.date.getFullYear();
+        this.currentMonth = this.date.getMonth();
+      }
+
+      this.prevDays = [];
+      this.days = [];
+      this.nextDays = [];
+      this.daysForSelectedDay = [];
+
+      this.renderCalendar(day.getDate())
     },
 
     getIsToday(day) {
@@ -148,14 +170,16 @@ export default {
     },
 
     getIsDay(day) {
-      if (this.selectedDay.getMonth() === this.currentMonth - 1) {
-        this.changePrevMonth(this.selectedDay.getDate())
-      }
+
+
       this.tempForPrevMonth = this.selectedDay.getMonth() - this.currentMonth;
       this.tempForPrevYear = this.currentYear - this.selectedDay.getFullYear();
+
       if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.selectedDay.getMonth() - this.tempForPrevMonth && this.currentYear - this.tempForPrevYear === this.selectedDay.getFullYear()) {
         return true
       }
+
+
     },
 
     getIsDayButton(day) {
@@ -177,6 +201,10 @@ export default {
       }
 
       this.daysForSelectedDay[day.getDate() - 1] = true;
+
+      if (this.selectedDay.getMonth() !== this.currentMonth) {
+        this.changeMonthFromSelectedDay(day)
+      }
     }
   }
 }
@@ -188,9 +216,6 @@ export default {
   border: 1px solid #BDBDBD;
   background: #FFFFFF;
   border-radius: 30px;
-  width: 60%;
-  margin-left: 160px;
-  /*  ВОТ ТУТ ЗАТЕРЕТЬ ШИРИНУ И МАРГИН*/
 }
 
 /* Header style */
@@ -203,7 +228,7 @@ export default {
 }
 
 .header-date {
-  margin: 0 auto 0 40px;
+  margin: 0 auto 0 10%;
   padding: 0;
 
 }
@@ -226,7 +251,7 @@ export default {
 }
 
 .right {
-  margin-right: 40px;
+  margin-right: 10%;
   outline: none;
 }
 
@@ -240,8 +265,7 @@ hr {
 /* Main style */
 
 .main-grid {
-  width: 260px;
-  padding-right: 40px;
+  padding-right: 10%;
 }
 
 .calendar {
@@ -249,7 +273,7 @@ hr {
   grid-template-columns: repeat(7, 1fr);
   gap: 9px;
   margin: 0 0 25px 0;
-
+  padding-left: 10%;
 }
 
 .calendar li {

@@ -13,7 +13,7 @@
 
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
-        <small-calendar :selected-day="selectedDate" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
+        <small-calendar class="small-calendar" :selected-day="selectedDate" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
         <meet-places @takePlace="handleTakePlace"></meet-places>
       </div>
       <div class="slice-container">
@@ -89,13 +89,14 @@ export default {
 <style scoped>
 .calendar-main-container {
   height: 100%;
+  margin-left: 10.14%;
+  margin-right: 10.14%;
 }
 
 h1 {
   font-family: "Exo 2", serif;
   font-weight: 700;
   font-size: 2rem;
-  margin-left: 10.14%;
   margin-bottom: 30px;
   margin-top: 0;
   padding-top: 30px;
@@ -112,7 +113,6 @@ h1 {
 
 .calendar-header {
   flex: 2;
-  margin-right: 10.14%;
   padding-right: 5px;
 }
 
@@ -124,10 +124,15 @@ h1 {
 
 .slice-container {
   flex: 2;
-  margin-right: 10.14%;
 }
 
 .blank-mini-calendar {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 62px;
+}
+
+.small-calendar {
+  width: 100%;
 }
 </style>

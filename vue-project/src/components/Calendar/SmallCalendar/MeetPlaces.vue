@@ -41,10 +41,6 @@ export default {
 .meet-places {
   justify-content: center;
   display: flex;
-  margin-top: 5px;
-  margin-left: 120px;
-/*  ВОТ ТУТ ЗАТЕРЕТЬ МАРГИН*/
-  overflow-y: scroll;
 }
 
 /* Style of list */
@@ -52,8 +48,6 @@ export default {
   background: #FFFFFF;
   border: 1px solid #BABABA;
   border-radius: 30px;
-  min-height: 20%;
-  min-width: 30%;
   margin: 0;
   padding: 15px 40px 15px 40px;
 }
