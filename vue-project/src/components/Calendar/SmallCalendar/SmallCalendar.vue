@@ -216,29 +216,34 @@ export default {
   border: 1px solid #BDBDBD;
   background: #FFFFFF;
   border-radius: 30px;
+  box-sizing: border-box;
+
 }
 
 /* Header style */
 
 .header-small-calendar {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  margin-top: 17px;
+  margin-top: 5%;
+
 }
 
 .header-date {
-  margin: 0 auto 0 10%;
+  margin: 0 9% 0 10%;
   padding: 0;
+  width: 100px;
+  font-size: 1em;
 
 }
 
 .icon {
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   text-align: center;
-  line-height: 40px;
-  font-size: 40px;
+  line-height: 30px;
+  font-size: 30px;
   cursor: pointer;
   margin: 0 1px;
   border-radius: 50%;
@@ -251,7 +256,6 @@ export default {
 }
 
 .right {
-  margin-right: 10%;
   outline: none;
 }
 
@@ -270,17 +274,19 @@ hr {
 
 .calendar {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 9px;
+  grid-template-columns: repeat(7, 10%);
+  column-gap: 9px;
+  row-gap: 1px;
   margin: 0 0 25px 0;
   padding-left: 10%;
+
 }
 
 .calendar li {
   position: relative;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
+  width: 19px;
+  height: 19px;
+  line-height: 19px;
 }
 
 .day {

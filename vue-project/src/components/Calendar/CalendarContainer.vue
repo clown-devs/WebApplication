@@ -1,6 +1,5 @@
 <template>
   <div class="calendar-main-container">
-    <h1>Календарь</h1>
     <div class="calendar-header-level">
       <div class="blank-space"></div>
       <calendar-header
@@ -14,7 +13,7 @@
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
         <small-calendar class="small-calendar" :selected-day="selectedDate" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
-        <meet-places @takePlace="handleTakePlace"></meet-places>
+        <meet-places class="meet-places" @takePlace="handleTakePlace"></meet-places>
       </div>
       <div class="slice-container">
         <calendar-day-slice
@@ -91,6 +90,7 @@ export default {
   height: 100%;
   margin-left: 10.14%;
   margin-right: 10.14%;
+  margin-top: 50px;
 }
 
 h1 {
@@ -120,19 +120,28 @@ h1 {
   display: flex;
   flex-direction: row;
   height: 70%;
+
 }
 
 .slice-container {
-  flex: 2;
+  flex: 1;
 }
 
 .blank-mini-calendar {
   display: flex;
   flex-direction: column;
   margin-right: 62px;
+  justify-content: space-between;
 }
 
 .small-calendar {
-  width: 100%;
+  height: 47%;
+
 }
+
+.meet-places {
+  height: 47%;
+}
+
+
 </style>
