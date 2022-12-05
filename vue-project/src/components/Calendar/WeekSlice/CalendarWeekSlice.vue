@@ -1,17 +1,40 @@
 <template>
   <div class="week-container">
-    <h1>Week-container</h1>
+    <ul class="days-container">
+      <li class="day-item" v-for="day in 7">
+        <calendar-day-slice></calendar-day-slice>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import CalendarDaySlice from "@/components/Calendar/DaySlice/CalendarDaySlice";
+
 export default {
-  name: "CalendarWeekSlice"
+  name: "CalendarWeekSlice",
+
+  components: {
+    CalendarDaySlice
+  }
 }
 </script>
 
 <style scoped>
 .week-container {
-  border: 1px solid black;
+  height: 100%;
+  overflow: auto;
+}
+
+.days-container {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+}
+
+.day-item {
+  flex: 1;
 }
 </style>
