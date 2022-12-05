@@ -1,5 +1,5 @@
 <template>
-  <div class="day-container" ref="gridLine">
+  <div class="day-container" ref="gridLine" :style="{overflow: isEnabledScroll}">
     <ul class="grid-container">
       <li
           class="grid-row"
@@ -68,6 +68,11 @@ export default {
     selectedDate: {
       type: Date,
       default: new Date()
+    },
+
+    turnedOnScroll: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -300,6 +305,10 @@ export default {
       today.setHours(0, 0, 0, 0);
 
       return (selectedDate - today) === 0;
+    },
+
+    isEnabledScroll() {
+      return this.turnedOnScroll ? 'auto' : 'none';
     }
   }
 
@@ -311,7 +320,7 @@ export default {
   border-right: 1px solid #BDBDBD;
   max-width: 1199px;
   height: 100%;
-  overflow: auto;
+  /*overflow: auto;*/
 }
 
 .grid-container {

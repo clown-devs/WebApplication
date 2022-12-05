@@ -2,7 +2,7 @@
   <div class="week-container">
     <ul class="days-container">
       <li class="day-item" v-for="day in 7">
-        <calendar-day-slice></calendar-day-slice>
+        <calendar-day-slice :turned-on-scroll="false"></calendar-day-slice>
       </li>
     </ul>
   </div>
