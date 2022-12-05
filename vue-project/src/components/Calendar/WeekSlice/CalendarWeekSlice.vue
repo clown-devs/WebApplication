@@ -1,11 +1,12 @@
 <template>
   <div class="week-container">
     <ul class="days-container">
-      <time-line></time-line>
+      <time-line :set-grid-line-height="gridRowHeight"></time-line>
       <li class="day-item" v-for="day in 7">
         <calendar-day-slice
             :turned-on-scroll="false"
             :hide-time="true"
+            :set-grid-row-height="gridRowHeight"
         ></calendar-day-slice>
       </li>
     </ul>
@@ -22,7 +23,13 @@ export default {
   components: {
     TimeLine,
     CalendarDaySlice,
-  }
+  },
+
+  data() {
+    return {
+      gridRowHeight: '60px',
+    }
+  },
 }
 </script>
 
