@@ -1,6 +1,5 @@
 <template>
   <div class="calendar-main-container">
-    <h1>Календарь</h1>
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
         <meet-places @takePlace="handleTakePlace"></meet-places>
@@ -78,20 +77,11 @@ export default {
   height: 100%;
 }
 
-h1 {
-  font-family: "Exo 2", serif;
-  font-weight: 700;
-  font-size: 2rem;
-  margin-left: 10.14%;
-  margin-bottom: 30px;
-  margin-top: 0;
-  padding-top: 30px;
-}
-
 .calendar-body-level {
+  padding-top: 30px;
   display: flex;
   flex-direction: row;
-  height: 70%;
+  height: 75%;
 }
 
 .slice-container {
