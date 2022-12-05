@@ -2,7 +2,10 @@
   <div class="week-container">
     <ul class="days-container">
       <li class="day-item" v-for="day in 7">
-        <calendar-day-slice :turned-on-scroll="false"></calendar-day-slice>
+        <calendar-day-slice
+            :turned-on-scroll="false"
+            :hide-time="true"
+        ></calendar-day-slice>
       </li>
     </ul>
   </div>
@@ -10,12 +13,14 @@
 
 <script>
 import CalendarDaySlice from "@/components/Calendar/DaySlice/CalendarDaySlice";
+import TimeLine from "@/components/Calendar/WeekSlice/TimeLine";
 
 export default {
   name: "CalendarWeekSlice",
 
   components: {
-    CalendarDaySlice
+    TimeLine,
+    CalendarDaySlice,
   }
 }
 </script>

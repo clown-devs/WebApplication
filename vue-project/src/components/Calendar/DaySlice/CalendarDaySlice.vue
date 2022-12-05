@@ -12,7 +12,7 @@
           <span
               class="time-item"
               ref="lineTime"
-              v-show="!hideTimeInLine.get(item)"
+              v-show="!hideTimeInLine.get(item) && !hideTime"
           > {{ prepareHoursForDisplay(item) }} </span>
             <div class="divider-cell-line" ref="dividerLine"></div>
           </div>
@@ -49,6 +49,7 @@
 
 <script>
 import api from "@/api";
+import time from "@/helpers/time";
 import {UPDATE_RED_LINE_TIME} from "@/helpers/constant";
 import EventTooltip from "@/components/Calendar/DaySlice/EventTooltip";
 
@@ -73,6 +74,11 @@ export default {
     turnedOnScroll: {
       type: Boolean,
       default: true
+    },
+
+    hideTime: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -217,7 +223,7 @@ export default {
     },
 
     prepareHoursForDisplay(hours) {
-      return hours < 10 ? '0' + hours + ':00' : hours + ':00';
+      return time.prepareHoursForDisplay(hours);
     },
 
     getStartOffsetByDividerLineInPercent() {
