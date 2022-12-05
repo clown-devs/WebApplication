@@ -61,7 +61,7 @@ export default {
       return shorts[weekday];
     },
 
-    deleteSecondsInTime(time) {
+    deleteSecondsInTime(displayTime) {
       return time.slice(0, 5);
     }
   },

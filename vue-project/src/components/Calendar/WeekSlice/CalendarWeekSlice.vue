@@ -1,6 +1,7 @@
 <template>
   <div class="week-container">
     <ul class="days-container">
+      <time-line></time-line>
       <li class="day-item" v-for="day in 7">
         <calendar-day-slice
             :turned-on-scroll="false"

@@ -6,6 +6,7 @@
           ref="infoBox"
           v-for="item in this.cells"
           :key="item"
+          :style="{height: setGridRowHeight}"
       >
         <div class="row-cell-container">
           <div class="divider-cell-line-container" ref="forStartCalculate">
@@ -49,7 +50,7 @@
 
 <script>
 import api from "@/api";
-import time from "@/helpers/time";
+import displayTime from "@/helpers/display-time";
 import {UPDATE_RED_LINE_TIME} from "@/helpers/constant";
 import EventTooltip from "@/components/Calendar/DaySlice/EventTooltip";
 
@@ -79,6 +80,11 @@ export default {
     hideTime: {
       type: Boolean,
       default: false
+    },
+
+    setGridRowHeight: {
+      type: String,
+      default: '60px'
     }
   },
 
@@ -223,7 +229,7 @@ export default {
     },
 
     prepareHoursForDisplay(hours) {
-      return time.prepareHoursForDisplay(hours);
+      return displayTime.prepareHoursForDisplay(hours);
     },
 
     getStartOffsetByDividerLineInPercent() {
@@ -341,10 +347,6 @@ export default {
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
-}
-
-.grid-row {
-  height: 60px;
 }
 
 .time-item {

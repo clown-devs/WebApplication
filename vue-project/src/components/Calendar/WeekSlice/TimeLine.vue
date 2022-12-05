@@ -1,18 +1,24 @@
 <template>
 <div class="time-line-container">
-  <span class="time-item" v-for="time in 23"> {{ time }} </span>
+  <span class="time-item" v-for="hours in 23">
+    {{ displayHours(hours) }}
+  </span>
 </div>
 </template>
 
 <script>
+import displayTime from "@/helpers/display-time.js";
 
 export default {
   name: "TimeLine",
 
-  props: {
-    time: {
-      type: String,
-      default: '05:00'
+  components: {
+    displayTime,
+  },
+
+  methods: {
+    displayHours(hours) {
+      return displayTime.prepareHoursForDisplay(hours);
     }
   }
 }
@@ -20,6 +26,11 @@ export default {
 </script>
 
 <style scoped>
+.time-line-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .time-item {
   font-family: "Exo 2", serif;
   font-weight: 500;
