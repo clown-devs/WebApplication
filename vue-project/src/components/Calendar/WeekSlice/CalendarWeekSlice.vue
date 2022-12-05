@@ -22,7 +22,7 @@ export default {
 
   components: {
     TimeLine,
-    CalendarDaySlice,
+    CalendarDaySlice
   },
 
   data() {
