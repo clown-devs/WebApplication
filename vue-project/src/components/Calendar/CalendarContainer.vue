@@ -1,20 +1,15 @@
 <template>
   <div class="calendar-main-container">
-    <h1>Календарь</h1>
-    <div class="calendar-header-level">
-      <div class="blank-space"></div>
-      <calendar-header
-          class="calendar-header"
-          @switchSlice="showSelectedSlice"
-          @selectedDate="handleSelectDate"
-      ></calendar-header>
-    </div>
-
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
         <meet-places @takePlace="handleTakePlace"></meet-places>
       </div>
       <div class="slice-container">
+        <calendar-header
+            class="calendar-header"
+            @switchSlice="showSelectedSlice"
+            @selectedDate="handleSelectDate"
+        ></calendar-header>
         <calendar-day-slice
             class="day-slice-container"
             v-if="isPressedDayBtn"
@@ -82,35 +77,11 @@ export default {
   height: 100%;
 }
 
-h1 {
-  font-family: "Exo 2", serif;
-  font-weight: 700;
-  font-size: 2rem;
-  margin-left: 10.14%;
-  margin-bottom: 30px;
-  margin-top: 0;
-  padding-top: 30px;
-}
-
-.calendar-header-level {
-  display: flex;
-  flex-direction: row;
-}
-
-.blank-space {
-  flex: 1;
-}
-
-.calendar-header {
-  flex: 2;
-  margin-right: 10.14%;
-  padding-right: 5px;
-}
-
 .calendar-body-level {
+  padding-top: 30px;
   display: flex;
   flex-direction: row;
-  height: 70%;
+  height: 75%;
 }
 
 .slice-container {
