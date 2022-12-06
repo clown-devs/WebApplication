@@ -22,7 +22,7 @@ export default {
       ]),
   },
 
-  mounted() {
+  async mounted() {
     if(sessionStorage.getItem("token") !== null) {
       this.loadDataFromSessionStorage();
       return;
@@ -32,8 +32,6 @@ export default {
       this.loadDataFromLocalStorage();
       return;
     }
-
-    api.auth();
 
     this.$router.push("/login");
   },

@@ -49,7 +49,7 @@
 
 <script>
 import api from "@/api";
-import {MINUTE} from "@/helpers/constant";
+import {UPDATE_RED_LINE_TIME} from "@/helpers/constant";
 import EventTooltip from "@/components/Calendar/DaySlice/EventTooltip";
 
 export default {
@@ -99,7 +99,7 @@ export default {
     window.setInterval(() => {
       this.updateRedLineComponent += 1;
       this.now = new Date();
-    }, MINUTE);
+    }, UPDATE_RED_LINE_TIME);
   },
 
   async mounted() {

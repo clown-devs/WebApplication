@@ -1,21 +1,15 @@
 <template>
   <div class="calendar-main-container">
-    <div class="calendar-header-level">
-      <div class="blank-space"></div>
-      <calendar-header
-          class="calendar-header"
-          @switchSlice="showSelectedSlice"
-          @selectedDate="handleSelectDate"
-          :inputSelectedDate="emitSelectedDay"
-      ></calendar-header>
-    </div>
-
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
-        <small-calendar class="small-calendar" :selected-day="selectedDate" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
-        <meet-places class="meet-places" @takePlace="handleTakePlace"></meet-places>
+        <meet-places @takePlace="handleTakePlace"></meet-places>
       </div>
       <div class="slice-container">
+        <calendar-header
+            class="calendar-header"
+            @switchSlice="showSelectedSlice"
+            @selectedDate="handleSelectDate"
+        ></calendar-header>
         <calendar-day-slice
             class="day-slice-container"
             v-if="isPressedDayBtn"
@@ -93,55 +87,31 @@ export default {
   margin-top: 50px;
 }
 
-h1 {
-  font-family: "Exo 2", serif;
-  font-weight: 700;
-  font-size: 2rem;
-  margin-bottom: 30px;
-  margin-top: 0;
-  padding-top: 30px;
-}
-
-.calendar-header-level {
-  display: flex;
-  flex-direction: row;
-}
-
-.blank-space {
-  flex: 1;
-}
-
-.calendar-header {
-  flex: 2;
-  padding-right: 5px;
-}
-
 .calendar-body-level {
+  padding-top: 30px;
   display: flex;
   flex-direction: row;
-  height: 70%;
-
+  height: 75%;
 }
 
 .slice-container {
-  flex: 1;
+  flex: 2;
+  margin-right: 10.14%;
 }
 
 .blank-mini-calendar {
-  display: flex;
-  flex-direction: column;
-  margin-right: 62px;
-  justify-content: space-between;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*margin-right: 62px;*/
+  /*justify-content: space-between;*/
+  flex: 1;
 }
 
 .small-calendar {
   height: 47%;
-
 }
 
 .meet-places {
   height: 47%;
 }
-
-
 </style>

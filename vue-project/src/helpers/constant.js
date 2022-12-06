@@ -1,1 +1,1 @@
-export const MINUTE = 1000 * 60;
+export const UPDATE_RED_LINE_TIME = 1000 * 60; // === 1 minute
