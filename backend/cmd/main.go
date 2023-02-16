@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"sberapi/internal/server"
+
+	conf "sberapi/internal/config"
 )
 
 var (
@@ -16,12 +18,12 @@ func init() {
 	flag.StringVar(&configPath, "config-path", "configs/config.json", "path to config file")
 }
 
-func parseConfig() *server.Config {
+func parseConfig() *conf.Config {
 	data, err := os.ReadFile(configPath)
 	if err != nil {
 		log.Fatal("Could not open config file", err)
 	}
-	config := server.NewConfig()
+	config := conf.NewConfig()
 	err = json.Unmarshal(data, config)
 	if err != nil {
 		log.Fatal("Could not parse config file", err)

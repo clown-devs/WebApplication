@@ -5,5 +5,10 @@
  > configs/config.json - путь по умолчанию
 
 ### Поля конфигурационного файла:
-- bindAddr - string -  если не указан то по дефолту ":6969") 
-- logLevel -  string - (trace, debug, info, warn, error, fatal, panic) 
+- bindAddr -  если не указан то по дефолту ":6969") 
+- logLevel - (trace, debug, info, warn, error, fatal, panic)
+- dbConnStr -  "user=**user** password=**password** dbname=sberdb sslmode=disable"
+
+```
+Все поля должны быть типа string
+```
