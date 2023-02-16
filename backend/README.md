@@ -12,3 +12,10 @@
 ```
 Все поля должны быть типа string
 ```
+
+### База данных
+Используемая CLI для миграции - https://github.com/golang-migrate/migrate  
+#### Команда для миграции:
+> migrate -path migrations -database "postgres://**user**:**passwd**@localhost/sberdb?sslmode=disable" up
+
+Позже напишу скрипт для автоматического деплоя
