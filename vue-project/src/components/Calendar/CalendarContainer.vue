@@ -2,13 +2,15 @@
   <div class="calendar-main-container">
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
-        <meet-places @takePlace="handleTakePlace"></meet-places>
+        <small-calendar class="small-calendar" :selected-day="selectedDate" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
+        <meet-places @takePlace="handleTakePlace" class="meet-places"></meet-places>
       </div>
       <div class="slice-container">
         <calendar-header
             class="calendar-header"
             @switchSlice="showSelectedSlice"
             @selectedDate="handleSelectDate"
+            :inputSelectedDate="emitSelectedDay"
         ></calendar-header>
         <calendar-day-slice
             class="day-slice-container"
@@ -100,18 +102,18 @@ export default {
 }
 
 .blank-mini-calendar {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*margin-right: 62px;*/
-  /*justify-content: space-between;*/
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 62px;
+  flex: 0.7;
 }
 
 .small-calendar {
-  height: 47%;
+
 }
 
 .meet-places {
-  height: 47%;
+  margin-top: 50px;
+  display: block;
 }
 </style>
