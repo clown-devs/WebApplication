@@ -10,22 +10,7 @@
 
       <div class="v-popup__content">
 
-        <div class="info-tags">
-          <ul class="tag-input">
-            <li v-for="tag in tags"
-                v-bind:value="tag"
-            class="tag-list">
-              <label for="myCheckbox01" class="checkbox">
-                <input class="checkbox__input" type="checkbox" id="myCheckbox01">
-                <svg class="checkbox__icon" viewBox="0 0 22 22">
-                  <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3" />
-                  <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
-                </svg>
-                <span class="checkbox__label">{{ tag.name }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
+
 
         <div class="info-meeting">
           <div class="info-meet-main">
@@ -168,6 +153,23 @@
           </div>
         </div>
 
+        <div class="info-tags">
+          <ul class="tag-input">
+            <li v-for="tag in tags"
+                v-bind:value="tag"
+                class="tag-list">
+              <label for="myCheckbox01" class="checkbox">
+                <input class="checkbox__input" type="checkbox" id="myCheckbox01">
+                <svg class="checkbox__icon" viewBox="0 0 22 22">
+                  <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3" />
+                  <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
+                </svg>
+                <span class="checkbox__label">{{ tag.name }}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+          
         <div class="info-note">
           <div class="note-container">
             <textarea
