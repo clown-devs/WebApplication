@@ -147,6 +147,10 @@ export default {
     },
 
     changeMonthFromSelectedDay(day) {
+      // if ((day.getDate() > 15) && ((day.getMonth() === this.currentMonth) || (day.getMonth() === this.currentMonth - 1) || (day.getMonth() === this.currentMonth + 1))) {
+      //
+      // }
+      console.log(123)
       this.currentMonth = day.getDate() > 15 ? this.currentMonth - 1: this.currentMonth + 1;
       if (this.currentMonth < 0 || this.currentMonth > 11) {
         this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
@@ -216,8 +220,8 @@ export default {
   border: 1px solid #BDBDBD;
   background: #FFFFFF;
   border-radius: 30px;
-  box-sizing: border-box;
-
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header style */
@@ -231,7 +235,7 @@ export default {
 }
 
 .header-date {
-  margin: 0 9% 0 10%;
+  margin: 0 auto 0 10.4%;
   padding: 0;
   width: 100px;
   font-size: 1em;
@@ -251,12 +255,12 @@ export default {
 
 
 .left {
-  margin-right: 5px;
   outline: none;
 }
 
 .right {
   outline: none;
+  margin-right: 10.4%;
 }
 
 hr {
@@ -279,6 +283,7 @@ hr {
   row-gap: 1px;
   margin: 0 0 25px 0;
   padding-left: 10%;
+  box-sizing: border-box;
 
 }
 
