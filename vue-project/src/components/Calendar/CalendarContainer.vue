@@ -2,13 +2,15 @@
   <div class="calendar-main-container">
     <div class="calendar-body-level">
       <div class="blank-mini-calendar">
-        <meet-places @takePlace="handleTakePlace"></meet-places>
+        <small-calendar class="small-calendar" :selected-day="selectedDate" @takeDayOnCalendar="takeDayOnCalendar"></small-calendar>
+        <meet-places @takePlace="handleTakePlace" class="meet-places"></meet-places>
       </div>
       <div class="slice-container">
         <calendar-header
             class="calendar-header"
             @switchSlice="showSelectedSlice"
             @selectedDate="handleSelectDate"
+            :inputSelectedDate="emitSelectedDay"
         ></calendar-header>
         <calendar-day-slice
             class="day-slice-container"
@@ -30,11 +32,13 @@ import CalendarWeekSlice from "@/components/Calendar/WeekSlice/CalendarWeekSlice
 import CalendarMonthSlice from "@/components/Calendar/MonthSlice/CalendarMonthSlice";
 import CalendarHeader from "@/components/Calendar/CalendarHeader";
 import MeetPlaces from "@/components/Calendar/SmallCalendar/MeetPlaces";
+import SmallCalendar from "@/components/Calendar/SmallCalendar/SmallCalendar";
 
 export default {
   name: "CalendarContainer",
 
   components: {
+    SmallCalendar,
     CalendarDaySlice,
     CalendarWeekSlice,
     CalendarMonthSlice,
@@ -44,13 +48,15 @@ export default {
 
   data() {
     return {
-        isPressedDayBtn: false,
-        isPressedWeekBtn: false,
-        isPressedMonthBtn: false,
-        selectedPlace: {},
-        selectedDate: new Date(),
-      }
-    },
+      isPressedDayBtn: false,
+      isPressedWeekBtn: false,
+      isPressedMonthBtn: false,
+      selectedPlace: {},
+      selectedDate: new Date(),
+      propsSelectedDay: new Date(),
+      emitSelectedDay: new Date(),
+    }
+  },
 
   methods: {
     showSelectedSlice(slicesState) {
@@ -65,6 +71,9 @@ export default {
 
     handleSelectDate(date) {
       this.selectedDate = date;
+    },
+    takeDayOnCalendar(day) {
+      this.emitSelectedDay = day;
     }
   },
 
@@ -75,6 +84,9 @@ export default {
 <style scoped>
 .calendar-main-container {
   height: 100%;
+  margin-left: 10.14%;
+  margin-right: 10.14%;
+  margin-top: 50px;
 }
 
 .calendar-body-level {
@@ -90,6 +102,18 @@ export default {
 }
 
 .blank-mini-calendar {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 62px;
+  flex: 0.7;
+}
+
+.small-calendar {
+
+}
+
+.meet-places {
+  margin-top: 50px;
+  display: block;
 }
 </style>

@@ -34,7 +34,9 @@ export default {
 <style scoped>
 main {
   height: calc(100vh - 110px);
-  padding-top: 110px;
+  padding-top: 80px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .calendar-container {

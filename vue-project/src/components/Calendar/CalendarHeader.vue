@@ -38,6 +38,13 @@
 export default {
   name: "CalendarHeader",
 
+  props: {
+    inputSelectedDate: {
+      type: Date,
+      default: new Date()
+    },
+  },
+
   data() {
     return {
       isPressedDayBtn: true,
@@ -48,6 +55,7 @@ export default {
   },
 
   mounted() {
+    this.selectedDate = this.inputSelectedDate;
     this.$emit("switchSlice", this.sliceState);
   },
 
@@ -111,6 +119,13 @@ export default {
         "isPressedMonthBtn": this.isPressedMonthBtn,
         "selectedDate": this.selectedDate
       }
+    }
+  },
+
+  watch: {
+    inputSelectedDate() {
+      this.selectedDate = this.inputSelectedDate;
+      this.$emit("selectedDate", this.selectedDate);
     }
   },
 

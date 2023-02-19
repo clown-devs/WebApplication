@@ -1,154 +1,378 @@
 <template>
   <div class="small-calendar-container">
     <header class="header-small-calendar">
-      <h2 class="header-date">Октябрь 2022</h2>
-      <i class="material-icons icon left"> arrow_left </i>
-      <i class="material-icons icon right"> arrow_right </i>
+      <h3 class="header-date"> {{ this.month[currentMonth] }} {{ currentYear }} </h3>
+      <i @click='changeMonth' class="material-icons icon left" id="prev"> arrow_left </i>
+      <i @click='changeMonth' class="material-icons icon right" id="next"> arrow_right </i>
     </header>
     <hr>
 
     <main class="main-grid">
       <ul class="calendar">
-        <li class="day day-name">П</li>
-        <li class="day day-name">В</li>
-        <li class="day day-name">С</li>
-        <li class="day day-name">Ч</li>
-        <li class="day day-name">П</li>
-        <li class="day day-name">С</li>
-        <li class="day day-name">В</li>
+        <li v-for="nameDay in daysName" :key="nameDay" class="day-name"> {{ nameDay }}</li>
 
-        <li class="day">1</li>
-        <li class="day">2</li>
-        <li class="day">3</li>
-        <li class="day">4</li>
-        <li class="day">5</li>
-        <li class="day">6</li>
-        <li class="day">7</li>
-        <li class="day">8</li>
-        <li class="day">9</li>
-        <li class="day">10</li>
-        <li class="day">11</li>
-        <li class="day">12</li>
-        <li class="day">13</li>
-        <li class="day">14</li>
-        <li class="day">15</li>
-        <li class="day">16</li>
-        <li class="day">17</li>
-        <li class="day">18</li>
-        <li class="day">19</li>
-        <li class="day">20</li>
-        <li class="day">21</li>
-        <li class="day">22</li>
-        <li class="day">23</li>
-        <li class="day">24</li>
-        <li class="day">25</li>
-        <li class="day">26</li>
-        <li class="day">27</li>
-        <li class="day">28</li>
-        <li class="day">29</li>
-        <li class="day">30</li>
-        <li class="day">31</li>
+        <li v-for="prevDay in prevDays" :key="prevDay" class="day">
+          <button class="day-button inactive" @click="changeMonthOnDayClick"> {{ prevDay }}
+          </button>
+        </li>
+
+        <li v-for="day in days" :key="day" class="day current-day" v-bind:class="{choseDay: getIsDay(day) }">
+          <button class="day-button" @click="getIsDayButton" v-bind:class="{active: getIsToday(day)}"> {{
+              day
+            }}
+          </button>
+        </li>
+
+        <li v-for="nextDay in nextDays" :key="nextDay" class="day">
+          <button class="day-button inactive" @click="changeMonthOnDayClick"> {{ nextDay }}
+          </button></li>
       </ul>
     </main>
   </div>
 </template>
 
 <script>
-export default {}
+
+import login from "@/pages/Login";
+
+export default {
+  props: {
+    selectedDay: {
+      type: Date,
+      default: new Date()
+    }
+  },
+
+  data() {
+    return {
+      date: "",
+      currentYear: 0,
+      currentMonth: 0,
+      month: [
+        "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь",
+      ],
+      days: [],
+      daysForSelectedDay: [],
+      daysName: ["П", "В", "С", "Ч", "П", "С", "В"],
+      prevDays: [],
+      nextDays: [],
+      lastDateOfMonth: "",
+      firstDayOfMonth: "",
+      lastDateOfLastMonth: "",
+      numberOfDay: "",
+      isDay: false,
+      propsDate: new Date(),
+      emitDate: new Date(),
+      choseDay: new Date().getDate(),
+      tempForPrevMonth: 0,
+      tempForPrevYear: 0,
+    };
+  },
+
+  mounted() {
+    // assign a Date
+    this.date = new Date();
+    this.currentYear = this.date.getFullYear();
+    this.currentMonth = this.date.getMonth();
+
+    this.renderCalendar(this.choseDay);
+  },
+
+  methods: {
+    renderCalendar(choseDay) {
+      //получаем число день в недели в котором начинается месяц если 2 то со вторника и тд
+      this.firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1).getDay();
+      //Получаем количество дней в месяце
+      this.lastDateOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+      //Получаем сколько дней у этого месяца в последней недели
+      this.lastDayOfMonth = new Date(this.currentYear, this.currentMonth, this.lastDateOfMonth).getDay();
+      //Получаем количество дней в предыдущем месяце
+      this.lastDateOfLastMonth = new Date(this.currentYear, this.currentMonth, 0).getDate();
+
+      if (this.firstDayOfMonth === 0) {
+        this.firstDayOfMonth = 7;
+      }
+      else if (this.lastDayOfMonth === 0) {
+        this.lastDayOfMonth = 7;
+      }
+
+      //Get in array end days prev Month
+      for (let i = this.firstDayOfMonth - 1; i > 0; i--) {
+        this.prevDays.push(this.lastDateOfLastMonth - i + 1);
+      }
+      //Get in array start days next Month
+      for (let i = this.lastDayOfMonth; i < 7; ++i) {
+        this.nextDays.push(i - this.lastDayOfMonth + 1);
+      }
+      //Get in array days current Month
+      for (let i = 1; i <= this.lastDateOfMonth; ++i) {
+        this.days.push(i);
+        this.daysForSelectedDay.push(false);
+      }
+
+      this.daysForSelectedDay[choseDay - 1] = true;
+    },
+
+    changeMonth(icon) {
+      this.currentMonth = icon.target.id === "prev" ? this.currentMonth - 1 : this.currentMonth + 1;
+      if (this.currentMonth < 0 || this.currentMonth > 11) {
+        this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
+        this.currentYear = this.date.getFullYear();
+        this.currentMonth = this.date.getMonth();
+      }
+
+      this.prevDays = [];
+      this.days = [];
+      this.nextDays = [];
+      this.daysForSelectedDay = [];
+      this.renderCalendar();
+    },
+    changeMonthOnDayClick(day) {
+      this.currentMonth = day.target.innerText > 15 ? this.currentMonth - 1: this.currentMonth + 1;
+      if (this.currentMonth < 0 || this.currentMonth > 11) {
+        this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
+        this.currentYear = this.date.getFullYear();
+        this.currentMonth = this.date.getMonth();
+      }
+
+      this.prevDays = [];
+      this.days = [];
+      this.nextDays = [];
+      this.daysForSelectedDay = [];
+
+      this.renderCalendar(day.target.innerText)
+
+      this.emitDate = new Date(this.currentYear, this.currentMonth, day.target.innerText);
+      this.$emit('takeDayOnCalendar', this.emitDate)
+    },
+
+    changeMonthFromSelectedDay(day) {
+      // if ((day.getDate() > 15) && ((day.getMonth() === this.currentMonth) || (day.getMonth() === this.currentMonth - 1) || (day.getMonth() === this.currentMonth + 1))) {
+      //
+      // }
+      console.log(123)
+      this.currentMonth = day.getDate() > 15 ? this.currentMonth - 1: this.currentMonth + 1;
+      if (this.currentMonth < 0 || this.currentMonth > 11) {
+        this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
+        this.currentYear = this.date.getFullYear();
+        this.currentMonth = this.date.getMonth();
+      }
+
+      this.prevDays = [];
+      this.days = [];
+      this.nextDays = [];
+      this.daysForSelectedDay = [];
+
+      this.renderCalendar(day.getDate())
+    },
+
+    getIsToday(day) {
+      if (day === this.date.getDate() && this.currentMonth === new Date().getMonth() && this.currentYear === new Date().getFullYear()) {
+        return true;
+      } else
+        return false;
+    },
+
+    getIsDay(day) {
+
+
+      this.tempForPrevMonth = this.selectedDay.getMonth() - this.currentMonth;
+      this.tempForPrevYear = this.currentYear - this.selectedDay.getFullYear();
+
+      if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.selectedDay.getMonth() - this.tempForPrevMonth && this.currentYear - this.tempForPrevYear === this.selectedDay.getFullYear()) {
+        return true
+      }
+
+
+    },
+
+    getIsDayButton(day) {
+      for (let i = 1; i <= this.lastDateOfMonth; ++i) {
+        this.daysForSelectedDay[i - 1] = false;
+      }
+      this.daysForSelectedDay[day.target.innerText - 1] = true;
+      this.emitDate = new Date(this.currentYear, this.currentMonth, day.target.innerText);
+      this.$emit('takeDayOnCalendar', this.emitDate)
+    },
+
+  },
+
+  watch: {
+
+    selectedDay(day) {
+      for (let i = 1; i <= this.lastDateOfMonth; ++i) {
+        this.daysForSelectedDay[i - 1] = false;
+      }
+
+      this.daysForSelectedDay[day.getDate() - 1] = true;
+
+      if (this.selectedDay.getMonth() !== this.currentMonth) {
+        this.changeMonthFromSelectedDay(day)
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
 /* General style */
 .small-calendar-container {
-  margin-left: 500px;
   border: 1px solid #BDBDBD;
   background: #FFFFFF;
   border-radius: 30px;
-  width: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header style */
 
 .header-small-calendar {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  margin-top: 17px;
+  margin-top: 5%;
+
 }
 
 .header-date {
-  margin: 0 10px 0 0;
+  margin: 0 auto 0 10.4%;
   padding: 0;
+  width: 100px;
+  font-size: 1em;
+
 }
 
 .icon {
-  height: 33px;
-  width: 33px;
+  height: 30px;
+  width: 30px;
   text-align: center;
-  line-height: 33px;
-  font-size: 33px;
+  line-height: 30px;
+  font-size: 30px;
   cursor: pointer;
   margin: 0 1px;
   border-radius: 50%;
-  color: #878787;
 }
 
+
 .left {
-  margin-right: 5px;
+  outline: none;
+}
+
+.right {
+  outline: none;
+  margin-right: 10.4%;
 }
 
 hr {
   border: 0;
   width: 85%;
   border-bottom: 1px solid #BDBDBD;
-  margin: 11px auto 11px auto;
+  margin: 0 auto 11px auto;
 }
 
 /* Main style */
 
 .main-grid {
-  width: 260px;
+  padding-right: 10%;
 }
 
 .calendar {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 9px;
+  grid-template-columns: repeat(7, 10%);
+  column-gap: 9px;
+  row-gap: 1px;
   margin: 0 0 25px 0;
+  padding-left: 10%;
+  box-sizing: border-box;
+
+}
+
+.calendar li {
+  position: relative;
+  width: 19px;
+  height: 19px;
+  line-height: 19px;
 }
 
 .day {
   list-style: none;
   text-align: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.day.active {
+  color: #fff;
+}
+
+.day-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  vertical-align: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.choseDay {
+  border-radius: 50%;
+  background: #7de5b8;
 }
 
 .calendar .day-name {
-  font-width: 700px;
+  font-weight: 700;
   font-size: 14px;
+  list-style: none;
+  text-align: center;
 }
 
-.grid {
-  display: grid;
-  margin-left: 500px;
-  grid-template-columns: 100px 100px;
-  grid-template-rows: 100px 100px;
-
-  width: 200px;
-  height: 200px;
-
-  gap: 10px;
+.inactive {
+  color: #aaa;
 }
 
-.header-grid {
-  border: 1px solid green;
-}
-
-.header-grid {
-  grid-row: 1 / -1;
-}
 
 /* Animation main */
 .icon:hover {
   background: #f2f2f2;
+}
+
+.day-button::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: -1;
+
+}
+
+.day-button::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+  z-index: -1;
+}
+
+.day-button:hover::before:not(.choseDay) {
+  background: #f2f2f2;
+}
+
+.day-button.active::before {
+  background: #00B268;
+}
+
+.day-button.active {
+  color: white;
+}
+
+.icon:active {
+  color: #00B268;
+}
+
+.day-button:nth-child(7n), .day-button:nth-child(7n - 1) {
+  color: #CC2222;
 }
 </style>

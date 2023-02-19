@@ -104,7 +104,6 @@ export default {
 
   async mounted() {
     this.createTimeGrid();
-
     let meetings = await api.getMeetingsByDate(this.selectedDate);
 
     this.setHideTimeInLineMap();

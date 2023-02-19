@@ -41,6 +41,7 @@ export default {
 .meet-places {
   justify-content: center;
   display: flex;
+
 }
 
 /* Style of list */
@@ -48,10 +49,15 @@ export default {
   background: #FFFFFF;
   border: 1px solid #BABABA;
   border-radius: 30px;
-  min-height: 20%;
-  min-width: 30%;
   margin: 0;
-  padding: 15px 40px 15px 40px;
+  padding: 3% 15% 3% 15%;
+  overflow: scroll;
+  overflow-x: auto;
+}
+
+.meet-places-list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .meet-place-item {
@@ -63,11 +69,12 @@ export default {
   display: flex;
   align-items: center;
   letter-spacing: 0.05em;
-  line-height: 30px;
+  line-height: 25px;
   font-weight: 500;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
   color: #7A7474;
+  white-space: nowrap;
 }
 
 .meet-place-item-button {

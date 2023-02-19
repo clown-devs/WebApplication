@@ -9,6 +9,9 @@
       </div>
 
       <div class="v-popup__content">
+
+
+
         <div class="info-meeting">
           <div class="info-meet-main">
             <div class="client-container">
@@ -150,6 +153,23 @@
           </div>
         </div>
 
+        <div class="info-tags">
+          <ul class="tag-input">
+            <li v-for="tag in tags"
+                v-bind:value="tag"
+                class="tag-list">
+              <label for="myCheckbox01" class="checkbox">
+                <input class="checkbox__input" type="checkbox" id="myCheckbox01">
+                <svg class="checkbox__icon" viewBox="0 0 22 22">
+                  <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3" />
+                  <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
+                </svg>
+                <span class="checkbox__label">{{ tag.name }}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+          
         <div class="info-note">
           <div class="note-container">
             <textarea
@@ -286,6 +306,49 @@ export default {
           id: 0,
           direction: ""
         },
+      ],
+      tags: [
+        {
+          name: "ММБ",
+          id: 0,
+        },
+        {
+          name: "Эквайринг",
+          id: 1,
+        },
+        {
+          name: "КСБ",
+          id: 2,
+        },
+        {
+          name: "РГС",
+          id: 3,
+        },
+        {
+          name: "МЗП",
+          id: 4,
+        },
+        {
+          name: "Благосостояние",
+          id: 5,
+        },
+        {
+          name: "Платежи и переводы",
+          id: 6,
+        },
+        {
+          name: "Лизинг",
+          id: 7,
+        },
+        {
+          name: "Инкассация",
+          id: 8,
+        },
+        {
+          name: "ВЭД",
+          id: 9,
+        },
+
       ],
     };
   },
@@ -481,7 +544,6 @@ export default {
       for (let i in this.selectedUsersInMeeting) {
         this.users.push(this.selectedUsersInMeeting[i]);
       }
-
       for (let i in users) {
         const fullName =
             users[i].second_name +
@@ -640,6 +702,16 @@ export default {
 .info-meet-main {
   margin-right: 10px;
   flex: 1.5;
+}
+
+.tag-input {
+  display: flex;
+  list-style-type: none;
+  border: 0;
+  border-bottom: 1px solid #7a7474;
+  border-radius: 10px;
+  background: #f5f5f5;
+  padding-bottom: 20px;
 }
 
 .worker-input {
@@ -1021,5 +1093,71 @@ export default {
 .material-icons:hover {
   transition-duration: 0.5s;
   color: #00b268;
+}
+
+
+/* Я ЭТОТ КАЛ ПОФИКШУ ЧИСТО НА ВРЕМЯ */
+
+.checkbox__input:checked + .checkbox__icon .tick {
+  /* убираем смещение для отрезков, чтобы включить анимацию галочки */
+  stroke-dashoffset: 0;
+}
+.checkbox {
+  /* меняем внешний вид курсора */
+  cursor: pointer;
+  /* выравниваем элементы по центру */
+  display: flex;
+  align-items: center;
+}
+
+/* отдельные настройки для самого чекбокса */
+.checkbox__input {
+  /* устанавливаем абсолютное позиционирование */
+  position: absolute;
+  /* задаём высоту и ширину */
+  width: 15px;
+  height: 15px;
+  /* делаем чекбокс непрозрачным, чтобы скрыть исходный элемент и заменить его потом нарисованным */
+  opacity: 0;
+  /* меняем внешний вид курсора */
+  cursor: pointer;
+}
+
+/* настройки для SVG-иконки */
+.checkbox__icon {
+  /* размеры совпадают с размерами скрытого чекбокса */
+  width: 15px;
+  height: 15px;
+  /* убираем ограничение по наименьшей ширине блока */
+  flex-shrink: 0;
+  /* разрешаем отображать содержимое за пределами блока */
+  overflow: visible;
+}
+
+/* общие настройки для нового чекбокса и галочки */
+.checkbox__icon .tick {
+  /* рисовать будем всё отрезками по 20 пикселей */
+  stroke-dasharray: 20px;
+  /* но сместим следующие отрезки тоже на 20 пикселей, чтобы получить сплошные линии */
+  stroke-dashoffset: 20px;
+  /* это даст нам плавную анимацию отрисовки галочки */
+  transition: stroke-dashoffset 0.2s ease-out;
+}
+
+/* настройки для подписи чекбокса */
+.checkbox__label {
+  /* добавляем отступ слева */
+  margin-left: 5px;
+  font-size: 13px;
+}
+.tag-list:not(:last-child) {
+  margin-right: 15px;
+
+}
+
+.tag-list {
+  justify-self: center;
+  vertical-align: center;
+  margin-top: 10px;
 }
 </style>
