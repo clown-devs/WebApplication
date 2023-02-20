@@ -16,8 +16,8 @@
           </button>
         </li>
 
-        <li v-for="day in days" :key="day" class="day current-day" v-bind:class="{choseDay: getIsDay(day) }">
-          <button class="day-button" @click="getIsDayButton" v-bind:class="{active: getIsToday(day)}"> {{
+        <li v-for="day in days" :key="day" class="day current-day" v-bind:class="{choseDay: isDaySelected(day)}">
+          <button class="day-button" @click="makeBackgroundColorInSelectedDay" v-bind:class="{active: isToday(day)}"> {{
               day
             }}
           </button>
@@ -147,10 +147,6 @@ export default {
     },
 
     changeMonthFromSelectedDay(day) {
-      // if ((day.getDate() > 15) && ((day.getMonth() === this.currentMonth) || (day.getMonth() === this.currentMonth - 1) || (day.getMonth() === this.currentMonth + 1))) {
-      //
-      // }
-      console.log(123)
       this.currentMonth = day.getDate() > 15 ? this.currentMonth - 1: this.currentMonth + 1;
       if (this.currentMonth < 0 || this.currentMonth > 11) {
         this.date = new Date(this.currentYear, this.currentMonth, this.date.getDate());
@@ -166,27 +162,21 @@ export default {
       this.renderCalendar(day.getDate())
     },
 
-    getIsToday(day) {
+    isToday(day) {
       if (day === this.date.getDate() && this.currentMonth === new Date().getMonth() && this.currentYear === new Date().getFullYear()) {
         return true;
       } else
         return false;
     },
 
-    getIsDay(day) {
+    isDaySelected(day) {
 
-
-      this.tempForPrevMonth = this.selectedDay.getMonth() - this.currentMonth;
-      this.tempForPrevYear = this.currentYear - this.selectedDay.getFullYear();
-
-      if (this.daysForSelectedDay[day - 1] === true && this.currentMonth === this.selectedDay.getMonth() - this.tempForPrevMonth && this.currentYear - this.tempForPrevYear === this.selectedDay.getFullYear()) {
+      if (this.daysForSelectedDay[day - 1] === true) {
         return true
       }
-
-
     },
 
-    getIsDayButton(day) {
+    makeBackgroundColorInSelectedDay(day) {
       for (let i = 1; i <= this.lastDateOfMonth; ++i) {
         this.daysForSelectedDay[i - 1] = false;
       }

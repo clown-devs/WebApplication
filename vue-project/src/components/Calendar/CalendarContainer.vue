@@ -113,7 +113,7 @@ export default {
 }
 
 .meet-places {
-  margin-top: 50px;
+  margin-top: 30px;
   display: block;
 }
 </style>

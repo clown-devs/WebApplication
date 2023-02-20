@@ -15,6 +15,7 @@ const API_PATHS = {
     directions: 'users/directions/',
     users_employee: 'users/employee/',
     check_token: 'users/check_token/',
+    tags: 'meetings/tags/',
 }
 
 const api = {
@@ -286,6 +287,19 @@ const api = {
         try {
             let res = await axios.get(
                 API_KEY + API_PATHS['users'] 
+            );
+            return res.data;
+
+        } catch (error) {
+            this.errorHandle(error);
+            return [];
+        }
+    },
+
+    async getTags() {
+        try {
+            let res = await axios.get(
+                API_KEY + API_PATHS['tags']
             );
             return res.data;
 

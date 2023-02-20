@@ -11,7 +11,6 @@
       <div class="v-popup__content">
 
 
-
         <div class="info-meeting">
           <div class="info-meet-main">
             <div class="client-container">
@@ -158,18 +157,19 @@
             <li v-for="tag in tags"
                 v-bind:value="tag"
                 class="tag-list">
-              <label for="myCheckbox01" class="checkbox">
-                <input class="checkbox__input" type="checkbox" id="myCheckbox01">
+              <label class="checkbox">
+                <input class="checkbox__input" type="checkbox" @click="tag.isSelected = !tag.isSelected">
                 <svg class="checkbox__icon" viewBox="0 0 22 22">
-                  <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3" />
-                  <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
+                  <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3"/>
+                  <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4"
+                        d="M4 10l5 5 9-9"/>
                 </svg>
-                <span class="checkbox__label">{{ tag.name }}</span>
+                <span class="checkbox__label">{{ prepareTagForDisplay(tag) }}</span>
               </label>
             </li>
           </ul>
         </div>
-          
+
         <div class="info-note">
           <div class="note-container">
             <textarea
@@ -307,49 +307,8 @@ export default {
           direction: ""
         },
       ],
-      tags: [
-        {
-          name: "ММБ",
-          id: 0,
-        },
-        {
-          name: "Эквайринг",
-          id: 1,
-        },
-        {
-          name: "КСБ",
-          id: 2,
-        },
-        {
-          name: "РГС",
-          id: 3,
-        },
-        {
-          name: "МЗП",
-          id: 4,
-        },
-        {
-          name: "Благосостояние",
-          id: 5,
-        },
-        {
-          name: "Платежи и переводы",
-          id: 6,
-        },
-        {
-          name: "Лизинг",
-          id: 7,
-        },
-        {
-          name: "Инкассация",
-          id: 8,
-        },
-        {
-          name: "ВЭД",
-          id: 9,
-        },
 
-      ],
+      tags: []
     };
   },
 
@@ -372,6 +331,7 @@ export default {
         contact_id: this.selectedContact.id,
         client_id: this.selectedClient.id !== 0 ? this.selectedClient.id : "",
         employee_list: this.getEmployeeList(),
+        tags_list: this.getTagsList()
       };
 
       if (this.isCreatePopup) {
@@ -453,6 +413,14 @@ export default {
       return ls;
     },
 
+    getTagsList() {
+      const ls = [];
+      this.tags.forEach(tag => {
+        if (tag.isSelected) ls.push(tag.id);
+      });
+      return ls;
+    },
+
     async fillDataInputs() {
       this.selectedClient = {
         name: this.editingMeet.client_name,
@@ -485,7 +453,10 @@ export default {
       }
 
       await this.fillUsers();
+      await this.fillTags();
       await this.fillSelectedUsers();
+      await this.fillSelectedTags();
+
     },
 
     fillContactsForSelect(contacts) {
@@ -559,6 +530,19 @@ export default {
       }
     },
 
+    async fillTags() {
+      const tags = await api.getTags();
+      this.tags = [];
+
+      for (let i in tags) {
+        this.tags.push({
+          id: tags[i].id,
+          name: tags[i].name,
+          isSelected: false
+        });
+      }
+    },
+
     async fillSelectedUsers() {
       const selectedEmployers = new Map();
       for (let i in this.editingMeet.employee_list) {
@@ -594,7 +578,11 @@ export default {
 
     prepareUserForDisplay(user) {
       return user.name + ((user.id !== 0) ? "(" + user.direction + ")" : "");
-    }
+    },
+
+    prepareTagForDisplay(tag) {
+      return tag.name;
+    },
   },
 
   async mounted() {
@@ -615,6 +603,7 @@ export default {
       await this.fillDataInputs();
     } else {
       await this.fillUsers();
+      await this.fillTags();
     }
   },
 
@@ -695,10 +684,6 @@ export default {
   width: 100%;
 }
 
-.time-start-end {
-
-}
-
 .info-meet-main {
   margin-right: 10px;
   flex: 1.5;
@@ -711,7 +696,9 @@ export default {
   border-bottom: 1px solid #7a7474;
   border-radius: 10px;
   background: #f5f5f5;
-  padding-bottom: 20px;
+  height: 50px;
+  margin-bottom: 0;
+  padding-left: 15px;
 }
 
 .worker-input {
@@ -757,14 +744,6 @@ export default {
   width: 100%;
 }
 
-.contact-container,
-.client-container,
-.theme-container,
-.time-start,
-.time-end,
-.date-container,
-.place-container {
-}
 
 .time-start {
   margin-right: 20px;
@@ -1102,6 +1081,7 @@ export default {
   /* убираем смещение для отрезков, чтобы включить анимацию галочки */
   stroke-dashoffset: 0;
 }
+
 .checkbox {
   /* меняем внешний вид курсора */
   cursor: pointer;
@@ -1121,6 +1101,7 @@ export default {
   opacity: 0;
   /* меняем внешний вид курсора */
   cursor: pointer;
+  margin: 0;
 }
 
 /* настройки для SVG-иконки */
@@ -1150,14 +1131,12 @@ export default {
   margin-left: 5px;
   font-size: 13px;
 }
+
 .tag-list:not(:last-child) {
   margin-right: 15px;
-
 }
 
 .tag-list {
-  justify-self: center;
-  vertical-align: center;
-  margin-top: 10px;
+  align-self: center;
 }
 </style>
