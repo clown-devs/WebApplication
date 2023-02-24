@@ -1,10 +1,10 @@
 package model
 
 type Employee struct {
-	ID int
-	Firstname string
-	Secondname string
-	Thirdname string
-	Username string
-	Encrypted_password string 
+	ID                 uint64
+	Firstname          string
+	Secondname         string
+	Thirdname          string
+	Username           string
+	Encrypted_password string
 }

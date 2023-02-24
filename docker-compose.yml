@@ -1,0 +1,25 @@
+version: '3'
+
+networks:
+  main:
+    driver: bridge
+
+
+services:
+  postgres:
+    container_name: sber_postgres
+    image: postgres:13-alpine
+    restart: always
+    networks:
+      - main
+    ports:
+      - 5432:5432
+
+    volumes: 
+      - ./database:/var/lib/postgresql/data
+
+    environment:
+      - POSTGRES_DB=sberdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    

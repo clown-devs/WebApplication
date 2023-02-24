@@ -1,14 +1,17 @@
 package store
 
-import "sberapi/internal/model"
+import (
+	"database/sql"
+	"sberapi/internal/model"
+)
 
 type EmployeeRepository struct {
-	store *Store
+	db *sql.DB
 }
 
 func (r *EmployeeRepository) Create(u *model.Employee) (*model.Employee, error) {
-	err := r.store.db.QueryRow(
-		"INSERT INTO employee "+
+	err := r.db.QueryRow(
+		"INSERT INTO employees "+
 			"(first_name, second_name, third_name, username, encrypted_password)"+
 			"VALUES ($1, $2, $3, $4, $5) RETURNING id",
 		u.Firstname, u.Secondname, u.Thirdname,
@@ -17,7 +20,7 @@ func (r *EmployeeRepository) Create(u *model.Employee) (*model.Employee, error) 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return u, nil
 
 }
