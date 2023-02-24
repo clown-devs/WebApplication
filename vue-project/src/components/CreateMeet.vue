@@ -154,11 +154,11 @@
 
         <div class="info-tags">
           <ul class="tag-input">
-            <li v-for="tag in tags"
+            <li v-for="(tag, index) in tags"
                 v-bind:value="tag"
                 class="tag-list">
               <label class="checkbox">
-                <input class="checkbox__input" type="checkbox" @click="tag.isSelected = !tag.isSelected">
+                <input class="checkbox__input" type="checkbox" @click="tag.isSelected = !tag.isSelected" v-bind:id="'checkbox' + index">
                 <svg class="checkbox__icon" viewBox="0 0 22 22">
                   <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3"/>
                   <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4"
@@ -208,6 +208,7 @@ import useVuelidate from "@vuelidate/core";
 import AddButton from "@/components/UI/AddButton.vue";
 import auth from "@/store/modules/auth";
 import Popup from "@/components/UI/Popup";
+import login from "@/pages/Login";
 
 export default {
   components: {
@@ -457,6 +458,7 @@ export default {
       await this.fillSelectedUsers();
       await this.fillSelectedTags();
 
+
     },
 
     fillContactsForSelect(contacts) {
@@ -570,6 +572,18 @@ export default {
       }
     },
 
+    async fillSelectedTags() {
+      for (let i in this.editingMeet.tags_list) {
+        for (let j = 0; j < this.tags.length; ++j) {
+          if (this.editingMeet.tags_list[i] === this.tags[j].id) {
+            this.tags[j].isSelected = true;
+            let qwe = document.getElementById('checkbox' + j)
+            qwe.checked = true
+          }
+        }
+      }
+    },
+
     async touchCancelMeetingButtonHandler() {
       await api.deleteMeeting(this.editingMeet.id);
       this.$emit("cancelMeeting", this.editingMeet.id);
@@ -624,6 +638,12 @@ export default {
       end.setHours(Number(endHours), Number(endMinutes));
 
       return start < end;
+    },
+
+    selectedNames() {
+      return this.tags
+          .filter(tag => tag.isSelected)
+          .map(tag => tag.name);
     },
 
     isCorrectDate() {
