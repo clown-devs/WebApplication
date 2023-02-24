@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	. "sberapi/internal/config"
-	"sberapi/internal/model"
 	"sberapi/internal/store"
 
 	"github.com/gorilla/mux"
@@ -13,7 +12,7 @@ import (
 
 type Server struct {
 	config *Config
-	logger *logrus.Logger
+	Logger *logrus.Logger
 	router *mux.Router
 	store  *store.Store
 }
@@ -21,7 +20,7 @@ type Server struct {
 func New(config *Config) *Server {
 	return &Server{
 		config: config,
-		logger: logrus.New(),
+		Logger: logrus.New(),
 		router: mux.NewRouter(),
 		store:  nil,
 	}
@@ -32,13 +31,14 @@ func (s *Server) Start() error {
 		return err
 	}
 
+	s.Logger.Info("Configuring routers...")
 	s.configureRouter()
 
 	if err := s.configureStore(); err != nil {
 		return err
 	}
 
-	s.logger.Info("Starting server...")
+	s.Logger.Info("Server started")
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
 
@@ -48,7 +48,7 @@ func (s *Server) configureLogger() error {
 		return err
 	}
 
-	s.logger.SetLevel(level)
+	s.Logger.SetLevel(level)
 	return nil
 }
 
@@ -59,15 +59,16 @@ func (s *Server) configureStore() error {
 	}
 	s.store = st
 	// Debug working!!! Don't pass!
-	u, err := s.store.Employee().Create(&model.Employee{
-		Firstname:          "Vladimir",
-		Secondname:         "Putin",
-		Thirdname:          "Vladimirovich",
-		Encrypted_password: "ebal",
-		Username:           "putin",
-	})
+	// u, err := s.store.Employee().Create(&model.Employee{
+	// 	Firstname:          "Vladimir",
+	// 	Secondname:         "Putin",
+	// 	Thirdname:          "Vladimirovich",
+	// 	Encrypted_password: "ebal",
+	// 	Username:           "putin",
+	// })
 
-	s.logger.Debug(u)
+	u, err := s.store.Employee().FindByUsername("putin")
+	s.Logger.Debug(u)
 	if err != nil {
 		return err
 	}

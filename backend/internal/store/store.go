@@ -2,7 +2,6 @@ package store
 
 import (
 	"database/sql"
-	"fmt"
 	. "sberapi/internal/config"
 
 	_ "github.com/lib/pq"
@@ -26,8 +25,7 @@ func (s *Store) Open() error {
 		return err
 	}
 
-	fmt.Println("Pinging database!")
-	if err := db.Ping(); err != nil {
+	if err := db.Ping(); err != nil { // database ping
 		return err
 	}
 
@@ -40,12 +38,10 @@ func (s *Store) Close() {
 }
 
 func (s *Store) Employee() *EmployeeRepository {
-	if s.employeeRepository != nil {
-		return s.employeeRepository
-	}
-
-	s.employeeRepository = &EmployeeRepository{
-		db: s.db,
+	if s.employeeRepository == nil {
+		s.employeeRepository = &EmployeeRepository{
+			db: s.db,
+		}
 	}
 	return s.employeeRepository
 }
