@@ -617,7 +617,7 @@ export default {
       await this.fillDataInputs();
     } else {
       await this.fillUsers();
-      await this.fillTags();
+        await this.fillTags();
     }
   },
 

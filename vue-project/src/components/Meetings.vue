@@ -25,7 +25,12 @@
             {{ nearMeeting.start }} - {{ nearMeeting.end }}
           </p>
         </div>
-        <p class="place-window">{{ nearMeeting.place_name }}</p>
+        <div class="place-and-tags-window">
+          <p class="place-window">{{ nearMeeting.place_name }}</p>
+          <ul class="tags-list">
+            <li class="tag-item" v-for="tag in selectedTags">{{ tag }}</li>
+          </ul>
+        </div>
       </div>
 
       <div class="container-window empty" v-else>
@@ -133,6 +138,8 @@ export default {
       displayCreateMeetPopup: false,
       displayEditMeetPopup: false,
       editingMeet: {},
+      selectedTags: [],
+      tags: [],
     };
   },
 
@@ -152,6 +159,8 @@ export default {
         meeting.start = meeting.start.substr(0, 5);
         meeting.end = meeting.end.substr(0, 5);
       });
+      await this.fillTags();
+      await this.fillSelectedTags();
     },
 
     async selectedSegmentedControl(selectedFirstControl) {
@@ -219,6 +228,31 @@ export default {
       }
 
       this.prepareMeetingsForDisplay();
+    },
+
+    async fillSelectedTags() {
+      if (this.meetings[0].tags_list.length < 4) {
+        for (let i in this.meetings[0].tags_list) {
+          for (let j = 0; j < this.tags.length; ++j) {
+            if (this.meetings[0].tags_list[i] === this.tags[j].id) {
+              this.selectedTags.push(this.tags[j].name)
+            }
+          }
+        }
+      }
+    },
+
+    async fillTags() {
+      const tags = await api.getTags();
+      this.tags = [];
+
+      for (let i in tags) {
+        this.tags.push({
+          id: tags[i].id,
+          name: tags[i].name,
+          isSelected: false
+        });
+      }
     },
   },
 };
@@ -340,6 +374,22 @@ li p {
   flex: 1;
 }
 
+.place-and-tags-window {
+  display: flex;
+
+}
+
+.tags-list {
+  flex: 1;
+  margin: 0;
+  display: flex;
+}
+
+.tag-item {
+  margin-right: 10px;
+}
+
+
 .all-meet-item {
   height: 127px;
   background: #fff;
@@ -384,6 +434,7 @@ li p {
 
 .place-window {
   margin-bottom: 60px;
+  flex: 1;
 }
 
 .add-meeting-phone {
