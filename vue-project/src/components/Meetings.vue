@@ -3,8 +3,8 @@
     <div v-if="isLoadedMeetings" class="near-meet">
       <h2 class="near-meet-text">Ближайшая встреча:</h2>
 
-      <div 
-        class="container-window" 
+      <div
+        class="container-window"
         v-if="nearMeeting !== undefined"
         @click="editMeeting(this.nearMeeting)"
       >
@@ -28,7 +28,7 @@
         <div class="place-and-tags-window">
           <p class="place-window">{{ nearMeeting.place_name }}</p>
           <ul class="tags-list">
-            <li class="tag-item" v-for="tag in selectedTags">{{ tag }}</li>
+            <li class="tag-item" v-for="tag in this.qwe(nearMeeting)">{{ fillSelectedTagsAllMeetings(tag) }}</li>
           </ul>
         </div>
       </div>
@@ -77,9 +77,9 @@
       </segmented-control>
 
       <ul class="list-all-meet" v-if="meetings.length">
-        <li 
-          v-for="meeting in meetings" 
-          :key="meeting" 
+        <li
+          v-for="meeting in meetings"
+          :key="meeting"
           class="all-meet-item"
           @click="editMeeting(meeting)"
         >
@@ -93,6 +93,11 @@
           </div>
           <p class="theme-item"><span class="theme-item-container">{{ meeting.topic }}</span></p>
           <p class="client-item"><span class="client-item-container">{{ meeting.client_name }}</span></p>
+          <ul class="tags-list-right-display">
+            <li class="tag-item-right-display" v-for="tag in this.qwe(meeting)">
+              {{ fillSelectedTagsAllMeetings(tag) }}
+            </li>
+          </ul>
         </li>
       </ul>
       <ul class="list-all-meet" v-else>
@@ -138,8 +143,8 @@ export default {
       displayCreateMeetPopup: false,
       displayEditMeetPopup: false,
       editingMeet: {},
-      selectedTags: [],
       tags: [],
+      tmp: 0,
     };
   },
 
@@ -160,7 +165,6 @@ export default {
         meeting.end = meeting.end.substr(0, 5);
       });
       await this.fillTags();
-      await this.fillSelectedTags();
     },
 
     async selectedSegmentedControl(selectedFirstControl) {
@@ -230,16 +234,20 @@ export default {
       this.prepareMeetingsForDisplay();
     },
 
-    async fillSelectedTags() {
-      if (this.meetings[0].tags_list.length < 4) {
-        for (let i in this.meetings[0].tags_list) {
-          for (let j = 0; j < this.tags.length; ++j) {
-            if (this.meetings[0].tags_list[i] === this.tags[j].id) {
-              this.selectedTags.push(this.tags[j].name)
-            }
-          }
+    fillSelectedTagsAllMeetings(tag) {
+      for (let i = 0; i < this.tags.length; ++i) {
+        if (this.tags[i].id === tag) {
+          return this.tags[i].name
         }
       }
+    },
+
+    qwe (meeting) {
+      let tempArray = [];
+      for (let i = 0; i < 3; ++i) {
+        tempArray.push(meeting.tags_list[i])
+      }
+      return tempArray;
     },
 
     async fillTags() {
@@ -379,17 +387,6 @@ li p {
 
 }
 
-.tags-list {
-  flex: 1;
-  margin: 0;
-  display: flex;
-}
-
-.tag-item {
-  margin-right: 10px;
-}
-
-
 .all-meet-item {
   height: 127px;
   background: #fff;
@@ -459,7 +456,7 @@ li p {
   height: 72%;
 }
 
-.list-all-meet li {
+.list-all-meet .all-meet-item  {
   font-weight: 700;
   margin-left: 16px;
   margin-right: 16px;
@@ -495,6 +492,24 @@ li p {
   font-weight: bolder;
 }
 
+.tags-list, .tags-list-right-display {
+  flex: 1;
+  margin: 0;
+  display: flex;
+}
+
+
+.tag-item {
+  margin-right: 10px;
+}
+
+.tag-item-right-display {
+  margin-top: 45px;
+  margin-left: 16px;
+  margin-right: 16px;
+  font-weight: normal;
+}
+
 .pencil-icon {
   max-width: 100%;
   color: rgba(0, 0, 0, 0)
@@ -506,7 +521,7 @@ li p {
 
 .edit-btn {
   background-color: #ffffff;
-  margin-right: 10px;	
+  margin-right: 10px;
   background: rgba(0, 0, 0, 0);
 }
 
