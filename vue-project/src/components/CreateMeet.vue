@@ -132,6 +132,7 @@
                 Место встречи - обязательное поле!
               </small>
             </div>
+
           </div>
 
           <div class="worker-container">
@@ -152,22 +153,31 @@
           </div>
         </div>
 
-        <div class="info-tags">
-          <ul class="tag-input">
-            <li v-for="(tag, index) in tags"
-                v-bind:value="tag"
-                class="tag-list">
-              <label class="checkbox">
-                <input class="checkbox__input" type="checkbox" @click="tag.isSelected = !tag.isSelected" v-bind:id="'checkbox' + index">
-                <svg class="checkbox__icon" viewBox="0 0 22 22">
-                  <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3"/>
-                  <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4"
-                        d="M4 10l5 5 9-9"/>
-                </svg>
-                <span class="checkbox__label">{{ prepareTagForDisplay(tag) }}</span>
-              </label>
-            </li>
-          </ul>
+        <div class="info-tags-report">
+          <div class="info-tags">
+            <ul class="tag-input">
+              <li v-for="(tag, index) in tags"
+                  v-bind:value="tag"
+                  class="tag-list">
+                <label class="checkbox">
+                  <input class="checkbox__input" type="checkbox" @click="tag.isSelected = !tag.isSelected"
+                         v-bind:id="'checkbox' + index">
+                  <svg class="checkbox__icon" viewBox="0 0 22 22">
+                    <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3"/>
+                    <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4"
+                          d="M4 10l5 5 9-9"/>
+                  </svg>
+                  <span class="checkbox__label">{{ prepareTagForDisplay(tag) }}</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="report-button">
+            <button class="report-meeting-button" >
+              Отчёт
+            </button>
+          </div>
         </div>
 
         <div class="info-note">
@@ -617,7 +627,7 @@ export default {
       await this.fillDataInputs();
     } else {
       await this.fillUsers();
-        await this.fillTags();
+      await this.fillTags();
     }
   },
 
@@ -709,6 +719,30 @@ export default {
   flex: 1.5;
 }
 
+.info-tags-report {
+  display: flex;
+}
+
+.info-tags {
+  flex: 1.5;
+  margin-right: 10px;
+}
+
+.report-button {
+  display: flex;
+  justify-content: flex-end;
+  width: 350px;
+}
+
+.report-meeting-button {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #7a7474;
+  border-radius: 10px;
+  padding: 0;
+  margin-top: 16px;
+}
+
 .tag-input {
   display: flex;
   list-style-type: none;
@@ -719,6 +753,8 @@ export default {
   height: 50px;
   margin-bottom: 0;
   padding-left: 15px;
+  padding-right: 15px;
+  overflow-x: auto;
 }
 
 .worker-input {
@@ -973,9 +1009,6 @@ export default {
   .popup-save,
   .popup-edit {
     width: 300px;
-  }
-
-  .worker-container {
   }
 }
 
