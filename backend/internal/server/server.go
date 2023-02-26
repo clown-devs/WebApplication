@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	. "sberapi/internal/config"
+	"sberapi/internal/model"
 	"sberapi/internal/store"
 
 	"github.com/gorilla/mux"
@@ -34,6 +35,7 @@ func (s *Server) Start() error {
 	s.Logger.Info("Configuring routers...")
 	s.configureRouter()
 
+	s.Logger.Info("Configuring database...")
 	if err := s.configureStore(); err != nil {
 		return err
 	}
@@ -59,15 +61,15 @@ func (s *Server) configureStore() error {
 	}
 	s.store = st
 	// Debug working!!! Don't pass!
-	// u, err := s.store.Employee().Create(&model.Employee{
-	// 	Firstname:          "Vladimir",
-	// 	Secondname:         "Putin",
-	// 	Thirdname:          "Vladimirovich",
-	// 	Encrypted_password: "ebal",
-	// 	Username:           "putin",
-	// })
-
-	u, err := s.store.Employee().FindByUsername("putin")
+	u, err := s.store.Employee().Create(&model.Employee{
+		Firstname:  "Vladimir",
+		Secondname: "Putin",
+		Thirdname:  "Vladimirovich",
+		Password:   "ebal",
+		Username:   "putin",
+	})
+	
+	//u, err := s.store.Employee().FindByUsername("putin")
 	s.Logger.Debug(u)
 	if err != nil {
 		return err

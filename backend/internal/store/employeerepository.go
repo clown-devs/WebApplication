@@ -10,6 +10,10 @@ type EmployeeRepository struct {
 }
 
 func (r *EmployeeRepository) Create(e *model.Employee) (*model.Employee, error) {
+	if err := e.Validate(); err != nil {
+		return nil, err
+	}
+
 	if err := e.BeforeCreate(); err != nil {
 		return nil, err
 	}

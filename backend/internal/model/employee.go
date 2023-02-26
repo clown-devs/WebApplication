@@ -18,7 +18,7 @@ type Employee struct {
 func (e *Employee) Validate() error {
 	return validation.ValidateStruct(e,
 		validation.Field(&e.Username, validation.Required),
-		validation.Field(&e.Password, validation.Required),
+		validation.Field(&e.Password, validation.By(requiredIf(e.EncryptedPassword == ""))),
 	)
 }
 
