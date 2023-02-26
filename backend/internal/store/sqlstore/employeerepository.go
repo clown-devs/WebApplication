@@ -1,4 +1,4 @@
-package store
+package sqlstore
 
 import (
 	"database/sql"
@@ -9,13 +9,13 @@ type EmployeeRepository struct {
 	db *sql.DB
 }
 
-func (r *EmployeeRepository) Create(e *model.Employee) (*model.Employee, error) {
+func (r *EmployeeRepository) Create(e *model.Employee) error {
 	if err := e.Validate(); err != nil {
-		return nil, err
+		return nil
 	}
 
 	if err := e.BeforeCreate(); err != nil {
-		return nil, err
+		return nil
 	}
 
 	err := r.db.QueryRow(
@@ -26,15 +26,31 @@ func (r *EmployeeRepository) Create(e *model.Employee) (*model.Employee, error) 
 		e.Username, e.EncryptedPassword).Scan(&e.ID)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := e.Validate(); err != nil {
-		return nil, err
+		return err
 	}
 
-	return e, nil
+	return nil
 
+}
+
+func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
+	u := &model.Employee{}
+
+	if err := r.db.QueryRow("SELECT * FROM employees WHERE id = $1", id).Scan(
+		&u.ID,
+		&u.Firstname,
+		&u.Secondname,
+		&u.Thirdname,
+		&u.Username,
+		&u.EncryptedPassword,
+	); err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, error) {

@@ -1,11 +1,13 @@
 package server
 
 import (
+	"database/sql"
 	"net/http"
 
 	. "sberapi/internal/config"
 	"sberapi/internal/model"
 	"sberapi/internal/store"
+	"sberapi/internal/store/sqlstore"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -15,7 +17,7 @@ type Server struct {
 	config *Config
 	Logger *logrus.Logger
 	router *mux.Router
-	store  *store.Store
+	store  store.Store
 }
 
 func New(config *Config) *Server {
@@ -31,14 +33,11 @@ func (s *Server) Start() error {
 	if err := s.configureLogger(); err != nil {
 		return err
 	}
-
 	s.Logger.Info("Configuring routers...")
 	s.configureRouter()
 
 	s.Logger.Info("Configuring database...")
-	if err := s.configureStore(); err != nil {
-		return err
-	}
+	s.configureStore()
 
 	s.Logger.Info("Server started")
 	return http.ListenAndServe(s.config.BindAddr, s.router)
@@ -54,22 +53,38 @@ func (s *Server) configureLogger() error {
 	return nil
 }
 
+func newDB(connStr string) (*sql.DB, error) {
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := db.Ping(); err != nil { // database ping
+		return nil, err
+	}
+
+	return db, nil
+}
+
 func (s *Server) configureStore() error {
-	st := store.New(s.config)
-	if err := st.Open(); err != nil {
+	db, err := newDB(s.config.DbConnStr)
+	if err != nil {
 		return err
 	}
-	s.store = st
+	s.store = sqlstore.New(db)
+
 	// Debug working!!! Don't pass!
-	u, err := s.store.Employee().Create(&model.Employee{
+	u := &model.Employee{
 		Firstname:  "Vladimir",
 		Secondname: "Putin",
 		Thirdname:  "Vladimirovich",
 		Password:   "ebal",
 		Username:   "putin",
-	})
-	
-	//u, err := s.store.Employee().FindByUsername("putin")
+	}
+
+	err = s.store.Employee().Create(u)
+
+	u, _ = s.store.Employee().Find(u.ID)
 	s.Logger.Debug(u)
 	if err != nil {
 		return err
@@ -78,6 +93,7 @@ func (s *Server) configureStore() error {
 	//---End of debugging work---
 	return nil
 }
+
 func (s *Server) configureRouter() {
 	s.router.HandleFunc("/", s.handleIndex())
 }
