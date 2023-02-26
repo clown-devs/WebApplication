@@ -153,31 +153,29 @@
           </div>
         </div>
 
-        <div class="info-tags-report">
-          <div class="info-tags">
-            <ul class="tag-input">
-              <li v-for="(tag, index) in tags"
-                  v-bind:value="tag"
-                  class="tag-list">
-                <label class="checkbox">
-                  <input class="checkbox__input" type="checkbox" @click="tag.isSelected = !tag.isSelected"
-                         v-bind:id="'checkbox' + index">
-                  <svg class="checkbox__icon" viewBox="0 0 22 22">
-                    <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3"/>
-                    <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4"
-                          d="M4 10l5 5 9-9"/>
-                  </svg>
-                  <span class="checkbox__label">{{ prepareTagForDisplay(tag) }}</span>
-                </label>
-              </li>
-            </ul>
-          </div>
+        <div class="info-tags">
+          <ul class="tag-input">
+            <li v-for="(tag, index) in tags"
+                v-bind:value="tag"
+                class="tag-list">
+              <label class="checkbox">
+                <input class="checkbox__input" type="checkbox" @click="tag.isSelected = !tag.isSelected"
+                       v-bind:id="'checkbox' + index">
+                <svg class="checkbox__icon" viewBox="0 0 22 22">
+                  <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#7a7474" rx="3"/>
+                  <path class="tick" stroke="#7a7474" fill="none" stroke-linecap="round" stroke-width="4"
+                        d="M4 10l5 5 9-9"/>
+                </svg>
+                <span class="checkbox__label">{{ prepareTagForDisplay(tag) }}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
 
-          <div class="report-button">
-            <button class="report-meeting-button" >
-              Отчёт
-            </button>
-          </div>
+        <div class="report-button">
+          <button class="report-meeting-button" @click="this.displayReportMeet = true">
+            Отчёт
+          </button>
         </div>
 
         <div class="info-note">
@@ -208,6 +206,15 @@
         >
       </div>
     </form>
+
+    <reportMeet
+        v-if="displayReportMeet"
+        @closeReportPopup="closeReportMeetPopup"
+        :selectedUsersInMeeting="this.selectedUsersInMeeting"
+        class="report-meet"
+    >
+
+    </reportMeet>
   </div>
 </template>
 
@@ -218,12 +225,14 @@ import useVuelidate from "@vuelidate/core";
 import AddButton from "@/components/UI/AddButton.vue";
 import auth from "@/store/modules/auth";
 import Popup from "@/components/UI/Popup";
+import reportMeet from "@/components/ReportMeet";
 import login from "@/pages/Login";
 
 export default {
   components: {
     Popup,
-    AddButton
+    AddButton,
+    reportMeet
   },
 
   props: {
@@ -261,6 +270,8 @@ export default {
         id: 0,
         inn: "",
       },
+
+      displayReportMeet: false,
 
       selectedContact: {
         name: "Контактное лицо",
@@ -360,6 +371,10 @@ export default {
     closePopup() {
       this.$emit("closePopup");
       this.clearPopup();
+    },
+
+    closeReportMeetPopup() {
+      this.displayReportMeet = false;
     },
 
     async isCorrectForm() {
@@ -610,7 +625,7 @@ export default {
   },
 
   async mounted() {
-    let vm = this;
+  let vm = this;
 
     document.addEventListener("click", function (item) {
       if (item.target === vm.$refs["popup_wrapper"]) {
@@ -719,19 +734,10 @@ export default {
   flex: 1.5;
 }
 
-.info-tags-report {
-  display: flex;
-}
-
-.info-tags {
-  flex: 1.5;
-  margin-right: 10px;
-}
-
 .report-button {
   display: flex;
-  justify-content: flex-end;
-  width: 350px;
+  height: 66px;
+  margin-bottom: 0;
 }
 
 .report-meeting-button {
@@ -741,20 +747,17 @@ export default {
   border-radius: 10px;
   padding: 0;
   margin-top: 16px;
+  cursor: pointer;
 }
 
-.tag-input {
-  display: flex;
-  list-style-type: none;
-  border: 0;
-  border-bottom: 1px solid #7a7474;
-  border-radius: 10px;
-  background: #f5f5f5;
-  height: 50px;
-  margin-bottom: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-  overflow-x: auto;
+.report-meeting-button {
+  transition: 0.3s;
+}
+
+.report-meeting-button:hover,
+.report-meeting-button:focus {
+  border: 2px solid grey;
+  transition: 0.3s;
 }
 
 .worker-input {
@@ -841,6 +844,20 @@ export default {
   justify-content: space-around;
 }
 
+.tag-input {
+  display: flex;
+  overflow-x: hidden;
+  list-style-type: none;
+  border: 0;
+  border-bottom: 1px solid #7a7474;
+  border-radius: 10px;
+  background: #f5f5f5;
+  height: 50px;
+  margin-bottom: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .date-input {
   background: #f5f5f5;
   border: 0;
@@ -892,7 +909,7 @@ export default {
   border-radius: 7px;
   height: 100px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 16px;
   resize: none;
 }
 
@@ -1127,60 +1144,39 @@ export default {
   color: #00b268;
 }
 
-
-/* Я ЭТОТ КАЛ ПОФИКШУ ЧИСТО НА ВРЕМЯ */
-
 .checkbox__input:checked + .checkbox__icon .tick {
-  /* убираем смещение для отрезков, чтобы включить анимацию галочки */
   stroke-dashoffset: 0;
 }
 
 .checkbox {
-  /* меняем внешний вид курсора */
   cursor: pointer;
-  /* выравниваем элементы по центру */
   display: flex;
   align-items: center;
 }
 
-/* отдельные настройки для самого чекбокса */
 .checkbox__input {
-  /* устанавливаем абсолютное позиционирование */
   position: absolute;
-  /* задаём высоту и ширину */
   width: 15px;
   height: 15px;
-  /* делаем чекбокс непрозрачным, чтобы скрыть исходный элемент и заменить его потом нарисованным */
   opacity: 0;
-  /* меняем внешний вид курсора */
   cursor: pointer;
   margin: 0;
 }
 
-/* настройки для SVG-иконки */
 .checkbox__icon {
-  /* размеры совпадают с размерами скрытого чекбокса */
   width: 15px;
   height: 15px;
-  /* убираем ограничение по наименьшей ширине блока */
   flex-shrink: 0;
-  /* разрешаем отображать содержимое за пределами блока */
   overflow: visible;
 }
 
-/* общие настройки для нового чекбокса и галочки */
 .checkbox__icon .tick {
-  /* рисовать будем всё отрезками по 20 пикселей */
   stroke-dasharray: 20px;
-  /* но сместим следующие отрезки тоже на 20 пикселей, чтобы получить сплошные линии */
   stroke-dashoffset: 20px;
-  /* это даст нам плавную анимацию отрисовки галочки */
   transition: stroke-dashoffset 0.2s ease-out;
 }
 
-/* настройки для подписи чекбокса */
 .checkbox__label {
-  /* добавляем отступ слева */
   margin-left: 5px;
   font-size: 13px;
 }
@@ -1191,5 +1187,6 @@ export default {
 
 .tag-list {
   align-self: center;
+
 }
 </style>
