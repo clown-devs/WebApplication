@@ -29,12 +29,13 @@ func New(config *Config) *Server {
 	}
 }
 
+// Function for starting HTTP. Don't start if using struct in tests
 func (s *Server) Start() error {
 	if err := s.configureLogger(); err != nil {
 		return err
 	}
 	s.Logger.Info("Configuring routers...")
-	s.configureRouter()
+	s.configureRouter() // routes.go
 
 	s.Logger.Info("Configuring database...")
 	s.configureStore()
@@ -92,16 +93,4 @@ func (s *Server) configureStore() error {
 
 	//---End of debugging work---
 	return nil
-}
-
-func (s *Server) configureRouter() {
-	s.router.HandleFunc("/", s.handleIndex())
-}
-
-func (s *Server) handleIndex() http.HandlerFunc {
-	// Такое определние позволяет нам определять дополнительные поля здесь, перед функцией,
-	// Так называемое замыкание.. Поэтому я не передаю в роутер http функцию напрямую
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, web!"))
-	}
 }
