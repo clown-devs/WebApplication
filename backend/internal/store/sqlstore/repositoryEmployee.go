@@ -11,11 +11,11 @@ type EmployeeRepository struct {
 
 func (r *EmployeeRepository) Create(e *model.Employee) error {
 	if err := e.Validate(); err != nil {
-		return nil
+		return err
 	}
 
 	if err := e.BeforeCreate(); err != nil {
-		return nil
+		return err
 	}
 
 	err := r.db.QueryRow(

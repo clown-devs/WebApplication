@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	. "sberapi/internal/config"
-	"sberapi/internal/model"
 	"sberapi/internal/store"
 	"sberapi/internal/store/sqlstore"
 
@@ -24,8 +23,8 @@ func New(config *Config) *Server {
 	return &Server{
 		config: config,
 		Logger: logrus.New(),
-		router: mux.NewRouter(),
-		store:  nil,
+		//router: mux.NewRouter(), FIXME:
+		store: nil,
 	}
 }
 
@@ -38,7 +37,10 @@ func (s *Server) Start() error {
 	s.configureRouter() // routes.go
 
 	s.Logger.Info("Configuring database...")
-	s.configureStore()
+	err := s.configureStore()
+	if err != nil {
+		return err
+	}
 
 	s.Logger.Info("Server started")
 	return http.ListenAndServe(s.config.BindAddr, s.router)
@@ -73,24 +75,5 @@ func (s *Server) configureStore() error {
 		return err
 	}
 	s.store = sqlstore.New(db)
-
-	// Debug working!!! Don't pass!
-	u := &model.Employee{
-		Firstname:  "Vladimir",
-		Secondname: "Putin",
-		Thirdname:  "Vladimirovich",
-		Password:   "ebal",
-		Username:   "putin",
-	}
-
-	err = s.store.Employee().Create(u)
-
-	u, _ = s.store.Employee().Find(u.ID)
-	s.Logger.Debug(u)
-	if err != nil {
-		return err
-	}
-
-	//---End of debugging work---
 	return nil
 }

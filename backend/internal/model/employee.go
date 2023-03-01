@@ -6,20 +6,26 @@ import (
 )
 
 type Employee struct {
-	ID                uint64
-	Firstname         string
-	Secondname        string
-	Thirdname         string
-	Username          string
-	Password          string //Don't store in DB
-	EncryptedPassword string
+	ID                uint64 `json:"id"`
+	Firstname         string `json:"first_name"`
+	Secondname        string `json:"second_name"`
+	Thirdname         string `json:"third_name"`
+	Username          string `json:"username"`
+	Password          string `json:"password,omitempty"` //Don't store in DB
+	EncryptedPassword string `json:"-"`
 }
 
 func (e *Employee) Validate() error {
-	return validation.ValidateStruct(e,
+	err := validation.ValidateStruct(e,
 		validation.Field(&e.Username, validation.Required),
+		validation.Field(&e.Password, validation.Required),
 		validation.Field(&e.Password, validation.By(requiredIf(e.EncryptedPassword == ""))),
 	)
+	return err
+}
+
+func (e *Employee) Sanitize() {
+	e.Password = ""
 }
 
 func (e *Employee) BeforeCreate() error {
