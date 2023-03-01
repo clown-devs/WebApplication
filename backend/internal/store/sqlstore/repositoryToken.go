@@ -2,7 +2,6 @@ package sqlstore
 
 import (
 	"database/sql"
-	"fmt"
 	"sberapi/internal/model"
 )
 
@@ -12,7 +11,6 @@ type TokenRepository struct {
 
 func (r *TokenRepository) Create(employeeId uint64, salt string) (*model.Token, error) {
 	token := model.NewToken(employeeId, salt)
-	fmt.Println(token.Token)
 	_, err := r.db.Exec(
 		"INSERT INTO tokens"+
 			"(employee_id, token)"+

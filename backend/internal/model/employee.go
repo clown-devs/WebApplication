@@ -7,9 +7,7 @@ import (
 
 type Employee struct {
 	ID                uint64 `json:"id"`
-	Firstname         string `json:"first_name"`
-	Secondname        string `json:"second_name"`
-	Thirdname         string `json:"third_name"`
+	Fullname          string `json:"fullname"`
 	Username          string `json:"username"`
 	Password          string `json:"password,omitempty"` //Don't store in DB
 	EncryptedPassword string `json:"-"`

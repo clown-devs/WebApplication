@@ -21,10 +21,9 @@ func (r *EmployeeRepository) Create(e *model.Employee) error {
 
 	err := r.db.QueryRow(
 		"INSERT INTO employees "+
-			"(first_name, second_name, third_name, username, encrypted_password)"+
-			"VALUES ($1, $2, $3, $4, $5) RETURNING id",
-		e.Firstname, e.Secondname, e.Thirdname,
-		e.Username, e.EncryptedPassword).Scan(&e.ID)
+			"(fullname, username, encrypted_password)"+
+			"VALUES ($1, $2, $3) RETURNING id",
+		e.Fullname, e.Username, e.EncryptedPassword).Scan(&e.ID)
 
 	if err != nil {
 		return err
@@ -43,9 +42,7 @@ func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
 
 	if err := r.db.QueryRow("SELECT * FROM employees WHERE id = $1", id).Scan(
 		&u.ID,
-		&u.Firstname,
-		&u.Secondname,
-		&u.Thirdname,
+		&u.Fullname,
 		&u.Username,
 		&u.EncryptedPassword,
 	); err != nil {
@@ -61,9 +58,7 @@ func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, e
 	u := &model.Employee{}
 	if err := r.db.QueryRow("SELECT * FROM employees WHERE username = $1", username).Scan(
 		&u.ID,
-		&u.Firstname,
-		&u.Secondname,
-		&u.Thirdname,
+		&u.Fullname,
 		&u.Username,
 		&u.EncryptedPassword,
 	); err != nil {

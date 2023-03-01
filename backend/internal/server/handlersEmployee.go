@@ -16,11 +16,9 @@ func (s *Server) RegisterEmployeeHandlers() {
 
 func (s *Server) handleEmployeeCreate() http.HandlerFunc {
 	type request struct {
-		Firstname  string `json:"first_name"`
-		Secondname string `json:"second_name"`
-		Thirdname  string `json:"third_name"`
-		Username   string `json:"username"`
-		Password   string `json:"password"`
+		Fullname string `json:"fullname"`
+		Username string `json:"username"`
+		Password string `json:"password"`
 	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -31,11 +29,9 @@ func (s *Server) handleEmployeeCreate() http.HandlerFunc {
 		}
 
 		e := &model.Employee{
-			Firstname:  request.Firstname,
-			Secondname: request.Secondname,
-			Thirdname:  request.Thirdname,
-			Username:   request.Username,
-			Password:   request.Password,
+			Fullname: request.Fullname,
+			Username: request.Username,
+			Password: request.Password,
 		}
 
 		if err := s.store.Employee().Create(e); err != nil {

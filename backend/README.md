@@ -4,13 +4,19 @@
 
 ## Сотрудники
 - /employees/  
-POST запрос - создать пользователя
+POST - создать пользователя
 ~~~
-- first_name
-- second_name
-- third_name
+- fullname
 - username - уникальный(если что вернёт ошибку)
 - password
+~~~
+
+- /employees/**id**/  
+GET - Получить пользователя по id
+~~~
+- id
+- fullname
+- username
 ~~~
 
 ## Авторизация
