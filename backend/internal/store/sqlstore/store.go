@@ -10,6 +10,7 @@ import (
 type Store struct {
 	db                 *sql.DB
 	employeeRepository *EmployeeRepository
+	tokenRepository    *TokenRepository
 }
 
 func New(db *sql.DB) *Store {
@@ -25,4 +26,13 @@ func (s *Store) Employee() store.EmployeeRepository {
 		}
 	}
 	return s.employeeRepository
+}
+
+func (s *Store) Token() store.TokenRepository {
+	if s.tokenRepository == nil {
+		s.tokenRepository = &TokenRepository{
+			db: s.db,
+		}
+	}
+	return s.tokenRepository
 }

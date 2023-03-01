@@ -30,7 +30,7 @@ func (e *Employee) Sanitize() {
 
 func (e *Employee) BeforeCreate() error {
 	if len(e.Password) > 0 {
-		enc, err := encryptPassword(e.Password)
+		enc, err := EncryptPassword(e.Password)
 		if err != nil {
 			return err
 		}
@@ -39,7 +39,11 @@ func (e *Employee) BeforeCreate() error {
 	return nil
 }
 
-func encryptPassword(password string) (string, error) {
+func (e *Employee) ComparePassword(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(e.EncryptedPassword), []byte(password)) == nil
+}
+
+func EncryptPassword(password string) (string, error) {
 	encrypted, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	if err != nil {
 		return "", err

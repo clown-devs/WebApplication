@@ -2,6 +2,7 @@ package sqlstore
 
 import (
 	"database/sql"
+	"fmt"
 	"sberapi/internal/model"
 )
 
@@ -48,6 +49,9 @@ func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
 		&u.Username,
 		&u.EncryptedPassword,
 	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("Employee with that id is not found")
+		}
 		return nil, err
 	}
 	return u, nil
@@ -63,6 +67,9 @@ func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, e
 		&u.Username,
 		&u.EncryptedPassword,
 	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("Employee with that username is not found")
+		}
 		return nil, err
 	}
 	return u, nil

@@ -12,6 +12,7 @@ import (
 func (s *Server) configureRouter() {
 	s.router = mux.NewRouter()
 	s.RegisterEmployeeHandlers()
+	s.RegisterAuthHandlers()
 }
 
 func (s *Server) error(w http.ResponseWriter, r *http.Request, code int, err error) {

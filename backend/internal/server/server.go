@@ -33,14 +33,15 @@ func (s *Server) Start() error {
 	if err := s.configureLogger(); err != nil {
 		return err
 	}
-	s.Logger.Info("Configuring routers...")
-	s.configureRouter() // routes.go
 
 	s.Logger.Info("Configuring database...")
 	err := s.configureStore()
 	if err != nil {
 		return err
 	}
+
+	s.Logger.Info("Configuring routers...")
+	s.configureRouter() // routes.go
 
 	s.Logger.Info("Server started")
 	return http.ListenAndServe(s.config.BindAddr, s.router)
