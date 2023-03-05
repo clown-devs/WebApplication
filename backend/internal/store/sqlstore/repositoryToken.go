@@ -26,6 +26,7 @@ func (r *TokenRepository) Create(employeeId uint64, salt string) (*model.Token, 
 func (r *TokenRepository) Find(employeeId uint64) (*model.Token, error) {
 	token := &model.Token{}
 
+	
 	if err := r.db.QueryRow("SELECT employee_id, token "+
 		"FROM tokens WHERE employee_id = $1", employeeId).Scan(
 		&token.EmployeeId,

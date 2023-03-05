@@ -17,8 +17,8 @@ CREATE TABLE employees (
     fullname VARCHAR(128),
     username VARCHAR(32) UNIQUE NOT NULL,
     encrypted_password VARCHAR(128) NOT NULL,
-    direction_id INT NOT NULL,
-    role_id INT NOT NULL,
+    direction_id INT,
+    role_id INT,
 
     CONSTRAINT fk_direction
         FOREIGN KEY(direction_id)
