@@ -25,9 +25,10 @@ func (r *EmployeeRepository) Create(e *model.Employee) error {
 			"VALUES ($1, $2, $3) RETURNING id",
 		e.Fullname, e.Username, e.EncryptedPassword).Scan(&e.ID)
 
-	if err != nil {
+	if err != nil { 
 		return err
 	}
+	
 
 	if err := e.Validate(); err != nil {
 		return err

@@ -10,8 +10,14 @@ import (
 )
 
 func (s *Server) RegisterEmployeeHandlers() {
-	s.router.HandleFunc("/api/v3/employee/", s.handleEmployeeCreate()).Methods("POST")
-	s.router.HandleFunc("/api/v3/employee/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
+	employeeRoute := s.router.PathPrefix("/employee").Subrouter()
+
+	protectedRoute := s.router.PathPrefix("/employee").Subrouter()
+	protectedRoute.Use(s.authentificateEmployee)
+
+	employeeRoute.HandleFunc("/", s.handleEmployeeCreate()).Methods("POST")
+
+	protectedRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
 }
 
 func (s *Server) handleEmployeeCreate() http.HandlerFunc {

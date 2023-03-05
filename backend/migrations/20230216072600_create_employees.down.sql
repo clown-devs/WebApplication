@@ -1,4 +1,0 @@
-BEGIN
-DROP TABLE employees;
-DROP TABLE tokens;
-END;

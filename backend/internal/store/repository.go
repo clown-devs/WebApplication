@@ -13,6 +13,7 @@ type EmployeeRepository interface {
 type TokenRepository interface {
 	Create(uint64, string) (*model.Token, error) // employee id, salt
 	// Not returning an error if not found
+	// Just nil
 	Find(uint64) (*model.Token, error)
 	//TODO:
 	//Destroy

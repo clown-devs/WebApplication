@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Server) RegisterAuthHandlers() {
-	s.router.HandleFunc("/api/v3/token/login/", s.handleCreateOrGetToken()).Methods("POST")
+	s.router.HandleFunc("/token/login/", s.handleCreateOrGetToken()).Methods("POST")
 }
 
 func (s *Server) handleCreateOrGetToken() http.HandlerFunc {
