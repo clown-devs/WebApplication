@@ -13,7 +13,7 @@ const (
 	d.id, d.name
 	FROM employees e
 	INNER JOIN roles r ON e.role_id = r.id
-	INNER JOIN directions d ON e.direction_id = d.id`
+	LEFT JOIN directions d ON e.direction_id = d.id`
 )
 
 type EmployeeRepository struct {
@@ -30,7 +30,7 @@ func (r *EmployeeRepository) Create(e *model.Employee) error {
 	}
 
 	err := r.db.QueryRow(
-		"INSERT INTO employees "+
+		"INSERT INTO employees e "+
 			"(fullname, username, encrypted_password)"+
 			"VALUES ($1, $2, $3) RETURNING id",
 		e.Fullname, e.Username, e.EncryptedPassword).Scan(&e.ID)
@@ -71,14 +71,20 @@ func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, e
 
 func (r *EmployeeRepository) parseUser(row *sql.Row) (*model.Employee, error) {
 
-	u := &model.Employee{Role: &model.Role{}, Direction: &model.Direction{}}
+	directionID, directionName := sql.NullInt64{}, sql.NullString{}
+	u := &model.Employee{Role: &model.Role{}, Direction: nil}
 	err := row.Scan(
 		&u.ID, &u.Fullname, &u.Username, &u.EncryptedPassword,
 		&u.Role.ID, &u.Role.Name, &u.Role.IsSuper, &u.Role.CanSeeMeetings,
-		&u.Direction.ID, &u.Direction.Name,
+		&directionID, &directionName,
 	)
 	if err != nil {
 		return nil, err
 	}
+
+	if directionID.Valid {
+		u.Direction = &model.Direction{ID: uint64(directionID.Int64), Name: directionName.String}
+	}
+
 	return u, nil
 }

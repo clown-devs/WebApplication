@@ -60,6 +60,6 @@ type Role struct {
 }
 
 type Direction struct {
-	ID   uint64 `json:"id"`
+	ID   uint64 `json:"id"` //needed because sql can return null
 	Name string `json:"name"`
 }

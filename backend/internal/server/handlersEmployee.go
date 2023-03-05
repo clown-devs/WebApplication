@@ -21,7 +21,7 @@ func (s *Server) RegisterEmployeeHandlers() {
 
 	employeeRoute.HandleFunc("/directions/", s.handleDirections()).Methods("POST", "GET")
 	employeeRoute.HandleFunc("/directions/{id:[0-9]+}/", s.handleDirectionById()).Methods("GET")
-
+	
 }
 
 func (s *Server) handleEmployeeCreate() http.HandlerFunc {
