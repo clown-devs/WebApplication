@@ -5,7 +5,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-
 type Employee struct {
 	ID                uint64 `json:"id"`
 	Fullname          string `json:"fullname"`
@@ -13,8 +12,8 @@ type Employee struct {
 	Password          string `json:"password,omitempty"` //Don't store in DB
 	EncryptedPassword string `json:"-"`
 
-	Role        *Role      `json:"role"`
-	Deportament *Direction `json:"direction"`
+	Role      *Role      `json:"role"`
+	Direction *Direction `json:"direction"`
 }
 
 func (e *Employee) Validate() error {
@@ -53,7 +52,6 @@ func EncryptPassword(password string) (string, error) {
 	}
 	return string(encrypted), nil
 }
-
 
 type Role struct {
 	ID             uint64 `json:"id"`

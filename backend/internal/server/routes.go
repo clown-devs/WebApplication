@@ -11,6 +11,8 @@ import (
 // DI and Middleware
 func (s *Server) configureRouter() {
 	s.router = mux.NewRouter().PathPrefix("/api/v3").Subrouter()
+	s.router.Use(s.commonMiddleware)
+
 	s.RegisterEmployeeHandlers()
 	s.RegisterAuthHandlers()
 }
