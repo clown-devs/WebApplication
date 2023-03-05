@@ -11,10 +11,6 @@ import (
 // DI and Middleware
 func (s *Server) configureRouter() {
 	s.router = mux.NewRouter().PathPrefix("/api/v3").Subrouter()
-
-	s.router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, dude!"))
-	})
 	s.RegisterEmployeeHandlers()
 	s.RegisterAuthHandlers()
 }

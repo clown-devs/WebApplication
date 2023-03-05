@@ -11,10 +11,18 @@ type EmployeeRepository interface {
 }
 
 type TokenRepository interface {
-	Create(uint64, string) (*model.Token, error) // employee id, salt
+	Create(uint64, string) (*model.Token, error) // FIXME: provide token model
 	// Not returning an error if not found
 	// Just nil
 	Find(uint64) (*model.Token, error)
 	//TODO:
 	//Destroy
+}
+
+type DirectionRepository interface {
+	Create(*model.Direction) error
+	Find(uint64) (*model.Direction, error)
+	All() ([]*model.Direction, error)
+	//TODO:
+	//Delete
 }

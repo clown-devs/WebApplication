@@ -8,9 +8,10 @@ import (
 )
 
 type Store struct {
-	db                 *sql.DB
-	employeeRepository *EmployeeRepository
-	tokenRepository    *TokenRepository
+	db                  *sql.DB
+	employeeRepository  *EmployeeRepository
+	tokenRepository     *TokenRepository
+	directionRepository *DirectionRepository
 }
 
 func New(db *sql.DB) *Store {
@@ -35,4 +36,13 @@ func (s *Store) Token() store.TokenRepository {
 		}
 	}
 	return s.tokenRepository
+}
+
+func (s *Store) Direction() store.DirectionRepository {
+	if s.directionRepository == nil {
+		s.directionRepository = &DirectionRepository{
+			db: s.db,
+		}
+	}
+	return s.directionRepository
 }
