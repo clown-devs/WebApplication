@@ -15,6 +15,7 @@ func (s *Server) configureRouter() {
 
 	s.RegisterEmployeeHandlers()
 	s.RegisterAuthHandlers()
+	s.RegisterClientHandlers()
 }
 
 func (s *Server) error(w http.ResponseWriter, r *http.Request, code int, err error) {

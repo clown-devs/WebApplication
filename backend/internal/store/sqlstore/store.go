@@ -12,6 +12,8 @@ type Store struct {
 	employeeRepository  *EmployeeRepository
 	tokenRepository     *TokenRepository
 	directionRepository *DirectionRepository
+	clientRepository    *ClientRepository
+	contactRepository   *ContactRepository
 }
 
 func New(db *sql.DB) *Store {
@@ -45,4 +47,24 @@ func (s *Store) Direction() store.DirectionRepository {
 		}
 	}
 	return s.directionRepository
+}
+
+func (s *Store) Client() store.ClientRepository {
+	if s.clientRepository == nil {
+		s.clientRepository = &ClientRepository{
+			db: s.db,
+		}
+	}
+
+	return s.clientRepository
+}
+
+func (s *Store) Contact() store.ContactRepository {
+	if s.contactRepository == nil {
+		s.contactRepository = &ContactRepository{
+			db: s.db,
+		}
+	}
+	return s.contactRepository
+
 }
