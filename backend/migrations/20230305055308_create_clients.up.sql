@@ -12,7 +12,7 @@ CREATE TABLE contacts(
     phone VARCHAR(64),
     email VARCHAR(64),
     Position VARCHAR(64),
-    client_id INTEGER,
+    client_id INTEGER NOT NULL,
     FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );
 

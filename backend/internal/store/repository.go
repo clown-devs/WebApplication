@@ -6,6 +6,7 @@ type EmployeeRepository interface {
 	Create(*model.Employee) error
 	Find(uint64) (*model.Employee, error)
 	FindByUsername(string) (*model.Employee, error)
+	FindByToken(string) (*model.Employee, error)
 	//TODO:
 	//Delete
 }
@@ -25,4 +26,10 @@ type DirectionRepository interface {
 	All() ([]*model.Direction, error)
 	//TODO:
 	//Delete
+}
+
+type ClientRepository interface {
+	Create(*model.Client) error
+	Find(uint64) (*model.Client, error)
+	All() ([]*model.Client, error)
 }

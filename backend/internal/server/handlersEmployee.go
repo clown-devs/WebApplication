@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"sberapi/internal/model"
 	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -13,15 +14,15 @@ import (
 func (s *Server) RegisterEmployeeHandlers() {
 	employeeRoute := s.router.PathPrefix("/employee").Subrouter()
 
-	protectedRoute := s.router.PathPrefix("/employee").Subrouter()
-	protectedRoute.Use(s.authentificateEmployee)
+	authorizedRoute := s.router.PathPrefix("/employee").Subrouter()
+	authorizedRoute.Use(s.authentificateEmployee)
 
 	employeeRoute.HandleFunc("/", s.handleEmployeeCreate()).Methods("POST")
-	protectedRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
-
+	authorizedRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
+	authorizedRoute.HandleFunc("/current/", s.handleCurrentUser()).Methods("GET")
 	employeeRoute.HandleFunc("/directions/", s.handleDirections()).Methods("POST", "GET")
 	employeeRoute.HandleFunc("/directions/{id:[0-9]+}/", s.handleDirectionById()).Methods("GET")
-	
+
 }
 
 func (s *Server) handleEmployeeCreate() http.HandlerFunc {
@@ -59,6 +60,19 @@ func (s *Server) handleEmployeeById() http.HandlerFunc {
 		e, err := s.store.Employee().Find(id)
 		if err != nil {
 			s.error(w, r, http.StatusNotFound, err)
+			return
+		}
+		e.Sanitize()
+		s.respond(w, r, http.StatusOK, e)
+	}
+}
+
+func (s *Server) handleCurrentUser() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := strings.Fields(r.Header["Authorization"][0])[1]
+		e, err := s.store.Employee().FindByToken(token)
+		if err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
 			return
 		}
 		e.Sanitize()

@@ -15,7 +15,11 @@ func (s *Server) commonMiddleware(next http.Handler) http.Handler {
 
 func (s *Server) authentificateEmployee(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		requestToken := r.Header["Authorization"]
+		if len(r.Header["Authorization"]) != 1 {
+			s.error(w, r, http.StatusUnauthorized, fmt.Errorf("Wrong Authorization Header"))
+		}
+		requestToken := r.Header["Authorization"][0]
+
 		fmt.Println(requestToken)
 
 		next.ServeHTTP(w, r)

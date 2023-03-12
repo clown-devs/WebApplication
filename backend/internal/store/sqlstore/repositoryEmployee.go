@@ -13,7 +13,7 @@ const (
 	d.id, d.name
 	FROM employees e
 	INNER JOIN roles r ON e.role_id = r.id
-	LEFT JOIN directions d ON e.direction_id = d.id`
+	LEFT JOIN directions d ON e.direction_id = d.id `
 )
 
 type EmployeeRepository struct {
@@ -48,7 +48,9 @@ func (r *EmployeeRepository) Create(e *model.Employee) error {
 }
 
 func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
-	u, err := r.parseUser(r.db.QueryRow(userSQLString+" WHERE e.id = $1", id))
+	u, err := r.parseUser(
+		r.db.QueryRow(userSQLString+" WHERE e.id = $1", id),
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("Employee with that id is not found")
@@ -59,7 +61,9 @@ func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
 }
 
 func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, error) {
-	u, err := r.parseUser(r.db.QueryRow(userSQLString+" WHERE e.username = $1", username))
+	u, err := r.parseUser(
+		r.db.QueryRow(userSQLString+" WHERE e.username = $1", username),
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("Employee with that username is not found")
@@ -67,6 +71,20 @@ func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, e
 		return nil, err
 	}
 	return u, nil
+}
+
+func (r *EmployeeRepository) FindByToken(token string) (*model.Employee, error) {
+	u, err := r.parseUser(
+		r.db.QueryRow(userSQLString+
+			"WHERE e.id = "+
+			"(select employee_id from tokens t where t.token = $1)", token),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return u, nil
+
 }
 
 func (r *EmployeeRepository) parseUser(row *sql.Row) (*model.Employee, error) {
