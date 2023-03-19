@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"sberapi/internal/model"
 	"strconv"
@@ -15,10 +14,12 @@ func (s *Server) RegisterClientHandlers() {
 	authorizedRoute := s.router.PathPrefix("/clients").Subrouter()
 	authorizedRoute.Use(s.authentificateEmployee)
 
-	route.HandleFunc("/", s.handleClients()).Methods("POST", "GET")
+	route.HandleFunc("/", s.handleClientCreate()).Methods("POST")
+	route.HandleFunc("/", s.handleClientsGetAll()).Methods("GET")
+
 	route.HandleFunc("/{id:[0-9]+}/", s.handleClientById()).Methods("GET")
 
-	route.HandleFunc("/contacts/", s.handleContacts()).Methods("POST")
+	route.HandleFunc("/contacts/", s.handleContactCreate()).Methods("POST")
 
 }
 
@@ -35,41 +36,48 @@ func (s *Server) handleClientById() http.HandlerFunc {
 	}
 }
 
-func (s *Server) handleClients() http.HandlerFunc {
-	type PostRequest struct {
+func (s *Server) handleClientCreate() http.HandlerFunc {
+	type Request struct {
 		Name string `json:"name"`
 		Inn  string `json:"inn"`
 	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		if r.Method == "POST" {
-			data := &PostRequest{}
+		data := &Request{}
 
-			if err := json.NewDecoder(r.Body).Decode(data); err != nil {
-				s.error(w, r, http.StatusBadRequest, err)
-				return
-			}
-
-			client := &model.Client{Name: data.Name, Inn: data.Inn}
-
-			err := s.store.Client().Create(client)
-			if err != nil {
-				s.error(w, r, http.StatusBadRequest, err)
-				return
-			}
-
-			s.respond(w, r, http.StatusOK, client)
+		if err := json.NewDecoder(r.Body).Decode(data); err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
 		}
 
-		if r.Method == "GET" {
-			s.error(w, r, http.StatusBadRequest, fmt.Errorf("GET is not implemented yet"))
+		client := &model.Client{Name: data.Name, Inn: data.Inn}
+
+		err := s.store.Client().Create(client)
+		if err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
 		}
+
+		s.respond(w, r, http.StatusOK, client)
+
 	}
 }
 
-func (s *Server) handleContacts() http.HandlerFunc {
-	type PostData struct {
+func (s *Server) handleClientsGetAll() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		clients, err := s.store.Client().All()
+		if err != nil {
+			s.error(w, r, http.StatusInternalServerError, err)
+			return
+		}
+
+		s.respond(w, r, http.StatusOK, clients)
+	}
+}
+
+func (s *Server) handleContactCreate() http.HandlerFunc {
+	type Request struct {
 		Fullname string  `json:"fullname"`
 		ClientId uint64  `json:"client_id"`
 		Phone    *string `json:"phone,omitempty"`
@@ -79,27 +87,26 @@ func (s *Server) handleContacts() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		if r.Method == "POST" {
-			postData := &PostData{}
-			if err := json.NewDecoder(r.Body).Decode(postData); err != nil {
-				s.error(w, r, http.StatusBadRequest, err)
-				return
-			}
-			client := model.Contact{
-				Fullname: postData.Fullname,
-				Client:   &model.Client{ID: postData.ClientId},
-				Phone:    postData.Phone,
-				Email:    postData.Email,
-				Position: postData.Position,
-			}
-
-			err := s.store.Contact().Create(&client)
-			if err != nil {
-				s.error(w, r, http.StatusBadRequest, err)
-				return
-			}
-
-			s.respond(w, r, http.StatusOK, client)
+		req := &Request{}
+		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
 		}
+		client := model.Contact{
+			Fullname: req.Fullname,
+			Client:   &model.Client{ID: req.ClientId},
+			Phone:    req.Phone,
+			Email:    req.Email,
+			Position: req.Position,
+		}
+
+		err := s.store.Contact().Create(&client)
+		if err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+
+		s.respond(w, r, http.StatusOK, client)
 	}
+
 }

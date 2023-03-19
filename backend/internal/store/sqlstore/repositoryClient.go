@@ -10,6 +10,31 @@ type ClientRepository struct {
 	db *sql.DB
 }
 
+func (r *ClientRepository) All() ([]*model.Client, error) {
+	clients := make([]*model.Client, 0, 10)
+
+	rows, err := r.db.Query("SELECT id, name, inn FROM clients")
+	defer rows.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		client := &model.Client{}
+		err := rows.Scan(&client.ID, &client.Name, &client.Inn)
+		if err != nil {
+			return nil, err
+		}
+		clients = append(clients, client)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return clients, nil
+
+}
+
 func (r *ClientRepository) Create(client *model.Client) error {
 	if err := client.Validate(); err != nil {
 		return err

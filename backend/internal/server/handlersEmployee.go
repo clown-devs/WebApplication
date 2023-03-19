@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"sberapi/internal/model"
 	"strconv"
@@ -20,7 +19,9 @@ func (s *Server) RegisterEmployeeHandlers() {
 	employeeRoute.HandleFunc("/", s.handleEmployeeCreate()).Methods("POST")
 	authorizedRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
 	authorizedRoute.HandleFunc("/current/", s.handleCurrentUser()).Methods("GET")
-	employeeRoute.HandleFunc("/directions/", s.handleDirections()).Methods("POST", "GET")
+
+	employeeRoute.HandleFunc("/directions/", s.handleDirectionsCreate()).Methods("POST")
+	employeeRoute.HandleFunc("/directions/", s.handleDirectionsGetAll()).Methods("GET")
 	employeeRoute.HandleFunc("/directions/{id:[0-9]+}/", s.handleDirectionById()).Methods("GET")
 
 }
@@ -92,38 +93,39 @@ func (s *Server) handleDirectionById() http.HandlerFunc {
 
 	}
 }
-func (s *Server) handleDirections() http.HandlerFunc {
 
-	postRequest := &struct {
+func (s *Server) handleDirectionsCreate() http.HandlerFunc {
+	type Request struct {
 		Name string `json:"name"`
-	}{}
+	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == "POST" {
-			if err := json.NewDecoder(r.Body).Decode(postRequest); err != nil {
-				s.error(w, r, http.StatusBadRequest, err)
-				return
-			}
-			direction := &model.Direction{Name: postRequest.Name}
-
-			if err := s.store.Direction().Create(direction); err != nil {
-				s.error(w, r, http.StatusBadRequest, err)
-				return
-			}
-			s.respond(w, r, http.StatusOK, direction)
-
-		} else if r.Method == "GET" {
-			directions, err := s.store.Direction().All()
-			if err != nil {
-				s.error(w, r, http.StatusBadRequest, err)
-				return
-			}
-			s.respond(w, r, http.StatusOK, directions)
+		request := &Request{}
+		if err := json.NewDecoder(r.Body).Decode(request); err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
 			return
-
-		} else {
-			s.error(w, r, http.StatusBadRequest, fmt.Errorf("Wrong HTTP method"))
 		}
+		direction := &model.Direction{Name: request.Name}
+		if err := s.store.Direction().Create(direction); err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+		s.respond(w, r, http.StatusOK, direction)
 
 	}
+}
+
+func (s *Server) handleDirectionsGetAll() http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		directions, err := s.store.Direction().All()
+		if err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+		s.respond(w, r, http.StatusOK, directions)
+		return
+
+	}
+
 }

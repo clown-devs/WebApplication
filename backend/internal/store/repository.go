@@ -31,7 +31,7 @@ type DirectionRepository interface {
 type ClientRepository interface {
 	Create(*model.Client) error
 	Find(uint64) (*model.Client, error)
-	//All() ([]*model.Client, error)
+	All() ([]*model.Client, error)
 }
 
 type ContactRepository interface {

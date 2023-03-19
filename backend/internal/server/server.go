@@ -43,7 +43,7 @@ func (s *Server) Start() error {
 	s.Logger.Info("Configuring routers...")
 	s.configureRouter() // routes.go
 
-	s.Logger.Info("Server started")
+	s.Logger.Info("Server started on port ", s.config.BindAddr)
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
 
@@ -52,7 +52,10 @@ func (s *Server) configureLogger() error {
 	if err != nil {
 		return err
 	}
-
+	s.Logger.SetFormatter(&logrus.TextFormatter{
+		DisableColors: false,
+		FullTimestamp: true,
+	})
 	s.Logger.SetLevel(level)
 	return nil
 }
