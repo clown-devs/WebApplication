@@ -64,7 +64,7 @@ func (s *Server) handleClientCreate() http.HandlerFunc {
 	}
 }
 
-func (s *Server) handleClientsGetAll() http.HandlerFunc {
+func (s *Server) handleClientsGetAll() http.HandlerFunc {	
 	return func(w http.ResponseWriter, r *http.Request) {
 		clients, err := s.store.Client().All()
 		if err != nil {
