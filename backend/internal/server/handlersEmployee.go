@@ -17,7 +17,9 @@ func (s *Server) RegisterEmployeeHandlers() {
 	authorizedRoute.Use(s.authentificateEmployee)
 
 	employeeRoute.HandleFunc("/", s.handleEmployeeCreate()).Methods("POST")
-	authorizedRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
+	//FIXME:
+	//authorizedRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
+	employeeRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
 	authorizedRoute.HandleFunc("/current/", s.handleCurrentUser()).Methods("GET")
 
 	employeeRoute.HandleFunc("/directions/", s.handleDirectionsCreate()).Methods("POST")
@@ -63,7 +65,6 @@ func (s *Server) handleEmployeeById() http.HandlerFunc {
 			s.error(w, r, http.StatusNotFound, err)
 			return
 		}
-		e.Sanitize()
 		s.respond(w, r, http.StatusOK, e)
 	}
 }
@@ -76,7 +77,6 @@ func (s *Server) handleCurrentUser() http.HandlerFunc {
 			s.error(w, r, http.StatusBadRequest, err)
 			return
 		}
-		e.Sanitize()
 		s.respond(w, r, http.StatusOK, e)
 	}
 }

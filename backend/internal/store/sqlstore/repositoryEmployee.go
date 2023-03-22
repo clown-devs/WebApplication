@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"sberapi/internal/model"
+	"sberapi/internal/store"
 )
 
 const (
@@ -17,7 +18,8 @@ const (
 )
 
 type EmployeeRepository struct {
-	db *sql.DB
+	db               *sql.DB
+	clientRepository store.ClientRepository
 }
 
 func (r *EmployeeRepository) Create(e *model.Employee) error {
@@ -28,12 +30,20 @@ func (r *EmployeeRepository) Create(e *model.Employee) error {
 	if err := e.BeforeCreate(); err != nil {
 		return err
 	}
-
+	e.Role = &model.Role{}
+	e.Clients = make([]*model.Client, 0)
 	err := r.db.QueryRow(
-		"INSERT INTO employees e "+
-			"(fullname, username, encrypted_password)"+
-			"VALUES ($1, $2, $3) RETURNING id",
-		e.Fullname, e.Username, e.EncryptedPassword).Scan(&e.ID)
+		`WITH inserted_employee AS (
+			INSERT INTO employees(fullname, username, encrypted_password)
+			VALUES ($1, $2, $3)
+			RETURNING employees.id, role_id)
+
+			SELECT ie.id, roles.id, roles.name, roles.is_super, roles.can_see_meetings 
+			FROM inserted_employee ie
+				INNER JOIN roles on ie.role_id = roles.id`,
+		e.Fullname, e.Username, e.EncryptedPassword).Scan(
+		&e.ID,
+		&e.Role.ID, &e.Role.Name, &e.Role.IsSuper, &e.Role.CanSeeMeetings)
 
 	if err != nil {
 		return err
@@ -88,14 +98,15 @@ func (r *EmployeeRepository) FindByToken(token string) (*model.Employee, error) 
 }
 
 func (r *EmployeeRepository) parseUser(row *sql.Row) (*model.Employee, error) {
-
 	directionID, directionName := sql.NullInt64{}, sql.NullString{}
 	u := &model.Employee{Role: &model.Role{}, Direction: nil}
+
 	err := row.Scan(
 		&u.ID, &u.Fullname, &u.Username, &u.EncryptedPassword,
 		&u.Role.ID, &u.Role.Name, &u.Role.IsSuper, &u.Role.CanSeeMeetings,
 		&directionID, &directionName,
 	)
+
 	if err != nil {
 		return nil, err
 	}
@@ -103,6 +114,7 @@ func (r *EmployeeRepository) parseUser(row *sql.Row) (*model.Employee, error) {
 	if directionID.Valid {
 		u.Direction = &model.Direction{ID: uint64(directionID.Int64), Name: directionName.String}
 	}
+	u.Clients, err = r.clientRepository.FindByEmployeeId(u.ID)
 
 	return u, nil
 }

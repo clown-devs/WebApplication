@@ -45,7 +45,7 @@ func (s *Server) handleCreateOrGetToken() http.HandlerFunc {
 		}
 		s.respond(w, r, http.StatusOK, map[string]interface{}{
 			"auth_token:": token.Token,
-			"employee_id": token.EmployeeId,
+			"employee":    e,
 		})
 	}
 }

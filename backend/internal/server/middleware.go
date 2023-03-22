@@ -17,6 +17,7 @@ func (s *Server) authentificateEmployee(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if len(r.Header["Authorization"]) != 1 {
 			s.error(w, r, http.StatusUnauthorized, fmt.Errorf("Wrong Authorization Header"))
+			return
 		}
 		requestToken := r.Header["Authorization"][0]
 

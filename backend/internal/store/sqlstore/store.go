@@ -25,7 +25,8 @@ func New(db *sql.DB) *Store {
 func (s *Store) Employee() store.EmployeeRepository {
 	if s.employeeRepository == nil {
 		s.employeeRepository = &EmployeeRepository{
-			db: s.db,
+			db:               s.db,
+			clientRepository: s.Client(),
 		}
 	}
 	return s.employeeRepository
