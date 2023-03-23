@@ -22,6 +22,30 @@ type EmployeeRepository struct {
 	clientRepository store.ClientRepository
 }
 
+func (r *EmployeeRepository) All(filters *model.EmployeeFilters) ([]model.Employee, error) {
+	employees := make([]model.Employee, 0, 10)
+	query := userSQLString
+
+	rows, err := r.executeQueryWithFilters(query, filters)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		e, err := r.parseUser(rows)
+		if err != nil {
+			return nil, err
+		}
+		employees = append(employees, *e)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return employees, nil
+}
+
 func (r *EmployeeRepository) Create(e *model.Employee) error {
 	if err := e.Validate(); err != nil {
 		return err
@@ -97,7 +121,12 @@ func (r *EmployeeRepository) FindByToken(token string) (*model.Employee, error) 
 
 }
 
-func (r *EmployeeRepository) parseUser(row *sql.Row) (*model.Employee, error) {
+type Scannable interface {
+	Scan(dest ...any) error
+}
+
+// Parses sql row to employee model
+func (r *EmployeeRepository) parseUser(row Scannable) (*model.Employee, error) {
 	directionID, directionName := sql.NullInt64{}, sql.NullString{}
 	u := &model.Employee{Role: &model.Role{}, Direction: nil}
 
@@ -117,4 +146,43 @@ func (r *EmployeeRepository) parseUser(row *sql.Row) (*model.Employee, error) {
 	u.Clients, err = r.clientRepository.FindByEmployeeId(u.ID)
 
 	return u, nil
+}
+
+// returns query with filters
+func filterQuery(query string, filters *model.EmployeeFilters) (string, []interface{}) {
+	//TODO: Переписать на рефлексии типов
+	values := []interface{}{}
+
+	counter := 1
+	query += "WHERE 1=1 "
+	if filters.ClientId != 0 {
+		query += fmt.Sprintf("AND e.id in (SELECT employee_id from clients_employee where client_id = $%d) ", counter)
+		values = append(values, filters.ClientId)
+		counter++
+	}
+	if filters.DirectionId != 0 {
+		query += fmt.Sprintf("AND d.id = $%d ", counter)
+		values = append(values, filters.DirectionId)
+		counter++
+	}
+
+	fmt.Println(query)
+	return query, values
+}
+
+// execute sql query with provided filters
+func (r *EmployeeRepository) executeQueryWithFilters(query string, filters *model.EmployeeFilters) (*sql.Rows, error) {
+
+	query, values := filterQuery(query, filters)
+	stmt, err := r.db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := stmt.Query(values...)
+	defer stmt.Close()
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
 }

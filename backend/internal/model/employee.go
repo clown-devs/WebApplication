@@ -17,6 +17,11 @@ type Employee struct {
 	Direction *Direction `json:"direction"`
 }
 
+type EmployeeFilters struct {
+	DirectionId uint64
+	ClientId    uint64
+}
+
 func (e *Employee) Validate() error {
 	err := validation.ValidateStruct(e,
 		validation.Field(&e.Username, validation.Required),

@@ -10,8 +10,8 @@ type ClientRepository struct {
 	db *sql.DB
 }
 
-func (r *ClientRepository) All() ([]*model.Client, error) {
-	clients := make([]*model.Client, 0, 10)
+func (r *ClientRepository) All() ([]model.Client, error) {
+	clients := make([]model.Client, 0, 10)
 
 	rows, err := r.db.Query("SELECT id, name, inn FROM clients")
 	defer rows.Close()
@@ -20,7 +20,7 @@ func (r *ClientRepository) All() ([]*model.Client, error) {
 	}
 
 	for rows.Next() {
-		client := &model.Client{}
+		client := model.Client{}
 		err := rows.Scan(&client.ID, &client.Name, &client.Inn)
 		if err != nil {
 			return nil, err

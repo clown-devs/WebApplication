@@ -17,6 +17,7 @@ func (s *Server) RegisterEmployeeHandlers() {
 	authorizedRoute.Use(s.authentificateEmployee)
 
 	employeeRoute.HandleFunc("/", s.handleEmployeeCreate()).Methods("POST")
+	employeeRoute.HandleFunc("/", s.handleEmployeesGetAll()).Methods("GET")
 	//FIXME:
 	//authorizedRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
 	employeeRoute.HandleFunc("/{id:[0-9]+}/", s.handleEmployeeById()).Methods("GET")
@@ -26,6 +27,22 @@ func (s *Server) RegisterEmployeeHandlers() {
 	employeeRoute.HandleFunc("/directions/", s.handleDirectionsGetAll()).Methods("GET")
 	employeeRoute.HandleFunc("/directions/{id:[0-9]+}/", s.handleDirectionById()).Methods("GET")
 
+}
+func (s *Server) handleEmployeesGetAll() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		filters := &model.EmployeeFilters{}
+
+		filters.DirectionId, _ = strconv.ParseUint(r.URL.Query().Get("direction_id"), 10, 64)
+		filters.ClientId, _ = strconv.ParseUint(r.URL.Query().Get("client_id"), 10, 64)
+
+		employees, err := s.store.Employee().All(filters)
+
+		if err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+		s.respond(w, r, http.StatusOK, employees)
+	}
 }
 
 func (s *Server) handleEmployeeCreate() http.HandlerFunc {

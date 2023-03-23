@@ -38,8 +38,8 @@ func (r *DirectionRepository) Find(id uint64) (*model.Direction, error) {
 	return dir, nil
 }
 
-func (r *DirectionRepository) All() ([]*model.Direction, error) {
-	dirs := make([]*model.Direction, 0, 10)
+func (r *DirectionRepository) All() ([]model.Direction, error) {
+	dirs := make([]model.Direction, 0, 10)
 
 	rows, err := r.db.Query("SELECT id, name FROM directions")
 	if err != nil {
@@ -48,7 +48,7 @@ func (r *DirectionRepository) All() ([]*model.Direction, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		dir := &model.Direction{}
+		dir := model.Direction{}
 		err := rows.Scan(&dir.ID, &dir.Name)
 		if err != nil {
 			return nil, err
