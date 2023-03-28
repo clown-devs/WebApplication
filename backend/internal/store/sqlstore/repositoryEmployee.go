@@ -24,15 +24,17 @@ type EmployeeRepository struct {
 
 func (r *EmployeeRepository) All(filters *model.EmployeeFilters) ([]model.Employee, error) {
 	employees := make([]model.Employee, 0, 10)
-	query := userSQLString
+	query, values := r.filterQuery(userSQLString, filters)
 
-	rows, err := r.executeQueryWithFilters(query, filters)
+	rows, err := r.db.Query(query, values...)
+	defer rows.Close()
+
 	if err != nil {
 		return nil, err
 	}
 
 	for rows.Next() {
-		e, err := r.parseUser(rows)
+		e, err := r.parseEmployee(rows)
 		if err != nil {
 			return nil, err
 		}
@@ -82,7 +84,7 @@ func (r *EmployeeRepository) Create(e *model.Employee) error {
 }
 
 func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
-	u, err := r.parseUser(
+	u, err := r.parseEmployee(
 		r.db.QueryRow(userSQLString+" WHERE e.id = $1", id),
 	)
 	if err != nil {
@@ -95,7 +97,7 @@ func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
 }
 
 func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, error) {
-	u, err := r.parseUser(
+	u, err := r.parseEmployee(
 		r.db.QueryRow(userSQLString+" WHERE e.username = $1", username),
 	)
 	if err != nil {
@@ -108,7 +110,7 @@ func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, e
 }
 
 func (r *EmployeeRepository) FindByToken(token string) (*model.Employee, error) {
-	u, err := r.parseUser(
+	u, err := r.parseEmployee(
 		r.db.QueryRow(userSQLString+
 			"WHERE e.id = "+
 			"(select employee_id from tokens t where t.token = $1)", token),
@@ -126,7 +128,7 @@ type Scannable interface {
 }
 
 // Parses sql row to employee model
-func (r *EmployeeRepository) parseUser(row Scannable) (*model.Employee, error) {
+func (r *EmployeeRepository) parseEmployee(row Scannable) (*model.Employee, error) {
 	directionID, directionName := sql.NullInt64{}, sql.NullString{}
 	u := &model.Employee{Role: &model.Role{}, Direction: nil}
 
@@ -149,40 +151,19 @@ func (r *EmployeeRepository) parseUser(row Scannable) (*model.Employee, error) {
 }
 
 // returns query with filters
-func filterQuery(query string, filters *model.EmployeeFilters) (string, []interface{}) {
+func (r *EmployeeRepository) filterQuery(query string, filters *model.EmployeeFilters) (string, []interface{}) {
 	//TODO: Переписать на рефлексии типов
-	values := []interface{}{}
 
-	counter := 1
+	values := []interface{}{}
 	query += "WHERE 1=1 "
 	if filters.ClientId != 0 {
-		query += fmt.Sprintf("AND e.id in (SELECT employee_id from clients_employee where client_id = $%d) ", counter)
 		values = append(values, filters.ClientId)
-		counter++
+		query += fmt.Sprintf("AND e.id in (SELECT employee_id from clients_employee where client_id = $%d) ", len(values))
 	}
 	if filters.DirectionId != 0 {
-		query += fmt.Sprintf("AND d.id = $%d ", counter)
 		values = append(values, filters.DirectionId)
-		counter++
+		query += fmt.Sprintf("AND d.id = $%d ", len(values))
 	}
-
 	fmt.Println(query)
 	return query, values
-}
-
-// execute sql query with provided filters
-func (r *EmployeeRepository) executeQueryWithFilters(query string, filters *model.EmployeeFilters) (*sql.Rows, error) {
-
-	query, values := filterQuery(query, filters)
-	stmt, err := r.db.Prepare(query)
-	if err != nil {
-		return nil, err
-	}
-
-	rows, err := stmt.Query(values...)
-	defer stmt.Close()
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
 }

@@ -28,6 +28,7 @@ func (s *Server) RegisterEmployeeHandlers() {
 	employeeRoute.HandleFunc("/directions/{id:[0-9]+}/", s.handleDirectionById()).Methods("GET")
 
 }
+
 func (s *Server) handleEmployeesGetAll() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		filters := &model.EmployeeFilters{}

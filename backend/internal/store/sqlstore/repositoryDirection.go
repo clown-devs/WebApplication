@@ -19,7 +19,6 @@ func (r *DirectionRepository) Create(dir *model.Direction) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 
 }

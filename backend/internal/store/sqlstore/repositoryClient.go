@@ -88,3 +88,5 @@ func (r *ClientRepository) FindByEmployeeId(employeeId uint64) ([]*model.Client,
 
 	return clients, nil
 }
+
+
