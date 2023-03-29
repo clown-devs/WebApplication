@@ -8,8 +8,8 @@ import (
 type Employee struct {
 	ID                uint64 `json:"id"`
 	Fullname          string `json:"fullname"`
-	Username          string `json:"-"`
-	Password          string `json:"-"` //Don't store in DB
+	Username          string `json:"username,omitempty"`
+	Password          string `json:"password,omitempty"` //Don't store in DB
 	EncryptedPassword string `json:"-"`
 
 	Clients   []*Client  `json:"client_list"`

@@ -83,6 +83,14 @@ func (r *EmployeeRepository) Create(e *model.Employee) error {
 
 }
 
+func (r *EmployeeRepository) Delete(id uint64) error {
+	_, err := r.db.Exec("DELETE FROM employees WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
 	u, err := r.parseEmployee(
 		r.db.QueryRow(userSQLString+" WHERE e.id = $1", id),
@@ -166,4 +174,54 @@ func (r *EmployeeRepository) filterQuery(query string, filters *model.EmployeeFi
 	}
 	fmt.Println(query)
 	return query, values
+}
+
+// requires username and password!
+
+func (r *EmployeeRepository) UpdateInternal(e *model.Employee) error {
+	if err := e.Validate(); err != nil {
+		return err
+	}
+	encrypted, err := model.EncryptPassword(e.Password)
+	if err != nil {
+		return err
+	}
+	e.EncryptedPassword = encrypted
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var directionId *uint64
+	if e.Direction != nil {
+		directionId = &e.Direction.ID
+	} else {
+		directionId = nil
+	}
+
+	_, err = tx.Exec(
+		`
+			UPDATE employees
+			SET fullname = $1, username = $2, encrypted_password = $3, role_id = $4, direction_id = $5
+			WHERE id = $6
+		`, e.Fullname, e.Username, e.EncryptedPassword, e.Role.ID, directionId, e.ID)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec("DELETE FROM clients_employee WHERE employee_id = $1", e.ID)
+	if err != nil {
+		return err
+	}
+
+	for _, client := range e.Clients {
+		_, err = tx.Exec("INSERT INTO clients_employee(client_id, employee_id) VALUES ($1, $2)", client.ID, e.ID)
+		if err != nil {
+			return err
+		}
+	}
+
+	return tx.Commit()
 }

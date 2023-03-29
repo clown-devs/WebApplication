@@ -8,6 +8,7 @@ type EmployeeRepository interface {
 	FindByUsername(string) (*model.Employee, error)
 	FindByToken(string) (*model.Employee, error)
 	All(*model.EmployeeFilters) ([]model.Employee, error)
+	UpdateInternal(*model.Employee) error
 	//TODO:
 	//Delete
 }

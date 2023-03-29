@@ -22,7 +22,7 @@ func RegisterEmployeeHandlers(router *mux.Router, store store.Store) {
 	//FIXME:
 	//authorizedRoute.HandleFunc("/{id:[0-9]+}/", handleEmployeeById()).Methods("GET")
 	employeeRoute.HandleFunc("/{id:[0-9]+}/", handleEmployeeById(store)).Methods("GET")
-	authorizedRoute.HandleFunc("/current/", handleCurrentUser(store)).Methods("GET")
+	authorizedRoute.HandleFunc("/current/", handleCurrentUser(store)).Methods("GET", "PUT")
 
 	employeeRoute.HandleFunc("/directions/", handleDirectionsCreate(store)).Methods("POST")
 	employeeRoute.HandleFunc("/directions/", handleDirectionsGetAll(store)).Methods("GET")
@@ -96,7 +96,23 @@ func handleCurrentUser(store store.Store) http.HandlerFunc {
 			respondError(w, r, http.StatusBadRequest, err)
 			return
 		}
-		respond(w, r, http.StatusOK, e)
+
+		if r.Method == "GET" {
+			respond(w, r, http.StatusOK, e)
+
+		} else if r.Method == "PUT" {
+			if err := json.NewDecoder(r.Body).Decode(e); err != nil {
+				respondError(w, r, http.StatusBadRequest, err)
+				return
+			}
+
+			err := store.Employee().UpdateInternal(e)
+			if err != nil {
+				respondError(w, r, http.StatusBadRequest, err)
+				return
+			}
+			respond(w, r, http.StatusOK, e)
+		}
 	}
 }
 
