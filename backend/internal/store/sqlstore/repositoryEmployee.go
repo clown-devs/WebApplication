@@ -91,8 +91,9 @@ func (r *EmployeeRepository) Delete(id uint64) error {
 	return nil
 }
 
+// Returns only public fields (without password and username)
 func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
-	u, err := r.parseEmployee(
+	e, err := r.parseEmployee(
 		r.db.QueryRow(userSQLString+" WHERE e.id = $1", id),
 	)
 	if err != nil {
@@ -101,7 +102,9 @@ func (r *EmployeeRepository) Find(id uint64) (*model.Employee, error) {
 		}
 		return nil, err
 	}
-	return u, nil
+
+	e.Username = ""
+	return e, nil
 }
 
 func (r *EmployeeRepository) FindByUsername(username string) (*model.Employee, error) {
