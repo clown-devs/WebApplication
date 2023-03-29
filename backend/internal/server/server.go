@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	. "sberapi/internal/config"
+	"sberapi/internal/handlers"
 	"sberapi/internal/store"
 	"sberapi/internal/store/sqlstore"
 
@@ -33,7 +34,6 @@ func (s *Server) Start() error {
 	if err := s.configureLogger(); err != nil {
 		return err
 	}
-
 	s.Logger.Info("Configuring database...")
 	err := s.configureStore()
 	if err != nil {
@@ -80,4 +80,9 @@ func (s *Server) configureStore() error {
 	}
 	s.store = sqlstore.New(db)
 	return nil
+}
+
+func (s *Server) configureRouter() {
+	s.router = mux.NewRouter().PathPrefix("/api/v3").Subrouter()
+	handlers.RegisterHandlers(s.router, s.store)
 }

@@ -1,7 +1,7 @@
 .PHONY: build, run, all, check
 
 build: 
-	go build -v ./cmd/main.go
+	go build  -o ./bin/server -v ./cmd/main.go 
 	
 run:
 	go run ./cmd/main.go
