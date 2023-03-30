@@ -179,18 +179,8 @@ func (r *EmployeeRepository) filterQuery(query string, filters *model.EmployeeFi
 	return query, values
 }
 
-// requires username and password!
-
-func (r *EmployeeRepository) UpdateInternal(e *model.Employee) error {
-	if err := e.Validate(); err != nil {
-		return err
-	}
-	encrypted, err := model.EncryptPassword(e.Password)
-	if err != nil {
-		return err
-	}
-	e.EncryptedPassword = encrypted
-
+// cannot update username & password
+func (r *EmployeeRepository) UpdatePublic(e *model.Employee) error {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return err
@@ -207,9 +197,9 @@ func (r *EmployeeRepository) UpdateInternal(e *model.Employee) error {
 	_, err = tx.Exec(
 		`
 			UPDATE employees
-			SET fullname = $1, username = $2, encrypted_password = $3, role_id = $4, direction_id = $5
-			WHERE id = $6
-		`, e.Fullname, e.Username, e.EncryptedPassword, e.Role.ID, directionId, e.ID)
+			SET fullname = $1, direction_id = $2
+			WHERE id = $3
+		`, e.Fullname, directionId, e.ID)
 	if err != nil {
 		return err
 	}

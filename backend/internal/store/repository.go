@@ -8,7 +8,7 @@ type EmployeeRepository interface {
 	FindByUsername(string) (*model.Employee, error)
 	FindByToken(string) (*model.Employee, error)
 	All(*model.EmployeeFilters) ([]model.Employee, error)
-	UpdateInternal(*model.Employee) error
+	UpdatePublic(*model.Employee) error
 	//TODO:
 	//Delete
 }
@@ -18,6 +18,7 @@ type TokenRepository interface {
 	// Not returning an error if not found
 	// Just nil
 	Find(uint64) (*model.Token, error)
+	Exists(string) (bool, error)
 	//TODO:
 	//Destroy
 }

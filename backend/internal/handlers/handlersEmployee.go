@@ -106,7 +106,7 @@ func handleCurrentUser(store store.Store) http.HandlerFunc {
 				return
 			}
 
-			err := store.Employee().UpdateInternal(e)
+			err := store.Employee().UpdatePublic(e)
 			if err != nil {
 				respondError(w, r, http.StatusBadRequest, err)
 				return
