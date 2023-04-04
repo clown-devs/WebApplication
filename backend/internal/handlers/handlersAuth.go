@@ -47,8 +47,8 @@ func handleCreateOrGetToken(store store.Store) http.HandlerFunc {
 			}
 		}
 		respond(w, r, http.StatusOK, map[string]interface{}{
-			"auth_token:": token.Token,
-			"employee":    e,
+			"auth_token": token.Token,
+			"employee":   e,
 		})
 	}
 }
