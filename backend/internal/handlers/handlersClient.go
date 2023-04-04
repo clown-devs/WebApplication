@@ -13,7 +13,7 @@ import (
 func RegisterClientHandlers(router *mux.Router, store store.Store) {
 	route := router.PathPrefix("/clients").Subrouter()
 	authorizedRoute := router.PathPrefix("/clients").Subrouter()
-	authorizedRoute.Use(authentificateEmployee)
+	authorizedRoute.Use(authentificateEmployee(store))
 
 	route.HandleFunc("/", handleClientCreate(store)).Methods("POST")
 	route.HandleFunc("/", handleClientsGetAll(store)).Methods("GET")
@@ -21,6 +21,7 @@ func RegisterClientHandlers(router *mux.Router, store store.Store) {
 	route.HandleFunc("/{id:[0-9]+}/", handleClientById(store)).Methods("GET")
 
 	route.HandleFunc("/contacts/", handleContactCreate(store)).Methods("POST")
+	route.HandleFunc("/contacts/", handleContactsGetAll(store)).Methods("GET")
 }
 
 func handleClientById(store store.Store) http.HandlerFunc {
@@ -109,4 +110,17 @@ func handleContactCreate(store store.Store) http.HandlerFunc {
 		respond(w, r, http.StatusOK, client)
 	}
 
+}
+
+func handleContactsGetAll(store store.Store) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		//FIXME: add filters
+		filters := &model.ContactFilters{}
+		contacts, err := store.Contact().All(filters)
+		if err != nil {
+			respondError(w, r, http.StatusInternalServerError, err)
+			return
+		}
+		respond(w, r, http.StatusOK, contacts)
+	}
 }

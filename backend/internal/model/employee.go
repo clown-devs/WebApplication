@@ -18,8 +18,8 @@ type Employee struct {
 }
 
 type EmployeeFilters struct {
-	DirectionId uint64 `db:"direction_id"`
-	ClientId    uint64 `db:"client_id"`
+	DirectionId uint64
+	ClientId    uint64
 }
 
 func (e *Employee) Validate() error {

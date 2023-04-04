@@ -5,7 +5,7 @@ import validation "github.com/go-ozzo/ozzo-validation"
 type Client struct {
 	ID   uint64 `json:"id"`
 	Name string `json:"name"`
-	Inn  string `json:"inn"` // max length - 12
+	Inn  string `json:"inn"` // max length: 12
 }
 
 func (c *Client) Validate() error {
@@ -23,6 +23,10 @@ type Contact struct {
 	Position *string `json:"position"`
 	Email    *string `json:"email"`
 	Client   *Client `json:"client"`
+}
+
+type ContactFilters struct {
+	ClientId uint64
 }
 
 func (c *Contact) Validate() error {

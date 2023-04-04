@@ -163,8 +163,6 @@ func (r *EmployeeRepository) parseEmployee(row Scannable) (*model.Employee, erro
 
 // returns query with filters
 func (r *EmployeeRepository) filterQuery(query string, filters *model.EmployeeFilters) (string, []interface{}) {
-	//TODO: Переписать на рефлексии типов
-
 	values := []interface{}{}
 	query += "WHERE 1=1 "
 	if filters.ClientId != 0 {

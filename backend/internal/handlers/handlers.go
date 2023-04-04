@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Middleware
 func RegisterHandlers(router *mux.Router, store store.Store) {
 	router.Use(commonMiddleware)
 

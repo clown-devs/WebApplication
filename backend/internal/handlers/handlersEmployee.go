@@ -15,7 +15,7 @@ func RegisterEmployeeHandlers(router *mux.Router, store store.Store) {
 	employeeRoute := router.PathPrefix("/employee").Subrouter()
 
 	authorizedRoute := router.PathPrefix("/employee").Subrouter()
-	authorizedRoute.Use(authentificateEmployee)
+	authorizedRoute.Use(authentificateEmployee(store))
 
 	employeeRoute.HandleFunc("/", handleEmployeeCreate(store)).Methods("POST")
 	employeeRoute.HandleFunc("/", handleEmployeesGetAll(store)).Methods("GET")

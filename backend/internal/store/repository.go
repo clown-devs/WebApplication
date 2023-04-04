@@ -40,6 +40,7 @@ type ClientRepository interface {
 
 type ContactRepository interface {
 	Create(*model.Contact) error //FIXME:
+	All(*model.ContactFilters) ([]model.Contact, error)
 	//Find(uint64) (*model.Contact, error)
 	//All
 }

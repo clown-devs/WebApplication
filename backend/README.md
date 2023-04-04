@@ -7,6 +7,7 @@
 - В конце **всех** ссылок теперь надо писать / для единообразия. Даже если после будут параметры.  
 Например:
 > sbermeeting.tk/api/v3/employees/?client_id=1&direction_id=1
+- Те значения, которые могут быть NULL помечены **NULL***
 ---
 ## Авторизация
 
@@ -27,7 +28,7 @@ POST запрос
 - fullname
 - client_list - список клиентов, с которыми работает сотрудники (см. сотрудники)
 - role (см. роли)
-- direction (см. направления)
+- direction (см. направления) - NULL*
 ~~~
 ### Эндпоинты:  
 
@@ -146,5 +147,8 @@ POST - добавить новое направление
 Используемая CLI для миграции - https://github.com/golang-migrate/migrate  
 #### Команда для миграции:
 > migrate -path migrations -database "postgres://**user**:**passwd**@localhost/sberdb?sslmode=disable" up
+
+#### Подключение к бд через консоль:
+> docker exec -it **container-name** psql -U postgres
 
 Позже напишу скрипт для автоматического деплоя
